@@ -1,0 +1,73 @@
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f1f8f4;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #2e7d32;
+}
+.navbar-brand, .nav-link {
+  color: white !important;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  height: 100%;
+  width: 250px;
+  background-color: #1b4332;
+  padding-top: 1rem;
+}
+.sidebar .nav-link {
+  color: #d8f3dc;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+.sidebar .nav-link.active {
+  background-color: #40916c;
+  color: white;
+}
+.sidebar .nav-link:hover {
+  background-color: #2d6a4f;
+  color: #fff;
+}
+
+/* Main Content */
+.main-content {
+  margin-left: 260px;
+  margin-top: 80px;
+  padding-right: 20px;
+}
+
+
+/* Card and Table */
+.card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+.table th {
+  background-color: #2e7d32;
+  color: #fff;
+}
+.table td {
+  vertical-align: middle;
+}
+
+/* Filter Dropdown */
+.filter-dropdown .dropdown-toggle {
+  border-radius: 15px;
+  font-weight: 600;
+  font-size: 15px;
+}
+.filter-box {
+  border-radius: 12px;
+  background-color: #fff;
+}
+.filter-box .form-label {
+  color: #2e7d32;
+}

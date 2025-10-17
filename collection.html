@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BasuraTrack Sariaya - Collection Records</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="collection.css">
+</head>
+
+<body>
+  <!-- Top Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#"><i class="bi bi-recycle me-2"></i>BasuraTrack Sariaya</a>
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item me-3">
+          <a class="nav-link" href="#"><i class="bi bi-bell-fill"></i></a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" data-bs-toggle="dropdown">
+            <i class="bi bi-person-circle"></i> Admin
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <nav class="nav flex-column">
+      <a class="nav-link" href="index.html"><i class="bi bi-house-door-fill me-2"></i> Dashboard</a>
+      <a class="nav-link" href="schedule.html"><i class="bi bi-map-fill me-2"></i> Routes & Schedules</a>
+      <a class="nav-link" href="trucks.html"><i class="bi bi-truck-front-fill me-2"></i> Trucks & Collectors</a>
+      <a class="nav-link active" href="collection.html"><i class="bi bi-trash-fill me-2"></i> Collection Records</a>
+      <a class="nav-link" href="#"><i class="bi bi-file-earmark-text-fill me-2"></i> Resident Reports</a>
+      <a class="nav-link" href="#"><i class="bi bi-bar-chart-fill me-2"></i> Analytics & Reports</a>
+      <a class="nav-link" href="#"><i class="bi bi-megaphone-fill me-2"></i> Announcements</a>
+      <a class="nav-link" href="#"><i class="bi bi-gear-fill me-2"></i> Settings</a>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <h4 class="mb-4"><i class="bi bi-trash-fill me-2 text-success"></i>Collection Records Management</h4>
+
+    <!-- Filter + Add Button -->
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addRecordModal">
+        <i class="bi bi-plus-circle me-2"></i>Add Record
+      </button>
+
+      <!-- Filter Dropdown -->
+      <div class="dropdown">
+        <button class="btn btn-outline-success dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-funnel-fill me-2"></i>Filter Records
+        </button>
+        <div class="dropdown-menu dropdown-menu-end p-3 shadow" style="min-width: 250px;">
+          <div class="mb-2">
+            <label class="form-label fw-semibold">Filter Type</label>
+            <select id="filterType" class="form-select">
+              <option value="">Select Type</option>
+              <option value="barangay">Barangay</option>
+              <option value="date">Date</option>
+            </select>
+          </div>
+
+          <div class="mb-2 d-none" id="barangayContainer">
+            <label class="form-label fw-semibold">Barangay</label>
+            <select id="filterBarangay" class="form-select">
+              <option value="">Select Barangay</option>
+              <option value="Sampaloc">Sampaloc</option>
+              <option value="Guisguis">Guisguis</option>
+              <option value="Poblacion">Poblacion</option>
+            </select>
+          </div>
+
+          <div class="mb-2 d-none" id="dateContainer">
+            <label class="form-label fw-semibold">Date</label>
+            <input type="date" id="filterDate" class="form-control">
+          </div>
+
+          <div class="d-flex justify-content-between mt-3">
+            <button class="btn btn-success btn-sm w-50 me-1" id="filterBtn">
+              <i class="bi bi-check-circle me-1"></i>Apply
+            </button>
+            <button class="btn btn-outline-secondary btn-sm w-50" id="resetFilterBtn">
+              <i class="bi bi-arrow-clockwise me-1"></i>Reset
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Records Table -->
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped align-middle text-center">
+        <thead class="table-success">
+          <tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Barangay</th>
+            <th>Waste (kg)</th>
+            <th>Truck</th>
+            <th>Collector</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="recordsBody">
+          <tr>
+            <td>1</td>
+            <td>2025-10-15</td>
+            <td>Sampaloc</td>
+            <td>250</td>
+            <td>#1</td>
+            <td>Juan Dela C.</td>
+            <td>
+              <div class="action-buttons d-flex flex-wrap gap-2 justify-content-center">
+                <button class="btn btn-warning btn-sm edit-btn"><i class="bi bi-pencil-square"></i></button>
+                <button class="btn btn-danger btn-sm delete-btn"><i class="bi bi-trash3-fill"></i></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Add/Edit Record Modal -->
+  <div class="modal fade" id="addRecordModal" tabindex="-1" aria-labelledby="addRecordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title" id="addRecordModalLabel"><i class="bi bi-plus-circle me-2"></i>Add Collection Record</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="recordForm">
+            <input type="hidden" id="editIndex">
+            <div class="mb-3">
+              <label class="form-label">Date</label>
+              <input type="date" class="form-control" id="recordDate" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Barangay</label>
+              <select class="form-select" id="recordBarangay" required>
+                <option value="">Select Barangay</option>
+                <option value="Sampaloc">Sampaloc</option>
+                <option value="Guisguis">Guisguis</option>
+                <option value="Poblacion">Poblacion</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Waste Collected (kg)</label>
+              <input type="number" class="form-control" id="recordWaste" min="1" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Truck</label>
+              <input type="text" class="form-control" id="recordTruck" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Collector</label>
+              <input type="text" class="form-control" id="recordCollector" required>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+              <button type="submit" class="btn btn-success px-5">Save Record</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const tableBody = document.getElementById("recordsBody");
+    const recordForm = document.getElementById("recordForm");
+    const editIndex = document.getElementById("editIndex");
+    const modalEl = document.getElementById("addRecordModal");
+    const modal = new bootstrap.Modal(modalEl);
+
+    const getValues = () => ({
+      date: document.getElementById("recordDate").value,
+      barangay: document.getElementById("recordBarangay").value.trim(),
+      waste: document.getElementById("recordWaste").value.trim(),
+      truck: document.getElementById("recordTruck").value.trim(),
+      collector: document.getElementById("recordCollector").value.trim(),
+    });
+
+    function reindexRows() {
+      [...tableBody.rows].forEach((r, i) => (r.cells[0].textContent = i + 1));
+    }
+
+    // Add / Update Record
+    recordForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const { date, barangay, waste, truck, collector } = getValues();
+      if (!date || !barangay || !waste || !truck || !collector) return alert("Please fill in all required fields.");
+
+      if (editIndex.value === "") {
+        const newRow = tableBody.insertRow();
+        newRow.innerHTML = `
+          <td></td>
+          <td>${date}</td>
+          <td>${barangay}</td>
+          <td>${waste}</td>
+          <td>${truck}</td>
+          <td>${collector}</td>
+          <td>
+            <div class="action-buttons d-flex flex-wrap gap-2 justify-content-center">
+              <button class="btn btn-warning btn-sm edit-btn"><i class="bi bi-pencil-square"></i></button>
+              <button class="btn btn-danger btn-sm delete-btn"><i class="bi bi-trash3-fill"></i></button>
+            </div>
+          </td>`;
+      } else {
+        const row = tableBody.rows[editIndex.value];
+        row.cells[1].textContent = date;
+        row.cells[2].textContent = barangay;
+        row.cells[3].textContent = waste;
+        row.cells[4].textContent = truck;
+        row.cells[5].textContent = collector;
+      }
+
+      reindexRows();
+      recordForm.reset();
+      editIndex.value = "";
+      modal.hide();
+    });
+
+    // Edit Record
+    tableBody.addEventListener("click", (e) => {
+      if (e.target.closest(".edit-btn")) {
+        const row = e.target.closest("tr");
+        const i = row.rowIndex - 1;
+        editIndex.value = i;
+        document.getElementById("recordDate").value = row.cells[1].textContent;
+        document.getElementById("recordBarangay").value = row.cells[2].textContent;
+        document.getElementById("recordWaste").value = row.cells[3].textContent;
+        document.getElementById("recordTruck").value = row.cells[4].textContent;
+        document.getElementById("recordCollector").value = row.cells[5].textContent;
+        document.querySelector("#addRecordModalLabel").innerHTML = "<i class='bi bi-pencil-square me-2'></i>Edit Record";
+        modal.show();
+      }
+    });
+
+    // Delete Record
+    tableBody.addEventListener("click", (e) => {
+      if (e.target.closest(".delete-btn")) {
+        const row = e.target.closest("tr");
+        if (confirm("Are you sure you want to delete this record?")) {
+          row.remove();
+          reindexRows();
+        }
+      }
+    });
+
+    // FILTER LOGIC
+    const filterType = document.getElementById("filterType");
+    const barangayContainer = document.getElementById("barangayContainer");
+    const dateContainer = document.getElementById("dateContainer");
+    const filterBarangay = document.getElementById("filterBarangay");
+    const filterDate = document.getElementById("filterDate");
+    const filterBtn = document.getElementById("filterBtn");
+    const resetBtn = document.getElementById("resetFilterBtn");
+
+    // Show input depending on filter type
+    filterType.addEventListener("change", () => {
+      barangayContainer.classList.add("d-none");
+      dateContainer.classList.add("d-none");
+
+      if (filterType.value === "barangay") barangayContainer.classList.remove("d-none");
+      else if (filterType.value === "date") dateContainer.classList.remove("d-none");
+    });
+
+    // Filter button click
+    filterBtn.addEventListener("click", () => {
+      const type = filterType.value;
+      const barangay = filterBarangay.value.toLowerCase();
+      const date = filterDate.value;
+
+      // Validation — must have input
+      if (type === "") {
+        alert("Please select a filter type first.");
+        return;
+      }
+
+      if (type === "barangay" && barangay === "") {
+        alert("Please select a barangay to filter.");
+        return;
+      }
+
+      if (type === "date" && date === "") {
+        alert("Please select a date to filter.");
+        return;
+      }
+
+      // Apply filtering
+      [...tableBody.rows].forEach((row) => {
+        const rowBarangay = row.cells[2].textContent.toLowerCase();
+        const rowDate = row.cells[1].textContent;
+        let show = true;
+
+        if (type === "barangay" && barangay && !rowBarangay.includes(barangay)) show = false;
+        if (type === "date" && date && rowDate !== date) show = false;
+
+        row.style.display = show ? "" : "none";
+      });
+    });
+
+    // Reset filter
+    resetBtn.addEventListener("click", () => {
+      filterType.value = "";
+      filterBarangay.value = "";
+      filterDate.value = "";
+      barangayContainer.classList.add("d-none");
+      dateContainer.classList.add("d-none");
+      [...tableBody.rows].forEach((row) => (row.style.display = ""));
+    });
+  });
+</script>
+
+</body>
+</html>
