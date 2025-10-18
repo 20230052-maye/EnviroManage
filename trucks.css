@@ -118,3 +118,10 @@ body {
 }
 
 
+.logo {
+  height: 100px; /* bigger than navbar */
+  width: auto;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}

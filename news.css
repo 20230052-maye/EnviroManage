@@ -139,3 +139,10 @@ h4 {
 .btn, .form-control, .form-select, .nav-link {
   transition: all 0.3s ease;
 }
+.logo {
+  height: 100px; /* bigger than navbar */
+  width: auto;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}

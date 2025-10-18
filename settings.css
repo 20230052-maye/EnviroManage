@@ -276,3 +276,10 @@ html.dark-mode .main-content table td {
     html.dark-mode .form-check-label {
       color: #f1f1f1;
     }
+    .logo {
+  height: 100px; /* bigger than navbar */
+  width: auto;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}

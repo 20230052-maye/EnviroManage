@@ -93,3 +93,10 @@ table td {
   font-family: "Poppins", sans-serif;
   text-transform: none;
 }
+.logo {
+  height: 100px; /* bigger than navbar */
+  width: auto;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}

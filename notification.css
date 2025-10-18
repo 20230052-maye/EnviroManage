@@ -1,0 +1,67 @@
+  body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f1f8f4;
+}
+
+
+/* Navbar */
+.navbar {
+  background-color: #2e7d32;
+}
+.navbar-brand, .nav-link {
+  color: white !important;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  height: 100%;
+  width: 250px;
+  background-color: #1b4332;
+  padding-top: 1rem;
+}
+.sidebar .nav-link {
+  color: #d8f3dc;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+.sidebar .nav-link.active {
+  background-color: #40916c;
+  color: white;
+}
+.sidebar .nav-link:hover {
+  background-color: #2d6a4f;
+  color: #fff;
+}
+    /* Main content */
+    .main-content {
+      margin-left: 250px;
+      padding: 25px;
+      margin-top: 70px;
+    }
+     .notification-category {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #1e5631;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+
+    .notification-card {
+      margin-bottom: 15px;
+    }
+
+    .notification-card.unread {
+      border-left: 5px solid #1e5631;
+      background-color: #e8f5e9;
+    }
+    .logo {
+  height: 100px; /* bigger than navbar */
+  width: auto;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
