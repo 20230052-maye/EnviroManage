@@ -100,3 +100,34 @@ table td {
   top: 50%;
   transform: translateY(-50%);
 }
+
+/* Modern multi-select dropdown style */
+.dropdown-checkbox .dropdown-menu {
+  padding: 10px;
+  max-height: 250px;
+  overflow-y: auto;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.dropdown-checkbox .form-check {
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.dropdown-checkbox .select-all-btn {
+  font-size: 0.85rem;
+  text-align: left;
+  padding-left: 0;
+  color: #0d6efd;
+    display: block;
+  margin: 0 auto;      /* centers horizontally */
+  text-align: center;  /* centers text inside the button */
+}
+
+.dropdown-checkbox .btn {
+  text-align: left;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

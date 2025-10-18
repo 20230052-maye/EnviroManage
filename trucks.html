@@ -79,7 +79,6 @@
               <th>Plate No.</th>
               <th>Status</th>
               <th>Collector Assigned</th>
-              <th>Barangay</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -89,7 +88,6 @@
               <td>NKA-1234</td>
               <td><span class="badge bg-success">Active</span></td>
               <td>Juan Dela Cruz</td>
-              <td>Sampaloc</td>
               <td>
                 <button class="btn btn-sm btn-warning edit-truck"><i class="bi bi-pencil-square"></i></button>
                 <button class="btn btn-sm btn-primary edit-status"><i class="bi bi-toggle-on"></i></button>
@@ -161,10 +159,6 @@
             <div class="mb-3">
               <label class="form-label">Plate Number</label>
               <input type="text" class="form-control" id="truckPlate">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Barangay</label>
-              <input type="text" class="form-control" id="truckBarangay">
             </div>
             <div class="mb-3">
               <label class="form-label">Collector Assigned</label>
@@ -281,9 +275,8 @@
       e.preventDefault();
       const id = truckId.value.trim();
       const plate = truckPlate.value.trim().toUpperCase();
-      const barangay = truckBarangay.value.trim();
       const collector = truckCollector.value.trim();
-      if (!id || !plate || !barangay || !collector) return alert("Please fill all fields.");
+      if (!id || !plate || !collector) return alert("Please fill all fields.");
 
       const existing = [...truckTable.rows].some(row => row.children[1].textContent === plate && row !== editingTruck);
       if (existing) return alert("Duplicate Plate Number not allowed.");
@@ -292,7 +285,6 @@
         editingTruck.children[0].textContent = id;
         editingTruck.children[1].textContent = plate;
         editingTruck.children[3].textContent = collector;
-        editingTruck.children[4].textContent = barangay;
         editingTruck = null;
       } else {
         const row = truckTable.insertRow();
@@ -301,7 +293,6 @@
           <td>${plate}</td>
           <td><span class="badge bg-success">Active</span></td>
           <td>${collector}</td>
-          <td>${barangay}</td>
           <td>
             <button class="btn btn-sm btn-warning edit-truck"><i class="bi bi-pencil-square"></i></button>
             <button class="btn btn-sm btn-primary edit-status"><i class="bi bi-toggle-on"></i></button>
@@ -319,7 +310,6 @@
         truckId.value = row.children[0].textContent;
         truckPlate.value = row.children[1].textContent;
         truckCollector.value = row.children[3].textContent;
-        truckBarangay.value = row.children[4].textContent;
         new bootstrap.Modal(truckModal).show();
       } else if (e.target.closest(".delete-truck")) {
         rowToDelete = row;
