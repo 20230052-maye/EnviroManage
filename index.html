@@ -1,250 +1,249 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BasuraTrack Sariaya - Admin Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Basuratrack Sariaya</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest-green: #1e5631;
+    --moss-green: #4c9a2a;
+    --panel-bg: #f1f8f4;
+    --dark-text: #2e2e2e;
+    --light-beige: #f5f5f0;
+  }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #1e5631, #f5f5f0);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+/* Splash */ #splash { position:fixed; top:0; left:0; width:100%; height:100%; background:#1e5631; display:flex; align-items:center; justify-content:center; z-index:9999; transition:opacity 0.5s ease; } #splash img { max-width:300px; width:60%; height:auto; } #splash.hidden { opacity:0; pointer-events:none; }
+  .container {
+    display: flex; width: 90%; max-width: 1100px; height: 650px;
+    border-radius: 20px; overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    background-color: white;
+    opacity: 0; transition: opacity 0.5s ease;
+  }
+  .container.visible { opacity:1; }
 
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  .left-panel { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 20px; }
+  .left-image { width: 100%; max-width: 350px; object-fit: cover; }
 
-  <!-- Bootstrap Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+  .right-panel {
+    flex: 1; padding: 60px 40px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    background-color: var(--panel-bg);
+  }
+  .title { color: var(--forest-green); font-size: 30px; font-weight: 700; text-align: center; margin-bottom: 40px; }
+  .input-group { margin-bottom: 25px; }
+  input { width: 100%; padding: 16px; border: 1px solid #D1D5DB; border-radius: 10px; font-size: 16px; outline: none; transition: 0.3s; }
+  input:focus { border-color: var(--forest-green); box-shadow: 0 0 8px rgba(30,86,49,0.3); }
+  .login-btn { width: 100%; padding: 16px; background-color: var(--forest-green); color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+  .login-btn:hover { background-color: var(--moss-green); }
+  .forgot { color: var(--forest-green); text-decoration: none; text-align: center; display: block; margin-top: 12px; font-weight: 500; font-size: 14px; cursor: pointer; }
 
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  .footer { text-align: center; font-size: 12px; color: var(--dark-text); margin-top: 30px; }
+  .toggle-btn { text-align: center; margin-bottom: 20px; cursor: pointer; color: var(--forest-green); font-weight: 600; }
+  .hidden { display: none; }
 
-<link rel="stylesheet" href="style.css">
+  /* Modals */
+  .modal {
+    display: none; position: fixed; z-index: 99999; left:0; top:0;
+    width:100%; height:100%; overflow:auto; background: rgba(0,0,0,0.5);
+    align-items:center; justify-content:center;
+  }
+  .modal-content {
+    background:white; padding:30px; border-radius:10px; width:90%; max-width:400px;
+  }
+  .modal h3 { margin-top:0; color:var(--forest-green);}
+  .modal input { margin-bottom:20px; }
+  .modal .modal-btn { width:100%; padding:14px; background:var(--forest-green); color:white; border:none; border-radius:10px; cursor:pointer; }
+  .modal .modal-btn:hover { background:var(--moss-green);}
+  
+  @media screen and (max-width: 900px) {
+    .container { flex-direction: column; height: auto; border-radius: 0; }
+    .left-panel, .right-panel { padding: 30px 20px; }
+    .left-image { max-width: 250px; margin-bottom: 20px; }
+  }
+  @media screen and (max-width: 500px) {
+    .title { font-size: 24px; }
+    input, .login-btn { font-size: 16px; padding: 14px; }
+  }
+</style>
+</head>
+<body>
 
-  <!-- Top Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#"><i class="bi bi-recycle me-2"></i>BasuraTrack Sariaya</a>
-      <ul class="navbar-nav ms-auto align-items-center">
-        <li class="nav-item me-3">
-          <a class="nav-link" href="#"><i class="bi bi-bell-fill"></i></a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" data-bs-toggle="dropdown">
-            <i class="bi bi-person-circle"></i> Admin
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item text-center" href="#">Logout <i class="bi bi-box-arrow-right me-1"></i></a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </nav>
+    <!-- Splash Screen -->
+<div id="splash"><img src="logo.png" alt="Basuratrack Logo"></div>
 
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <nav class="nav flex-column">
-      <a class="nav-link active" href="index.html"><i class="bi bi-house-door-fill me-2"></i> Dashboard</a>
-      <a class="nav-link " href="schedule.html"><i class="bi bi-map-fill me-2"></i> Routes & Schedules</a>
-      <a class="nav-link" href="trucks.html"><i class="bi bi-truck-front-fill me-2"></i> Trucks & Collectors</a>
-      <a class="nav-link" href="collection.html"><i class="bi bi-trash-fill me-2"></i> Collection Records</a>
-      <a class="nav-link" href="resident.html"><i class="bi bi-file-earmark-text-fill me-2"></i> Resident Reports</a>
-      <a class="nav-link" href="analytics.html"><i class="bi bi-bar-chart-fill me-2"></i> Analytics & Reports</a>
-      <a class="nav-link" href="announcements.html"><i class="bi bi-megaphone-fill me-2"></i> Announcements</a>
-        <a class="nav-link" href="news.html"><i class="bi bi-newspaper me-2"></i> News & Articles</a>
-       <a class="nav-link" href="user.html"><i class="bi bi-people-fill me-2"></i> User Management</a>
-        <a class="nav-link" href="#"><i class="bi bi-gear-fill me-2"></i> Settings</a>
-    </nav>
+<!-- Main Container -->
+<div class="container" id="loginContainer">
+  <div class="left-panel">
+    <img src="Basura.png" alt="Admin Illustration" class="left-image">
   </div>
+  <div class="right-panel">
+    <div class="form-area">
+      <h2 class="title" id="form-title">Log in as Admin</h2>
 
+      <!-- Login Form -->
+      <form id="loginForm">
+        <div class="input-group">
+          <input type="text" id="username" placeholder="Username" required>
+        </div>
+        <div class="input-group">
+          <input type="password" id="password" placeholder="Password" required>
+        </div>
+        <button type="submit" class="login-btn">Login</button>
+      </form>
 
-  <!-- Main Content -->
-  <div class="main-content p-4">
-  <div class="card p-4 shadow-sm mt-2">
-     <h4 class="fw-semibold text-dark"><i class="bi bi-speedometer2 me-2 text-success"></i>Dashboard Overview</h4>
+      <!-- Signup Form -->
+      <form id="signupForm" class="hidden">
+        <div class="input-group">
+          <input type="text" id="new-username" placeholder="Username" required>
+        </div>
+        <div class="input-group">
+          <input type="email" id="new-email" placeholder="Email" required>
+        </div>
+        <div class="input-group">
+          <input type="password" id="new-password" placeholder="Password" required>
+        </div>
+        <button type="submit" class="login-btn">Sign Up</button>
+      </form>
 
-    <!-- Overview Cards -->
-    <div class="row g-3">
-      <div class="col-md-4">
-        <div class="dashboard-card">
-          <h6><i class="bi bi-trash3-fill me-2 text-success"></i>Total Waste Collected</h6>
-          <h3 class="mt-2">2.4 tons <small class="text-muted">(Today)</small></h3>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="dashboard-card">
-          <h6><i class="bi bi-truck-front-fill me-2 text-primary"></i>Active Trucks</h6>
-          <h3 class="mt-2 text-primary">8 <small class="text-muted">Active</small></h3>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="dashboard-card">
-          <h6><i class="bi bi-exclamation-triangle-fill me-2 text-warning"></i>Missed Collections</h6>
-          <h3 class="mt-2 text-warning">2 <small class="text-muted">Delayed Routes</small></h3>
-        </div>
-      </div>
+      <div class="toggle-btn" id="toggleForm">Don't have an account? Sign Up</div>
+      <a class="forgot" id="forgotBtn">Forgot Password?</a>
+      <div class="footer">© 2025 Basuratrack Sariaya. Terms of Privacy Policy</div>
     </div>
-
-<!-- Collection Map -->
-<div class="mt-4">
-  <h5><i class="bi bi-map-fill me-2 text-success"></i>Collection Map (Barangays of Sariaya)</h5>
-  <div id="sariaya-map" style="height: 450px; border: 1px solid #ccc; border-radius: 8px;"></div>
-  <ul class="mt-2 small text-muted">
-    <li>Markers for trucks in <span class="text-danger">real-time</span></li>
-    <li>Color zones for routes (Poblacion, Guisguis, etc.)</li>
-    <li>Hover to show truck name and current status</li>
-  </ul>
+  </div>
 </div>
 
-<!-- Leaflet CSS & JS -->
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- Forgot Password Modal -->
+<div id="forgotModal" class="modal">
+  <div class="modal-content">
+    <h3>Reset Password</h3>
+    <input type="email" id="reset-email" placeholder="Enter your email" required>
+    <button class="modal-btn" id="resetBtn">Reset</button>
+  </div>
+</div>
+
+<!-- New Password Modal -->
+<div id="newPassModal" class="modal">
+  <div class="modal-content">
+    <h3>Set New Password</h3>
+    <input type="password" id="newPass" placeholder="Enter new password" required>
+    <button class="modal-btn" id="newPassBtn">Submit</button>
+  </div>
+</div>
 
 <script>
-  // Initialize the map centered on Sariaya
-  var map = L.map('sariaya-map').setView([13.9897, 121.4761], 13);
-
-  // Add OpenStreetMap tiles
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; OpenStreetMap contributors'
-  }).addTo(map);
-
-  // Example truck markers (replace with your real-time data later)
-  var trucks = [
-    {name: "Truck 01", status: "Collecting", coords: [13.990, 121.478]},
-    {name: "Truck 02", status: "Idle", coords: [13.987, 121.474]},
-    {name: "Truck 03", status: "Returning", coords: [13.985, 121.479]}
-  ];
-
-  trucks.forEach(function(truck) {
-    L.marker(truck.coords)
-      .addTo(map)
-      .bindPopup(`<b>${truck.name}</b><br>Status: ${truck.status}`);
+  // Splash screen
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('splash').classList.add('hidden');
+      document.getElementById('loginContainer').classList.add('visible');
+    }, 2000);
   });
 
-  // Example route zones with colors
-  var zones = [
-    {
-      name: "Poblacion",
-      color: "green",
-      coords: [
-        [13.992, 121.473],
-        [13.991, 121.479],
-        [13.986, 121.478],
-        [13.987, 121.473]
-      ]
-    },
-    {
-      name: "Guisguis",
-      color: "blue",
-      coords: [
-        [13.994, 121.480],
-        [13.993, 121.485],
-        [13.989, 121.484],
-        [13.990, 121.480]
-      ]
-    },
-    {
-      name: "San Juan",
-      color: "orange",
-      coords: [
-        [13.983, 121.477],
-        [13.982, 121.482],
-        [13.978, 121.481],
-        [13.979, 121.476]
-      ]
+  // Toggle Login / Signup
+  const toggleBtn = document.getElementById('toggleForm');
+  const loginForm = document.getElementById('loginForm');
+  const signupForm = document.getElementById('signupForm');
+  const formTitle = document.getElementById('form-title');
+
+  toggleBtn.addEventListener('click', () => {
+    if (loginForm.classList.contains('hidden')) {
+      loginForm.classList.remove('hidden');
+      signupForm.classList.add('hidden');
+      formTitle.textContent = "Log in as Admin";
+      toggleBtn.textContent = "Don't have an account? Sign Up";
+    } else {
+      loginForm.classList.add('hidden');
+      signupForm.classList.remove('hidden');
+      formTitle.textContent = "Sign Up";
+      toggleBtn.textContent = "Already have an account? Login";
     }
-  ];
-
-  zones.forEach(function(zone) {
-    L.polygon(zone.coords, {
-      color: zone.color,
-      fillOpacity: 0.2
-    }).addTo(map)
-      .bindPopup(zone.name + " Route Zone");
   });
 
-  // Optional: zoom to fit all markers & zones
-  var allLayers = trucks.map(t => L.latLng(t.coords)).concat(
-    zones.flatMap(z => z.coords.map(c => L.latLng(c)))
-  );
-  var group = L.featureGroup(allLayers.map(L.marker));
-  map.fitBounds(group.getBounds().pad(0.1));
+  // Responsive adjustment
+  function adjustLayout() {
+    const container = document.getElementById('loginContainer');
+    container.style.flexDirection = window.innerWidth <= 500 ? 'column' : 'row';
+  }
+  window.addEventListener('resize', adjustLayout);
+  window.addEventListener('load', adjustLayout);
+
+  // Simulate backend storage for signup
+  let users = {};
+
+ loginForm.addEventListener('submit', e=>{
+  e.preventDefault();
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value.trim();
+  if(!username){ alert("Username is required"); return; }
+  if(!password){ alert("Password is required"); return; }
+
+  alert(`Welcome back, ${username}!`);
+
+  loginForm.reset();
+
+  // ✅ THIS is where it redirects to dashboard.html
+  window.location.href = "dashboard.html";
+});
+
+
+  // Signup Form Submit
+  signupForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    const username = document.getElementById('new-username').value.trim();
+    const email = document.getElementById('new-email').value.trim();
+    const password = document.getElementById('new-password').value.trim();
+    if(!username || !email || !password) return alert("Please fill all fields");
+    users[username] = { email, password };
+    alert(`Account created for ${username}! Please log in.`);
+    signupForm.reset();
+    toggleBtn.click(); // Switch to login form
+  });
+
+  // Forgot Password
+  const forgotBtn = document.getElementById('forgotBtn');
+  const forgotModal = document.getElementById('forgotModal');
+  const newPassModal = document.getElementById('newPassModal');
+  const resetBtn = document.getElementById('resetBtn');
+  const newPassBtn = document.getElementById('newPassBtn');
+
+  forgotBtn.addEventListener('click', () => {
+    forgotModal.style.display = 'flex';
+  });
+
+  resetBtn.addEventListener('click', () => {
+    const email = document.getElementById('reset-email').value.trim();
+    if(!email) return alert("Email is required");
+    // Here you could verify the email exists
+    forgotModal.style.display = 'none';
+    newPassModal.style.display = 'flex';
+  });
+
+  newPassBtn.addEventListener('click', () => {
+    const newPass = document.getElementById('newPass').value.trim();
+    if(!newPass) return alert("Password is required");
+    alert("Password reset successful! Please log in with your new password.");
+    newPassModal.style.display = 'none';
+    loginForm.reset();
+  });
+
+  // Close modal on outside click
+  window.addEventListener('click', function(e){
+    if(e.target === forgotModal) forgotModal.style.display = 'none';
+    if(e.target === newPassModal) newPassModal.style.display = 'none';
+  });
+  
 </script>
 
-    <!-- Recent Reports -->
-    <div class="mt-4">
-      <h5><i class="bi bi-clipboard-data-fill me-2 text-primary"></i>Recent Reports (from Residents)</h5>
-      <div class="table-responsive">
-        <table class="table table-bordered table-striped align-middle mt-2">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Barangay</th>
-              <th>Issue</th>
-              <th>Status</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>12</td>
-              <td>Poblacion</td>
-              <td>Missed collection</td>
-              <td><span class="badge bg-warning text-dark">Pending</span></td>
-              <td>Oct 17</td>
-            </tr>
-            <tr>
-              <td>11</td>
-              <td>Sampaloc</td>
-              <td>Overflowing bin</td>
-              <td><span class="badge bg-success">Resolved</span></td>
-              <td>Oct 16</td>
-            </tr>
-            <tr>
-              <td>10</td>
-              <td>Guisguis</td>
-              <td>Missed collection</td>
-              <td><span class="badge bg-info text-dark">In-Progress</span></td>
-              <td>Oct 16</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Waste Collection Trends -->
-    <div class="mt-4">
-      <h5><i class="bi bi-bar-chart-fill me-2 text-success"></i>Waste Collection Trends</h5>
-      <canvas id="wasteChart" height="120"></canvas>
-    </div>
-  </div>
-
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Chart.js Script -->
-  <script>
-    const ctx = document.getElementById('wasteChart');
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Poblacion', 'Sampaloc', 'Guisguis', 'Sto. Cristo', 'Talaan'],
-        datasets: [{
-          label: 'Total Waste (tons)',
-          data: [2.4, 1.8, 1.2, 0.9, 0.7],
-          backgroundColor: '#1e5631'
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: { legend: { display: false } },
-        scales: {
-          y: { beginAtZero: true, title: { display: true, text: 'Tons Collected' } },
-          x: { title: { display: true, text: 'Barangay' } }
-        }
-      }
-    });
-  </script>
 </body>
 </html>
