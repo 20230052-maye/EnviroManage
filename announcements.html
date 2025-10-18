@@ -27,20 +27,21 @@
             <i class="bi bi-person-circle"></i> Admin
           </a>
         <ul class="dropdown-menu dropdown-menu-end">
-  <li><hr class="dropdown-divider"></li>
-  <li>
-    <a class="dropdown-item text-center" href="#" id="logoutBtn">
-      Logout <i class="bi bi-box-arrow-right me-1"></i>
-    </a>
-  </li>
-</ul>
+          <li><hr class="dropdown-divider"></li>
+          <li>
+            <a class="dropdown-item text-center" href="#" id="logoutBtn">
+              Logout <i class="bi bi-box-arrow-right me-1"></i>
+            </a>
+          </li>
+        </ul>
+      </ul>
     </div>
   </nav>
 
   <!-- Sidebar -->
   <div class="sidebar">
     <nav class="nav flex-column">
-      <a class="nav-link" href="dashboard.html"><i class="bi bi-house-door-fill me-2"></i>Dashboard</a>
+      <a class="nav-link" href="dashbboard.html"><i class="bi bi-house-door-fill me-2"></i>Dashboard</a>
       <a class="nav-link" href="schedule.html"><i class="bi bi-map-fill me-2"></i>Routes & Schedules</a>
       <a class="nav-link" href="trucks.html"><i class="bi bi-truck-front-fill me-2"></i>Trucks & Collectors</a>
       <a class="nav-link" href="collection.html"><i class="bi bi-trash-fill me-2"></i>Collection Records</a>
@@ -70,6 +71,7 @@
           <table class="table table-bordered align-middle text-center">
             <thead class="table-success">
               <tr>
+                <th>ID</th>
                 <th>Title</th>
                 <th>Date</th>
                 <th>Audience</th>
@@ -80,6 +82,7 @@
             </thead>
             <tbody id="announcementTable">
               <tr>
+                <td>A001</td>
                 <td>Garbage Schedule Reminder</td>
                 <td>Oct 17</td>
                 <td>Sampaloc</td>
@@ -107,6 +110,10 @@
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Announcement ID</label>
+            <input type="text" id="newID" class="form-control" placeholder="Enter announcement ID">
+          </div>
           <div class="mb-3">
             <label class="form-label">Title</label>
             <input type="text" id="newTitle" class="form-control" placeholder="Enter announcement title">
@@ -145,6 +152,10 @@
         </div>
         <div class="modal-body">
           <div class="mb-3">
+            <label class="form-label">Announcement ID</label>
+            <input type="text" id="editID" class="form-control">
+          </div>
+          <div class="mb-3">
             <label class="form-label">Title</label>
             <input type="text" id="editTitle" class="form-control">
           </div>
@@ -159,7 +170,6 @@
               <option value="Barangay 1">Guis Guis</option>
               <option value="Barangay 2">Poblacion</option>
               <option value="Barangay 3">Castañas</option>
-             
             </select>
           </div>
           <div class="mb-3">
@@ -187,16 +197,18 @@
 
     // Add New Announcement
     function addAnnouncement() {
+      const id = document.getElementById('newID').value.trim();
       const title = document.getElementById('newTitle').value.trim();
       const message = document.getElementById('newMessage').value.trim();
       const audience = document.getElementById('newAudience').value;
-      if (!title || !message) {
+      if (!id || !title || !message) {
         alert('Please fill in all fields.');
         return;
       }
       const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
       const newRow = document.createElement('tr');
       newRow.innerHTML = `
+        <td>${id}</td>
         <td>${title}</td>
         <td>${date}</td>
         <td>${audience}</td>
@@ -209,6 +221,7 @@
       `;
       table.appendChild(newRow);
       // Clear modal and hide
+      document.getElementById('newID').value = '';
       document.getElementById('newTitle').value = '';
       document.getElementById('newMessage').value = '';
       document.getElementById('newAudience').value = 'All Barangays';
@@ -220,28 +233,31 @@
     let currentEditRow = null;
     function openEditModal(btn) {
       currentEditRow = btn.closest('tr');
-      document.getElementById('editTitle').value = currentEditRow.children[0].innerText;
-      document.getElementById('editAudience').value = currentEditRow.children[2].innerText;
-      document.getElementById('editMessage').value = currentEditRow.children[3].innerText;
-      document.getElementById('editStatus').value = currentEditRow.children[4].innerText.trim();
+      document.getElementById('editID').value = currentEditRow.children[0].innerText;
+      document.getElementById('editTitle').value = currentEditRow.children[1].innerText;
+      document.getElementById('editAudience').value = currentEditRow.children[3].innerText;
+      document.getElementById('editMessage').value = currentEditRow.children[4].innerText;
+      document.getElementById('editStatus').value = currentEditRow.children[5].innerText.trim();
       const editModal = new bootstrap.Modal(document.getElementById('editAnnouncementModal'));
       editModal.show();
     }
 
     function saveEdit() {
       if (!currentEditRow) return;
+      const id = document.getElementById('editID').value.trim();
       const title = document.getElementById('editTitle').value.trim();
       const message = document.getElementById('editMessage').value.trim();
       const audience = document.getElementById('editAudience').value;
       const status = document.getElementById('editStatus').value;
-      if (!title || !message) {
+      if (!id || !title || !message) {
         alert('Please fill in all fields.');
         return;
       }
-      currentEditRow.children[0].innerText = title;
-      currentEditRow.children[2].innerText = audience;
-      currentEditRow.children[3].innerText = message;
-      currentEditRow.children[4].innerHTML = `<span class="badge ${status === 'Active' ? 'bg-success' : 'bg-secondary'}">${status}</span>`;
+      currentEditRow.children[0].innerText = id;
+      currentEditRow.children[1].innerText = title;
+      currentEditRow.children[3].innerText = audience;
+      currentEditRow.children[4].innerText = message;
+      currentEditRow.children[5].innerHTML = `<span class="badge ${status === 'Active' ? 'bg-success' : 'bg-secondary'}">${status}</span>`;
       const editModal = bootstrap.Modal.getInstance(document.getElementById('editAnnouncementModal'));
       editModal.hide();
     }
@@ -252,16 +268,14 @@
         btn.closest('tr').remove();
       }
     }
-      const logoutBtn = document.getElementById('logoutBtn');
 
-  logoutBtn.addEventListener('click', (e) => {
-    e.preventDefault(); // Prevent default link action
-    const confirmLogout = confirm("Are you sure you want to log out?");
-    if (confirmLogout) {
-      window.location.href = "index.html"; // Redirect to login
-    }
-  });
+    const logoutBtn = document.getElementById('logoutBtn');
+    logoutBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (confirm("Are you sure you want to log out?")) {
+        window.location.href = "index.html";
+      }
+    });
   </script>
 </body>
 </html>
-
