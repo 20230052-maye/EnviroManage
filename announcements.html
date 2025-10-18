@@ -12,7 +12,8 @@
 
   <!-- Custom CSS -->
   <link rel="stylesheet" href="announcements.css" />
-
+</head>
+<body>
    <!-- Top Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <div class="container-fluid">
@@ -44,12 +45,11 @@
       <a class="nav-link" href="resident.html"><i class="bi bi-file-earmark-text-fill me-2"></i>Resident Reports</a>
       <a class="nav-link" href="analytics.html"><i class="bi bi-bar-chart-fill me-2"></i>Analytics & Reports</a>
       <a class="nav-link active" href="announcements.html"><i class="bi bi-megaphone-fill me-2"></i>Announcements</a>
-    <a class="nav-link" href="news.html"><i class="bi bi-newspaper me-2"></i> News & Articles</a>
-              <a class="nav-link" href="user.html"><i class="bi bi-people-fill me-2"></i> User Management</a>
+      <a class="nav-link" href="news.html"><i class="bi bi-newspaper me-2"></i> News & Articles</a>
+      <a class="nav-link" href="user.html"><i class="bi bi-people-fill me-2"></i> User Management</a>
       <a class="nav-link" href="settings.html"><i class="bi bi-gear-fill me-2"></i> Settings</a>
     </nav>
   </div>
-
 
  <!-- Main Content -->
   <div class="main-content">
@@ -154,17 +154,23 @@
             <label class="form-label">Target Audience</label>
             <select id="editAudience" class="form-select">
               <option value="All Barangays">All Barangays</option>
-              <option value="Barangay 1">Barangay 1</option>
-              <option value="Barangay 2">Barangay 2</option>
-              <option value="Barangay 3">Barangay 3</option>
-              <option value="Barangay 4">Barangay 4</option>
-              <option value="Barangay 5">Barangay 5</option>
+              <option value="Barangay 1">Guis Guis</option>
+              <option value="Barangay 2">Poblacion</option>
+              <option value="Barangay 3">Castañas</option>
+             
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select id="editStatus" class="form-select">
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
             </select>
           </div>
         </div>
         <div class="modal-footer">
           <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button class="btn btn-primary" onclick="saveEdit()">Save Changes</button>
+          <button class="btn btn-success" onclick="saveEdit()">Save Changes</button>
         </div>
       </div>
     </div>
@@ -215,6 +221,7 @@
       document.getElementById('editTitle').value = currentEditRow.children[0].innerText;
       document.getElementById('editAudience').value = currentEditRow.children[2].innerText;
       document.getElementById('editMessage').value = currentEditRow.children[3].innerText;
+      document.getElementById('editStatus').value = currentEditRow.children[4].innerText.trim();
       const editModal = new bootstrap.Modal(document.getElementById('editAnnouncementModal'));
       editModal.show();
     }
@@ -224,6 +231,7 @@
       const title = document.getElementById('editTitle').value.trim();
       const message = document.getElementById('editMessage').value.trim();
       const audience = document.getElementById('editAudience').value;
+      const status = document.getElementById('editStatus').value;
       if (!title || !message) {
         alert('Please fill in all fields.');
         return;
@@ -231,6 +239,7 @@
       currentEditRow.children[0].innerText = title;
       currentEditRow.children[2].innerText = audience;
       currentEditRow.children[3].innerText = message;
+      currentEditRow.children[4].innerHTML = `<span class="badge ${status === 'Active' ? 'bg-success' : 'bg-secondary'}">${status}</span>`;
       const editModal = bootstrap.Modal.getInstance(document.getElementById('editAnnouncementModal'));
       editModal.hide();
     }
