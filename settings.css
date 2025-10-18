@@ -1,0 +1,279 @@
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f1f8f4;
+  overflow-x: hidden;
+  color: #2e2e2e;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #2e7d32;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+.navbar-brand, .nav-link {
+  color: white !important;
+}
+.navbar-brand:hover, .nav-link:hover {
+  color: #c8e6c9 !important;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  height: 100%;
+  width: 250px;
+  background-color: #1b4332;
+  padding-top: 1rem;
+  overflow-y: auto;
+}
+.sidebar .nav-link {
+  color: #d8f3dc;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+.sidebar .nav-link:hover {
+  background-color: #2d6a4f;
+  color: #fff;
+}
+.sidebar .nav-link.active {
+  background-color: #40916c;
+  color: white;
+}
+
+/* Main Content */
+.main-content {
+  margin-left: 260px;
+  margin-top: 80px;
+  padding: 20px;
+}
+.card {
+  border-radius: 14px;
+  border: none;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Settings Page */
+.settings-section .list-group-item {
+  border: none;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 15px;
+  padding: 12px 15px;
+  background-color: #fafafa;
+  transition: 0.2s;
+}
+.settings-section .list-group-item:hover {
+  background-color: #e9f5ee;
+}
+.settings-section strong {
+  color: #2e7d32;
+}
+
+/* DARK MODE */
+.dark-mode {
+  background-color: #121212 !important;
+  color: #e0e0e0 !important;
+}
+
+.dark-mode .navbar {
+  background-color: #1b5e20 !important;
+}
+
+.dark-mode .sidebar {
+  background-color: #0e3824 !important;
+}
+
+.dark-mode .nav-link {
+  color: #b9f6ca !important;
+}
+
+.dark-mode .nav-link.active {
+  background-color: #2e7d32 !important;
+  color: #fff !important;
+}
+
+.dark-mode .card {
+  background-color: #1f1f1f !important;
+  color: #e0e0e0 !important;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode .list-group-item {
+  background-color: #1f1f1f;
+  border-color: #333;
+  color: #dcdcdc;
+}
+.dark-mode .list-group-item:hover {
+  background-color: #2b2b2b;
+}
+
+/* Form fields */
+.dark-mode input,
+.dark-mode select,
+.dark-mode textarea {
+  background-color: #2a2a2a;
+  color: #f1f1f1;
+  border: 1px solid #444;
+}
+.dark-mode input:focus,
+.dark-mode select:focus,
+.dark-mode textarea:focus {
+  background-color: #333;
+  color: #fff;
+  border-color: #66bb6a;
+  box-shadow: none;
+}
+
+/* Buttons */
+.dark-mode .btn-outline-secondary {
+  color: #b9f6ca;
+  border-color: #4caf50;
+}
+.dark-mode .btn-outline-secondary:hover {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+/* Modal */
+.dark-mode .modal-content {
+  background-color: #1f1f1f;
+  color: #f1f1f1;
+  border: 1px solid #333;
+}
+.dark-mode .modal-header {
+  background-color: #2e7d32 !important;
+  border-bottom: 1px solid #333;
+}
+.dark-mode .btn-close-white {
+  filter: invert(1);
+}
+
+/* Switch Label */
+.dark-mode .form-check-label {
+  color: #f1f1f1;
+}
+  /* Main Content Dark Mode */
+html.dark-mode .main-content {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+html.dark-mode .main-content .card {
+  background-color: #1f1f1f;
+  color: #e0e0e0;
+}
+
+html.dark-mode .main-content table {
+  background-color: #1f1f1f;
+  color: #e0e0e0;
+  border-color: #333;
+}
+
+html.dark-mode .main-content table th,
+html.dark-mode .main-content table td {
+  border-color: #444;
+}
+
+    /* Settings Page */
+    .settings-section .list-group-item {
+      border: none;
+      border-bottom: 1px solid #e0e0e0;
+      font-size: 15px;
+      padding: 12px 15px;
+      background-color: #fafafa;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .settings-section .list-group-item:hover {
+      background-color: #e9f5ee;
+    }
+    .settings-section strong {
+      color: #2e7d32;
+    }
+
+    /* DARK MODE */
+    html.dark-mode,
+    body.dark-mode {
+      background-color: #121212 !important;
+      color: #e0e0e0 !important;
+    }
+
+    html.dark-mode .navbar {
+      background-color: #1b5e20 !important;
+    }
+
+    html.dark-mode .sidebar {
+      background-color: #0e3824 !important;
+    }
+
+    html.dark-mode .nav-link {
+      color: #b9f6ca !important;
+    }
+
+    html.dark-mode .nav-link.active {
+      background-color: #2e7d32 !important;
+      color: #fff !important;
+    }
+
+    html.dark-mode .card {
+      background-color: #1f1f1f !important;
+      color: #e0e0e0 !important;
+      box-shadow: 0 4px 10px rgba(255, 255, 255, 0.05);
+    }
+
+    html.dark-mode .list-group-item {
+      background-color: #1f1f1f;
+      border-color: #333;
+      color: #dcdcdc;
+    }
+    html.dark-mode .list-group-item:hover {
+      background-color: #2b2b2b;
+    }
+
+    /* Form fields */
+    html.dark-mode input,
+    html.dark-mode select,
+    html.dark-mode textarea {
+      background-color: #2a2a2a;
+      color: #f1f1f1;
+      border: 1px solid #444;
+    }
+    html.dark-mode input:focus,
+    html.dark-mode select:focus,
+    html.dark-mode textarea:focus {
+      background-color: #333;
+      color: #fff;
+      border-color: #66bb6a;
+      box-shadow: none;
+    }
+
+    /* Buttons */
+    html.dark-mode .btn-outline-secondary {
+      color: #b9f6ca;
+      border-color: #4caf50;
+    }
+    html.dark-mode .btn-outline-secondary:hover {
+      background-color: #4caf50;
+      color: #fff;
+    }
+
+    /* Modal */
+    html.dark-mode .modal-content {
+      background-color: #1f1f1f;
+      color: #f1f1f1;
+      border: 1px solid #333;
+    }
+    html.dark-mode .modal-header {
+      background-color: #2e7d32 !important;
+      border-bottom: 1px solid #333;
+    }
+    html.dark-mode .btn-close-white {
+      filter: invert(1);
+    }
+
+    /* Switch Label */
+    html.dark-mode .form-check-label {
+      color: #f1f1f1;
+    }

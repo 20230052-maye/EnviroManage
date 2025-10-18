@@ -23,10 +23,8 @@
             <i class="bi bi-person-circle"></i> Admin
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><a class="dropdown-item" href="#">Settings</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Logout</a></li>
+            <li><a class="dropdown-item text-center" href="#">Logout <i class="bi bi-box-arrow-right me-1"></i></a></li>
           </ul>
         </li>
       </ul>
@@ -43,13 +41,16 @@
       <a class="nav-link" href="resident.html"><i class="bi bi-file-earmark-text-fill me-2"></i> Resident Reports</a>
       <a class="nav-link" href="analytics.html"><i class="bi bi-bar-chart-fill me-2"></i> Analytics & Reports</a>
       <a class="nav-link" href="announcements.html"><i class="bi bi-megaphone-fill me-2"></i> Announcements</a>
-      <a class="nav-link" href="#"><i class="bi bi-gear-fill me-2"></i> Settings</a>
+      <a class="nav-link" href="news.html"><i class="bi bi-newspaper me-2"></i> News & Articles</a>
+      <a class="nav-link" href="user.html"><i class="bi bi-people-fill me-2"></i> User Management</a>
+      <a class="nav-link" href="settings.html"><i class="bi bi-gear-fill me-2"></i> Settings</a>
     </nav>
   </div>
 
-  <!-- Main Content -->
-  <div class="main-content p-4">
-    <h4 class="mb-4 mt-2 d-flex align-items-center">
+<!-- Main Content -->
+<div class="main-content p-4">
+  <div class="card p-4 shadow-sm mt-2">
+    <h4 class="fw-semibold text-dark">
       <i class="bi bi-truck-front-fill me-2 text-success"></i>
       Trucks and Collectors Management
     </h4>
@@ -68,7 +69,7 @@
       </div>
       <div class="card-body table-responsive">
         <table class="table table-hover align-middle" id="truckTable">
-          <thead class="table-light">
+          <thead class="table-light text-center">
             <tr>
               <th>ID</th>
               <th>Plate No.</th>
@@ -78,26 +79,16 @@
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="text-center">
             <tr>
-              <td>#1</td>
+              <td>1</td>
               <td>NKA-1234</td>
               <td><span class="badge bg-success">Active</span></td>
               <td>Juan Dela Cruz</td>
               <td>Sampaloc</td>
               <td>
                 <button class="btn btn-sm btn-warning edit-truck"><i class="bi bi-pencil-square"></i></button>
-                <button class="btn btn-sm btn-danger delete-truck"><i class="bi bi-trash"></i></button>
-              </td>
-            </tr>
-            <tr>
-              <td>#2</td>
-              <td>NMB-5678</td>
-              <td><span class="badge bg-success">Active</span></td>
-              <td>Lito Ramos</td>
-              <td>Guisguis</td>
-              <td>
-                <button class="btn btn-sm btn-warning edit-truck"><i class="bi bi-pencil-square"></i></button>
+                <button class="btn btn-sm btn-primary edit-status"><i class="bi bi-toggle-on"></i></button>
                 <button class="btn btn-sm btn-danger delete-truck"><i class="bi bi-trash"></i></button>
               </td>
             </tr>
@@ -120,33 +111,26 @@
       </div>
       <div class="card-body table-responsive">
         <table class="table table-hover align-middle" id="collectorTable">
-          <thead class="table-light">
+          <thead class="table-light text-center">
             <tr>
+              <th>ID</th>
               <th>Name</th>
-              <th>Assigned Truck</th>
+              <th>Assigned Truck ID</th>
               <th>Contact</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="text-center">
             <tr>
+              <td>1000</td>
               <td>Juan Dela Cruz</td>
-              <td>#1</td>
+              <td>1</td>
               <td>0998-xxx-xxx</td>
               <td><span class="badge bg-success">Active</span></td>
               <td>
                 <button class="btn btn-sm btn-warning edit-collector"><i class="bi bi-pencil-square"></i></button>
-                <button class="btn btn-sm btn-danger delete-collector"><i class="bi bi-trash"></i></button>
-              </td>
-            </tr>
-            <tr>
-              <td>Lito Ramos</td>
-              <td>#2</td>
-              <td>0927-xxx-xxx</td>
-              <td><span class="badge bg-success">Active</span></td>
-              <td>
-                <button class="btn btn-sm btn-warning edit-collector"><i class="bi bi-pencil-square"></i></button>
+                <button class="btn btn-sm btn-primary edit-status"><i class="bi bi-toggle-on"></i></button>
                 <button class="btn btn-sm btn-danger delete-collector"><i class="bi bi-trash"></i></button>
               </td>
             </tr>
@@ -167,6 +151,10 @@
         <div class="modal-body">
           <form id="truckForm">
             <div class="mb-3">
+              <label class="form-label">Truck ID</label>
+              <input type="text" class="form-control" id="truckId">
+            </div>
+            <div class="mb-3">
               <label class="form-label">Plate Number</label>
               <input type="text" class="form-control" id="truckPlate">
             </div>
@@ -179,7 +167,7 @@
               <input type="text" class="form-control" id="truckCollector">
             </div>
             <div class="text-center">
-              <button type="submit" class="btn btn-primary">Save Truck</button>
+              <button type="submit" class="btn btn-success">Save Truck</button>
             </div>
           </form>
         </div>
@@ -197,6 +185,10 @@
         </div>
         <div class="modal-body">
           <form id="collectorForm">
+            <div class="mb-3">
+              <label class="form-label">Collector ID</label>
+              <input type="text" class="form-control" id="collectorId">
+            </div>
             <div class="mb-3">
               <label class="form-label">Name</label>
               <input type="text" class="form-control" id="collectorName">
@@ -237,111 +229,183 @@
     </div>
   </div>
 
+  <!-- Edit Status Modal -->
+  <div class="modal fade" id="editStatusModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Edit Status</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editStatusForm">
+            <div class="mb-3">
+              <label for="statusSelect" class="form-label">Select Status</label>
+              <select id="statusSelect" class="form-select">
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-success w-100">
+              <i class="bi bi-check-circle me-1"></i>Save Status
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
   document.addEventListener("DOMContentLoaded", () => {
     let editingTruck = null;
     let editingCollector = null;
     let rowToDelete = null;
+    let rowBeingEditedStatus = null;
 
     const truckTable = document.querySelector("#truckTable tbody");
     const collectorTable = document.querySelector("#collectorTable tbody");
     const deleteModal = new bootstrap.Modal(document.querySelector("#deleteConfirmModal"));
     const confirmDeleteBtn = document.querySelector("#confirmDeleteBtn");
 
-    // Handle truck add/edit
+    const truckModal = document.querySelector("#addTruckModal");
+    const collectorModal = document.querySelector("#addCollectorModal");
+
+    // Truck Add/Edit
     document.querySelector("#truckForm").addEventListener("submit", e => {
       e.preventDefault();
-      const plate = truckPlate.value.trim();
+      const id = truckId.value.trim();
+      const plate = truckPlate.value.trim().toUpperCase();
       const barangay = truckBarangay.value.trim();
       const collector = truckCollector.value.trim();
-      if (!plate || !barangay || !collector) return alert("Please fill all fields.");
+      if (!id || !plate || !barangay || !collector) return alert("Please fill all fields.");
+
+      const existing = [...truckTable.rows].some(row => row.children[1].textContent === plate && row !== editingTruck);
+      if (existing) return alert("Duplicate Plate Number not allowed.");
 
       if (editingTruck) {
+        editingTruck.children[0].textContent = id;
         editingTruck.children[1].textContent = plate;
         editingTruck.children[3].textContent = collector;
         editingTruck.children[4].textContent = barangay;
         editingTruck = null;
       } else {
-        const id = truckTable.rows.length + 1;
         const row = truckTable.insertRow();
         row.innerHTML = `
-          <td>#${id}</td>
+          <td>${id}</td>
           <td>${plate}</td>
           <td><span class="badge bg-success">Active</span></td>
           <td>${collector}</td>
           <td>${barangay}</td>
           <td>
             <button class="btn btn-sm btn-warning edit-truck"><i class="bi bi-pencil-square"></i></button>
+            <button class="btn btn-sm btn-primary edit-status"><i class="bi bi-toggle-on"></i></button>
             <button class="btn btn-sm btn-danger delete-truck"><i class="bi bi-trash"></i></button>
           </td>`;
       }
       e.target.reset();
-      bootstrap.Modal.getInstance(document.querySelector("#addTruckModal")).hide();
+      bootstrap.Modal.getInstance(truckModal).hide();
     });
 
     truckTable.addEventListener("click", e => {
       const row = e.target.closest("tr");
       if (e.target.closest(".edit-truck")) {
         editingTruck = row;
+        truckId.value = row.children[0].textContent;
         truckPlate.value = row.children[1].textContent;
         truckCollector.value = row.children[3].textContent;
         truckBarangay.value = row.children[4].textContent;
-        new bootstrap.Modal(document.querySelector("#addTruckModal")).show();
+        new bootstrap.Modal(truckModal).show();
       } else if (e.target.closest(".delete-truck")) {
         rowToDelete = row;
         deleteModal.show();
+      } else if (e.target.closest(".edit-status")) {
+        rowBeingEditedStatus = row;
+        const badge = row.querySelector("span.badge");
+        document.getElementById("statusSelect").value = badge.textContent.trim();
+        new bootstrap.Modal(document.getElementById("editStatusModal")).show();
       }
     });
 
-    // Collector add/edit
+    // Collector Add/Edit
     document.querySelector("#collectorForm").addEventListener("submit", e => {
       e.preventDefault();
+      const id = collectorId.value.trim();
       const name = collectorName.value.trim();
       const truck = collectorTruck.value.trim();
       const contact = collectorContact.value.trim();
-      if (!name || !truck || !contact) return alert("Please fill all fields.");
+      if (!id || !name || !truck || !contact) return alert("Please fill all fields.");
+
+      const existing = [...collectorTable.rows].some(row => row.children[0].textContent === id && row !== editingCollector);
+      if (existing) return alert("Duplicate Collector ID not allowed.");
 
       if (editingCollector) {
-        editingCollector.children[0].textContent = name;
-        editingCollector.children[1].textContent = "#" + truck;
-        editingCollector.children[2].textContent = contact;
+        editingCollector.children[0].textContent = id;
+        editingCollector.children[1].textContent = name;
+        editingCollector.children[2].textContent = "#" + truck;
+        editingCollector.children[3].textContent = contact;
         editingCollector = null;
       } else {
         const row = collectorTable.insertRow();
         row.innerHTML = `
+          <td>${id}</td>
           <td>${name}</td>
           <td>#${truck}</td>
           <td>${contact}</td>
           <td><span class="badge bg-success">Active</span></td>
           <td>
             <button class="btn btn-sm btn-warning edit-collector"><i class="bi bi-pencil-square"></i></button>
+            <button class="btn btn-sm btn-primary edit-status"><i class="bi bi-toggle-on"></i></button>
             <button class="btn btn-sm btn-danger delete-collector"><i class="bi bi-trash"></i></button>
           </td>`;
       }
       e.target.reset();
-      bootstrap.Modal.getInstance(document.querySelector("#addCollectorModal")).hide();
+      bootstrap.Modal.getInstance(collectorModal).hide();
     });
 
     collectorTable.addEventListener("click", e => {
       const row = e.target.closest("tr");
       if (e.target.closest(".edit-collector")) {
         editingCollector = row;
-        collectorName.value = row.children[0].textContent;
-        collectorTruck.value = row.children[1].textContent.replace("#", "");
-        collectorContact.value = row.children[2].textContent;
-        new bootstrap.Modal(document.querySelector("#addCollectorModal")).show();
+        collectorId.value = row.children[0].textContent;
+        collectorName.value = row.children[1].textContent;
+        collectorTruck.value = row.children[2].textContent.replace("#", "");
+        collectorContact.value = row.children[3].textContent;
+        new bootstrap.Modal(collectorModal).show();
       } else if (e.target.closest(".delete-collector")) {
         rowToDelete = row;
         deleteModal.show();
+      } else if (e.target.closest(".edit-status")) {
+        rowBeingEditedStatus = row;
+        const badge = row.querySelector("span.badge");
+        document.getElementById("statusSelect").value = badge.textContent.trim();
+        new bootstrap.Modal(document.getElementById("editStatusModal")).show();
       }
     });
 
-    // Confirm delete modal
+    // Confirm Delete
     confirmDeleteBtn.addEventListener("click", () => {
       if (rowToDelete) rowToDelete.remove();
       deleteModal.hide();
     });
+
+    // Edit Status
+    document.getElementById("editStatusForm").addEventListener("submit", e => {
+      e.preventDefault();
+      if (!rowBeingEditedStatus) return;
+
+      const newStatus = document.getElementById("statusSelect").value;
+      const badge = rowBeingEditedStatus.querySelector("span.badge");
+      badge.textContent = newStatus;
+
+      if(newStatus === "Active") badge.className = "badge bg-success";
+      else if(newStatus === "Inactive") badge.className = "badge bg-warning text-dark";
+
+      const modalInstance = bootstrap.Modal.getInstance(document.getElementById("editStatusModal"));
+      modalInstance.hide();
+    });
+
   });
   </script>
 </body>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BasuraTrack Sariaya - Settings</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" href="settings.css">
+ 
+
+<body>
+  <!-- Top Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#"><i class="bi bi-recycle me-2"></i>BasuraTrack Sariaya</a>
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item me-3">
+          <a class="nav-link" href="#"><i class="bi bi-bell-fill"></i></a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" data-bs-toggle="dropdown">
+            <i class="bi bi-person-circle"></i> Admin
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-center" href="#">Logout <i class="bi bi-box-arrow-right me-1"></i></a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <nav class="nav flex-column">
+      <a class="nav-link" href="index.html"><i class="bi bi-house-door-fill me-2"></i>Dashboard</a>
+      <a class="nav-link" href="schedule.html"><i class="bi bi-map-fill me-2"></i>Routes & Schedules</a>
+      <a class="nav-link" href="trucks.html"><i class="bi bi-truck-front-fill me-2"></i>Trucks & Collectors</a>
+      <a class="nav-link" href="collection.html"><i class="bi bi-trash-fill me-2"></i>Collection Records</a>
+      <a class="nav-link" href="resident.html"><i class="bi bi-file-earmark-text-fill me-2"></i>Resident Reports</a>
+      <a class="nav-link" href="analytics.html"><i class="bi bi-bar-chart-fill me-2"></i>Analytics & Reports</a>
+      <a class="nav-link" href="announcements.html"><i class="bi bi-megaphone-fill me-2"></i>Announcements</a>
+      <a class="nav-link" href="news.html"><i class="bi bi-newspaper me-2"></i>News & Articles</a>
+      <a class="nav-link" href="user.html"><i class="bi bi-people-fill me-2"></i>User Management</a>
+      <a class="nav-link active" href="settings.html"><i class="bi bi-gear-fill me-2"></i>Settings</a>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="p-4">
+      <h4 class="mb-4 d-flex align-items-center">
+        <i class="bi bi-gear-fill me-2 text-success"></i> Settings
+      </h4>
+
+      <div class="card p-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+          <div class="d-flex flex-wrap gap-2">
+            <button class="btn btn-outline-success" id="btnSystemConfig"><i class="bi bi-sliders2 me-1"></i>System Configuration</button>
+            <button class="btn btn-outline-success" id="btnProfileSettings"><i class="bi bi-person-circle me-1"></i>Profile Settings</button>
+          </div>
+          <button class="btn btn-danger" id="btnLogout"><i class="bi bi-box-arrow-right me-1"></i>Logout</button>
+        </div>
+
+        <!-- System Configuration -->
+        <div id="systemConfigSection" class="settings-section">
+          <h5 class="fw-semibold text-success mb-3"><i class="bi bi-sliders2 me-2"></i>System Configuration</h5>
+          <div class="list-group">
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+              <span><i class="bi bi-person-lock text-success me-2"></i>Manage <strong>Admin Credentials</strong></span>
+              <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change Password</button>
+            </div>
+
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+              <span><i class="bi bi-bell-fill text-success me-2"></i>Notification Preferences</span>
+              <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#notificationModal">Configure</button>
+            </div>
+
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+              <span><i class="bi bi-cloud-arrow-up-fill text-success me-2"></i>Data Backup & Restore</span>
+              <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#backupModal">Open</button>
+            </div>
+
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+              <span><i class="bi bi-brightness-high-fill text-success me-2"></i>System Theme (Light/Dark Mode)</span>
+              <div class="form-check form-switch m-0">
+                <input class="form-check-input" type="checkbox" id="themeSwitch">
+                <label class="form-check-label" for="themeSwitch">Light Mode On</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile Settings -->
+        <div id="profileSettingsSection" class="settings-section d-none">
+          <h5 class="fw-semibold text-success mb-3"><i class="bi bi-person-circle me-2"></i>Profile Settings</h5>
+          <form id="profileForm">
+            <div class="mb-3">
+              <label class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="profileName" value="Admin User">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Email Address</label>
+              <input type="email" class="form-control" id="profileEmail" value="admin@basuratrack.com">
+            </div>
+            <button type="submit" class="btn btn-success"><i class="bi bi-save2 me-1"></i>Save Changes</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modals (Password, Notifications, Backup) -->
+  <!-- same modals as before -->
+  <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title"><i class="bi bi-shield-lock"></i> Change Admin Password</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="passwordForm">
+            <div class="mb-3">
+              <label class="form-label">Current Password</label>
+              <input type="password" class="form-control" id="currentPassword" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">New Password</label>
+              <input type="password" class="form-control" id="newPassword" required minlength="6">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Confirm New Password</label>
+              <input type="password" class="form-control" id="confirmPassword" required>
+            </div>
+            <button type="submit" class="btn btn-success w-100"><i class="bi bi-check-circle me-1"></i>Save Password</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title"><i class="bi bi-bell-fill"></i> Notification Preferences</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="notificationForm">
+            <div class="form-check form-switch mb-2">
+              <input class="form-check-input" type="checkbox" id="emailNotif" checked>
+              <label class="form-check-label" for="emailNotif">Email Notifications</label>
+            </div>
+            <div class="form-check form-switch mb-2">
+              <input class="form-check-input" type="checkbox" id="inAppNotif" checked>
+              <label class="form-check-label" for="inAppNotif">In-App Notifications</label>
+            </div>
+            <button type="submit" class="btn btn-success w-100"><i class="bi bi-check-circle me-1"></i>Save Preferences</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="backupModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title"><i class="bi bi-cloud-arrow-up"></i> Data Backup & Restore</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center">
+          <button class="btn btn-success w-100 mb-2" id="backupBtn"><i class="bi bi-cloud-upload me-1"></i>Backup Now</button>
+          <button class="btn btn-outline-success w-100" id="restoreBtn"><i class="bi bi-cloud-download me-1"></i>Restore Backup</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Section Toggle
+    document.getElementById("btnSystemConfig").onclick = () => {
+      document.getElementById("systemConfigSection").classList.remove("d-none");
+      document.getElementById("profileSettingsSection").classList.add("d-none");
+    };
+    document.getElementById("btnProfileSettings").onclick = () => {
+      document.getElementById("systemConfigSection").classList.add("d-none");
+      document.getElementById("profileSettingsSection").classList.remove("d-none");
+    };
+
+// Dark Mode Toggle
+const themeSwitch = document.getElementById("themeSwitch");
+const themeLabel = document.querySelector('label[for="themeSwitch"]');
+const root = document.documentElement;
+const mainContent = document.querySelector(".main-content");
+
+function applyTheme() {
+  const theme = localStorage.getItem("theme") || "light";
+  if (theme === "dark") {
+    root.classList.add("dark-mode");
+    mainContent.classList.add("dark-mode");
+    themeSwitch.checked = true;
+    themeLabel.textContent = "Dark Mode On";
+  } else {
+    root.classList.remove("dark-mode");
+    mainContent.classList.remove("dark-mode");
+    themeSwitch.checked = false;
+    themeLabel.textContent = "Light Mode On";
+  }
+}
+
+applyTheme();
+
+themeSwitch.addEventListener("change", () => {
+  const theme = themeSwitch.checked ? "dark" : "light";
+  localStorage.setItem("theme", theme);
+  applyTheme();
+});
+
+
+    // Notifications
+    document.getElementById("notificationForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      alert("✅ Notification preferences saved!");
+      bootstrap.Modal.getInstance(document.getElementById("notificationModal")).hide();
+    });
+
+    // Backup / Restore
+    document.getElementById("backupBtn").onclick = () => alert("☁️ Backup completed successfully!");
+    document.getElementById("restoreBtn").onclick = () => alert("♻️ Data restored from backup!");
+
+    // Logout
+    document.getElementById("btnLogout").onclick = () => {
+      if (confirm("Are you sure you want to log out?")) window.location.href = "login.html";
+    };
+
+    // Change Password
+    document.getElementById("passwordForm").onsubmit = (e) => {
+      e.preventDefault();
+      const newPass = document.getElementById("newPassword").value;
+      const confirmPass = document.getElementById("confirmPassword").value;
+      if (newPass !== confirmPass) return alert("❌ Passwords do not match!");
+      alert("✅ Password updated successfully!");
+      bootstrap.Modal.getInstance(document.getElementById("changePasswordModal")).hide();
+      e.target.reset();
+    };
+  </script>
+</body>
+</html>

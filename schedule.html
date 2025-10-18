@@ -14,6 +14,7 @@
 </head>
 <body>
 
+
   <!-- Top Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <div class="container-fluid">
@@ -27,10 +28,8 @@
             <i class="bi bi-person-circle"></i> Admin
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><a class="dropdown-item" href="#">Settings</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Logout</a></li>
+            <li><a class="dropdown-item text-center" href="#">Logout <i class="bi bi-box-arrow-right me-1"></i></a></li>
           </ul>
         </li>
       </ul>
@@ -47,187 +46,187 @@
       <a class="nav-link" href="resident.html"><i class="bi bi-file-earmark-text-fill me-2"></i> Resident Reports</a>
       <a class="nav-link" href="analytics.html"><i class="bi bi-bar-chart-fill me-2"></i> Analytics & Reports</a>
       <a class="nav-link" href="announcements.html"><i class="bi bi-megaphone-fill me-2"></i> Announcements</a>
-      <a class="nav-link" href="#"><i class="bi bi-gear-fill me-2"></i> Settings</a>
+      <a class="nav-link" href="news.html"><i class="bi bi-newspaper me-2"></i> News & Articles</a>
+      <a class="nav-link" href="user.html"><i class="bi bi-people-fill me-2"></i> User Management</a>
+      <a class="nav-link" href="settings.html"><i class="bi bi-gear-fill me-2"></i> Settings</a>
     </nav>
   </div>
+
   <!-- Main Content -->
-  <div class="main-content">
-    <h4 class="mb-4"><i class="bi bi-map-fill me-2 text-success"></i>Route and Schedule Management</h4>
+  <div class="main-content p-4">
+    <div class="card p-4 shadow-sm mt-2">
+      <h4 class="fw-semibold text-dark"><i class="bi bi-map-fill me-2 text-success"></i>Route and Schedule Management</h4>
 
-   <div class="d-flex justify-content-end">
-  <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addScheduleModal">
-    <i class="bi bi-plus-circle me-2"></i>Add Schedule
-  </button>
-</div>
+      <div class="d-flex justify-content-end">
+        <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addScheduleModal">
+          <i class="bi bi-plus-circle me-2"></i>Add Schedule
+        </button>
+      </div>
 
-    <div class="table-responsive">
-      <table class="table table-bordered table-striped align-middle">
-        <thead class="table-success">
-          <tr>
-            <th>#</th>
-            <th>Route Name</th>
-            <th>Truck</th>
-            <th>Collector</th>
-            <th>Days</th>
-            <th>Time</th>
-            <th>Remarks</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="scheduleTableBody">
-          <tr>
-            <td>1</td>
-            <td>Poblacion Route</td>
-            <td>Truck A</td>
-            <td>Collector Juan</td>
-            <td>Mon, Wed, Fri</td>
-            <td>7:00 AM - 11:00 AM</td>
-            <td>Regular Route</td>
-            <td>
-              <div class="action-buttons d-flex flex-wrap gap-2 justify-content-center">
-          <button class="btn btn-warning btn-sm me-2 edit-btn"><i class="bi bi-pencil-square"></i></button>
-<button class="btn btn-danger btn-sm delete-btn"><i class="bi bi-trash"></i></button>
-
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle">
+          <thead class="table-success">
+            <tr>
+              <th>#</th>
+              <th>Route Name</th>
+              <th>Truck ID</th>
+              <th>Collector</th>
+              <th>Days</th>
+              <th>Time</th>
+              <th>Remarks</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="scheduleTableBody">
+            <tr>
+              <td>1</td>
+              <td>Poblacion Route</td>
+              <td>1</td>
+              <td>Collector Juan</td>
+              <td>Mon, Wed, Fri</td>
+              <td>7:00 AM - 11:00 AM</td>
+              <td>Regular Route</td>
+              <td>
+                <div class="action-buttons d-flex flex-wrap gap-2 justify-content-center">
+                  <button class="btn btn-warning btn-sm me-2 edit-btn"><i class="bi bi-pencil-square"></i></button>
+                  <button class="btn btn-danger btn-sm delete-btn"><i class="bi bi-trash"></i></button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
 
-  <!-- Add Schedule Modal -->
-  <div class="modal fade" id="addScheduleModal" tabindex="-1" aria-labelledby="addScheduleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header bg-success text-white">
-          <h5 class="modal-title" id="addScheduleModalLabel"><i class="bi bi-calendar-plus me-2"></i>Add New Schedule</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <form id="addScheduleForm">
-            <div class="row mb-3">
-              <div class="col-md-6">
-                <label class="form-label">Route Name</label>
-                <input type="text" class="form-control" id="routeName" required>
-              </div>
-              <div class="col-md-6">
-                <label class="form-label">Assigned Truck</label>
-                <input type="text" class="form-control" id="truckName" required>
-              </div>
-            </div>
-            <div class="row mb-3">
-              <div class="col-md-6">
-                <label class="form-label">Collector</label>
-                <input type="text" class="form-control" id="collectorName" required>
-              </div>
-              <div class="col-md-6">
-                <label class="form-label">Days of Collection</label>
-                <div class="d-flex flex-wrap gap-2">
-                  <div class="form-check"><input class="form-check-input" type="checkbox" value="Mon"> Mon</div>
-                  <div class="form-check"><input class="form-check-input" type="checkbox" value="Tue"> Tue</div>
-                  <div class="form-check"><input class="form-check-input" type="checkbox" value="Wed"> Wed</div>
-                  <div class="form-check"><input class="form-check-input" type="checkbox" value="Thu"> Thu</div>
-                  <div class="form-check"><input class="form-check-input" type="checkbox" value="Fri"> Fri</div>
-                  <div class="form-check"><input class="form-check-input" type="checkbox" value="Sat"> Sat</div>
-                  <div class="form-check"><input class="form-check-input" type="checkbox" value="Sun"> Sun</div>
+    <!-- Add Schedule Modal -->
+    <div class="modal fade" id="addScheduleModal" tabindex="-1" aria-labelledby="addScheduleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header bg-success text-white">
+            <h5 class="modal-title" id="addScheduleModalLabel"><i class="bi bi-calendar-plus me-2"></i>Add New Schedule</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <form id="addScheduleForm">
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Route Name</label>
+                  <input type="text" class="form-control" id="routeName" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Truck ID</label>
+                  <input type="number" class="form-control" id="truckId" min="1" required>
                 </div>
               </div>
-            </div>
-            <div class="row mb-3">
-              <div class="col-md-6">
-                <label class="form-label">Start Time</label>
-                <input type="time" class="form-control" id="startTime" required>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Collector</label>
+                  <input type="text" class="form-control" id="collectorName" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Days of Collection</label>
+                  <div class="d-flex flex-wrap gap-2">
+                    <div class="form-check"><input class="form-check-input" type="checkbox" value="Mon"> Mon</div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" value="Tue"> Tue</div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" value="Wed"> Wed</div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" value="Thu"> Thu</div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" value="Fri"> Fri</div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" value="Sat"> Sat</div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" value="Sun"> Sun</div>
+                  </div>
+                </div>
               </div>
-              <div class="col-md-6">
-                <label class="form-label">End Time</label>
-                <input type="time" class="form-control" id="endTime" required>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Start Time</label>
+                  <input type="time" class="form-control" id="startTime" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">End Time</label>
+                  <input type="time" class="form-control" id="endTime" required>
+                </div>
               </div>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Remarks</label>
-              <textarea class="form-control" id="remarks" rows="2"></textarea>
-            </div>
-      <div class="modal-footer d-flex justify-content-center">
-  <button type="submit" class="btn btn-success px-5">Save Schedule</button>
-</div>
-
-          </form>
+              <div class="mb-3">
+                <label class="form-label">Remarks</label>
+                <textarea class="form-control" id="remarks" rows="2"></textarea>
+              </div>
+              <div class="modal-footer d-flex justify-content-center">
+                <button type="submit" class="btn btn-success px-5">Save Schedule</button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Edit Schedule Modal -->
-  <div class="modal fade" id="editScheduleModal" tabindex="-1" aria-labelledby="editScheduleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header bg-success text-white">
-          <h5 class="modal-title" id="editScheduleModalLabel"><i class="bi bi-pencil-square me-2"></i>Edit Schedule</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <form id="editScheduleForm">
-            <input type="hidden" id="editRowIndex">
-            <div class="row mb-3">
-              <div class="col-md-6">
-                <label class="form-label">Route Name</label>
-                <input type="text" class="form-control" id="editRouteName" required>
+    <!-- Edit Schedule Modal -->
+    <div class="modal fade" id="editScheduleModal" tabindex="-1" aria-labelledby="editScheduleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header bg-success text-white">
+            <h5 class="modal-title" id="editScheduleModalLabel"><i class="bi bi-pencil-square me-2"></i>Edit Schedule</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <form id="editScheduleForm">
+              <input type="hidden" id="editRowIndex">
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Route Name</label>
+                  <input type="text" class="form-control" id="editRouteName" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Truck ID</label>
+                  <input type="number" class="form-control" id="editTruckId" min="1" required>
+                </div>
               </div>
-              <div class="col-md-6">
-                <label class="form-label">Truck</label>
-                <input type="text" class="form-control" id="editTruckName" required>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Collector</label>
+                  <input type="text" class="form-control" id="editCollectorName" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Days</label>
+                  <input type="text" class="form-control" id="editDays" required>
+                </div>
               </div>
-            </div>
-            <div class="row mb-3">
-              <div class="col-md-6">
-                <label class="form-label">Collector</label>
-                <input type="text" class="form-control" id="editCollectorName" required>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Start Time</label>
+                  <input type="time" class="form-control" id="editStartTime" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">End Time</label>
+                  <input type="time" class="form-control" id="editEndTime" required>
+                </div>
               </div>
-              <div class="col-md-6">
-                <label class="form-label">Days</label>
-                <input type="text" class="form-control" id="editDays" required>
+              <div class="mb-3">
+                <label class="form-label">Remarks</label>
+                <textarea class="form-control" id="editRemarks" rows="2"></textarea>
               </div>
-            </div>
-            <div class="row mb-3">
-              <div class="col-md-6">
-                <label class="form-label">Start Time</label>
-                <input type="time" class="form-control" id="editStartTime" required>
+              <div class="modal-footer d-flex justify-content-center">
+                <button type="submit" class="btn btn-success px-5">Save Changes</button>
               </div>
-              <div class="col-md-6">
-                <label class="form-label">End Time</label>
-                <input type="time" class="form-control" id="editEndTime" required>
-              </div>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Remarks</label>
-              <textarea class="form-control" id="editRemarks" rows="2"></textarea>
-            </div>
-           <div class="modal-footer d-flex justify-content-center">
-  <button type="submit" class="btn btn-success px-5">Save Changes</button>
-</div>
-   </form>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Custom Script -->
  <script>
   document.addEventListener("DOMContentLoaded", () => {
     const tableBody = document.getElementById("scheduleTableBody");
     const addForm = document.getElementById("addScheduleForm");
     const editForm = document.getElementById("editScheduleForm");
+
     const startInput = document.getElementById("startTime");
     const endInput = document.getElementById("endTime");
     const editStartInput = document.getElementById("editStartTime");
     const editEndInput = document.getElementById("editEndTime");
 
-    // 🕒 Convert 24-hour to 12-hour format
     function to12Hour(timeStr) {
       let [hour, minute] = timeStr.split(":").map(Number);
       const ampm = hour >= 12 ? "PM" : "AM";
@@ -235,7 +234,6 @@
       return `${hour}:${minute.toString().padStart(2, "0")} ${ampm}`;
     }
 
-    // 🔄 Convert 12-hour (table text) to 24-hour (for inputs)
     function to24Hour(timeStr) {
       const [time, period] = timeStr.split(" ");
       let [hour, minute] = time.split(":").map(Number);
@@ -244,29 +242,16 @@
       return `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
     }
 
-    // ⚙️ Disable invalid end times dynamically
-    function adjustEndTimeOptions(start, endField) {
-      if (!start) return;
-      endField.min = start; // prevent choosing earlier or equal times
-    }
-
-    // Listen to start time changes (add form)
-    startInput.addEventListener("change", () => adjustEndTimeOptions(startInput.value, endInput));
-
-    // Listen to start time changes (edit form)
-    editStartInput.addEventListener("change", () => adjustEndTimeOptions(editStartInput.value, editEndInput));
-
-    // 🧮 Reindex rows after deletion
     function reindexRows() {
       Array.from(tableBody.rows).forEach((r, i) => (r.cells[0].textContent = i + 1));
     }
 
-    // ===== ADD SCHEDULE =====
-    addForm.addEventListener("submit", function (e) {
+    // ✅ Add schedule (with duplicate truck ID prevention and same button design)
+    addForm.addEventListener("submit", (e) => {
       e.preventDefault();
 
       const route = document.getElementById("routeName").value.trim();
-      const truck = document.getElementById("truckName").value.trim();
+      const truckId = document.getElementById("truckId").value.trim();
       const collector = document.getElementById("collectorName").value.trim();
       const start = startInput.value;
       const end = endInput.value;
@@ -275,13 +260,11 @@
         .map(cb => cb.value)
         .join(", ");
 
-      // Basic validation
-      if (!route || !truck || !collector || !start || !end || !days) {
+      if (!route || !truckId || !collector || !start || !end || !days) {
         alert("Please fill out all required fields.");
         return;
       }
 
-      // ❌ Prevent identical or invalid times
       if (start === end) {
         alert("Start time and End time cannot be the same.");
         return;
@@ -291,20 +274,27 @@
         return;
       }
 
+      // 🚫 Prevent duplicate Truck IDs
+      const existingTruckIds = Array.from(tableBody.rows).map(r => r.cells[2].textContent.trim());
+      if (existingTruckIds.includes(truckId)) {
+        alert("A schedule with this Truck ID already exists. Please choose another Truck ID.");
+        return;
+      }
+
       const rowCount = tableBody.rows.length + 1;
       const newRow = document.createElement("tr");
       newRow.innerHTML = `
         <td>${rowCount}</td>
         <td>${route}</td>
-        <td>${truck}</td>
+        <td>${truckId}</td>
         <td>${collector}</td>
         <td>${days}</td>
         <td>${to12Hour(start)} - ${to12Hour(end)}</td>
         <td>${remarks}</td>
         <td>
           <div class="action-buttons d-flex flex-wrap gap-2 justify-content-center">
-            <button class="btn btn-sm btn-outline-primary edit-btn"><i class="bi bi-pencil-square"></i></button>
-            <button class="btn btn-sm btn-outline-danger delete-btn"><i class="bi bi-trash3-fill"></i></button>
+            <button class="btn btn-warning btn-sm me-2 edit-btn"><i class="bi bi-pencil-square"></i></button>
+            <button class="btn btn-danger btn-sm delete-btn"><i class="bi bi-trash"></i></button>
           </div>
         </td>
       `;
@@ -314,7 +304,7 @@
       bootstrap.Modal.getInstance(document.getElementById("addScheduleModal")).hide();
     });
 
-    // ===== EDIT SCHEDULE =====
+    // Edit schedule
     tableBody.addEventListener("click", (e) => {
       if (e.target.closest(".edit-btn")) {
         const row = e.target.closest("tr");
@@ -322,7 +312,7 @@
 
         document.getElementById("editRowIndex").value = index;
         document.getElementById("editRouteName").value = row.cells[1].textContent;
-        document.getElementById("editTruckName").value = row.cells[2].textContent;
+        document.getElementById("editTruckId").value = row.cells[2].textContent;
         document.getElementById("editCollectorName").value = row.cells[3].textContent;
         document.getElementById("editDays").value = row.cells[4].textContent;
 
@@ -335,8 +325,8 @@
       }
     });
 
-    // ===== SAVE EDIT =====
-    editForm.addEventListener("submit", function (e) {
+    // Save edit
+    editForm.addEventListener("submit", (e) => {
       e.preventDefault();
 
       const i = document.getElementById("editRowIndex").value;
@@ -345,7 +335,6 @@
       const start = editStartInput.value;
       const end = editEndInput.value;
 
-      // Time validation
       if (start === end) {
         alert("Start time and End time cannot be the same.");
         return;
@@ -356,7 +345,7 @@
       }
 
       row.cells[1].textContent = document.getElementById("editRouteName").value;
-      row.cells[2].textContent = document.getElementById("editTruckName").value;
+      row.cells[2].textContent = document.getElementById("editTruckId").value;
       row.cells[3].textContent = document.getElementById("editCollectorName").value;
       row.cells[4].textContent = document.getElementById("editDays").value;
       row.cells[5].textContent = `${to12Hour(start)} - ${to12Hour(end)}`;
@@ -365,7 +354,7 @@
       bootstrap.Modal.getInstance(document.getElementById("editScheduleModal")).hide();
     });
 
-    // ===== DELETE SCHEDULE =====
+    // Delete schedule
     tableBody.addEventListener("click", (e) => {
       if (e.target.closest(".delete-btn")) {
         const row = e.target.closest("tr");
@@ -377,3 +366,6 @@
     });
   });
 </script>
+
+</body>
+</html>

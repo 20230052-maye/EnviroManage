@@ -52,6 +52,7 @@ body {
   background-color: #40916c;
 }
 
+
 /* Table */
 .table {
   background-color: white;
@@ -65,4 +66,43 @@ body {
   border-radius: 15px;
 }
 
+table th,
+table td {
+  text-align: center;
+  vertical-align: middle;
+}
 
+
+/* Action Buttons - consistent design for table & modal */
+.btn-success,
+.btn-danger {
+  border: none;
+  border-radius: 5px;
+  padding: 5px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+/* Success (Add/Edit/Save) buttons */
+.btn-success {
+  background-color: #2e7d32; /* dark green */
+}
+.btn-success:hover {
+  background-color: #40916c; /* lighter green */
+}
+
+/* Danger (Delete/Cancel) buttons */
+.btn-danger {
+  background-color: #d32f2f; /* red */
+}
+.btn-danger:hover {
+  background-color: #b71c1c; /* darker red */
+}
+
+/* Ensure all buttons (table + modal) use same font */
+.btn {
+  font-family: "Poppins", sans-serif;
+  text-transform: none;
+}
