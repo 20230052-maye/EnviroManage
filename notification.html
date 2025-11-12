@@ -16,15 +16,43 @@
 
   <link rel="stylesheet" href="notification.css">
 
+  <style>
+    .notification-card {
+      margin-bottom: 10px;
+      cursor: pointer;
+      border-left: 5px solid transparent;
+      transition: 0.2s ease;
+    }
+    .notification-card.unread {
+      border-left: 5px solid #28a745;
+      background-color: #f9fdf9;
+    }
+    .notification-card:hover {
+      background-color: #f5f5f5;
+    }
+    .notification-category {
+      font-weight: 600;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      color: #198754;
+    }
+    .timestamp {
+      font-size: 0.85rem;
+      color: #6c757d;
+      font-style: italic;
+      float: right;
+    }
+  </style>
+</head>
 
 <body>
 
   <!-- Top Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="height:70px;">
-  <div class="container-fluid">
-    <a class="navbar-brand position-relative" href="#">
-      <img src="logo.png" alt="BasuraTrack Logo" class="logo">
-    </a>
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="height:70px;">
+    <div class="container-fluid">
+      <a class="navbar-brand position-relative" href="#">
+        <img src="logo.png" alt="BasuraTrack Logo" class="logo">
+      </a>
       <ul class="navbar-nav ms-auto align-items-center">
         <li class="nav-item me-3">
           <a class="nav-link" href="notification.html"><i class="bi bi-bell-fill"></i></a>
@@ -65,23 +93,28 @@
   <!-- Main Content -->
   <div class="main-content">
     <div class="card p-4 shadow-sm mt-2">
-      <h4 class="fw-semibold text-dark"><i class="bi bi-bell-fill me-2 text-success"></i>Notifications</h4>
+      <h4 class="fw-semibold text-dark">
+        <i class="bi bi-bell-fill me-2 text-success"></i>Notifications
+      </h4>
 
       <!-- Reports & Segregation -->
       <div class="notification-category">Reports & Segregation</div>
       <div class="card notification-card unread">
         <div class="card-body">
           <strong>New report submitted:</strong> A new garbage collection report has been submitted by JohnD.
+          <span class="timestamp">5 mins ago</span>
         </div>
       </div>
       <div class="card notification-card">
         <div class="card-body">
           <strong>Report pending verification:</strong> A report from Barangay San Isidro is awaiting verification.
+          <span class="timestamp">2 hours ago</span>
         </div>
       </div>
       <div class="card notification-card">
         <div class="card-body">
           <strong>Report updated:</strong> User JaneD edited their report submitted on 10/18/2025.
+          <span class="timestamp">Yesterday</span>
         </div>
       </div>
 
@@ -90,11 +123,13 @@
       <div class="card notification-card unread">
         <div class="card-body">
           <strong>New user registered:</strong> A new user account has been created: Maria Santos.
+          <span class="timestamp">10 mins ago</span>
         </div>
       </div>
       <div class="card notification-card">
         <div class="card-body">
           <strong>User updated profile:</strong> User JohnD updated their personal information.
+          <span class="timestamp">1 hour ago</span>
         </div>
       </div>
 
@@ -103,6 +138,7 @@
       <div class="card notification-card unread">
         <div class="card-body">
           <strong>Collection schedule created/updated:</strong> A new garbage collection schedule has been added for Barangay San Isidro.
+          <span class="timestamp">30 mins ago</span>
         </div>
       </div>
 
@@ -111,8 +147,31 @@
       <div class="card notification-card unread">
         <div class="card-body">
           <strong>System maintenance:</strong> The app will undergo maintenance at 10 PM today.
+          <span class="timestamp">3 hours ago</span>
         </div>
       </div>
+
+      <!-- Activity Log -->
+      <div class="notification-category">Activity Log</div>
+      <div class="card notification-card unread">
+        <div class="card-body">
+          <strong>Admin login:</strong> Admin <em>admin_sariaya</em> logged into the system at 8:30 AM.
+          <span class="timestamp">Today, 8:30 AM</span>
+        </div>
+      </div>
+      <div class="card notification-card">
+        <div class="card-body">
+          <strong>Data backup completed:</strong> Automatic database backup finished successfully.
+          <span class="timestamp">Today, 12:00 AM</span>
+        </div>
+      </div>
+      <div class="card notification-card">
+        <div class="card-body">
+          <strong>System configuration updated:</strong> Waste collection frequency was modified by Admin.
+          <span class="timestamp">Yesterday, 9:45 PM</span>
+        </div>
+      </div>
+
     </div>
   </div>
 
