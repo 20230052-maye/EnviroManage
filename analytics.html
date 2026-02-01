@@ -12,26 +12,23 @@
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-matrix@1.1.0/dist/chartjs-chart-matrix.min.js"></script>
-<link rel="stylesheet" href="analytics.css" />
+  <link rel="stylesheet" href="analytics.css" />
 </head>
 <body>
   <style>
-      .chart-card { background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 0 8px rgba(0,0,0,0.1); }
+    .chart-card { background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 0 8px rgba(0,0,0,0.1); }
     .download-section button { margin: 5px; }
     .info-btn { font-style: italic; cursor: pointer; margin-left: 5px; color:#555; }
   </style>
-</head>
-<body>
 
-<!-- Top Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="height:70px;">
-  <div class="container-fluid">
-    <a class="navbar-brand d-flex align-items-center" href="#">
-      <img src="logo.png" alt="BasuraTrack Logo" style="height:40px; width:auto;">
-    </a>
+  <!-- Top Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="height:70px;">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="logo.png" alt="BasuraTrack Logo" style="height:40px; width:auto;">
+      </a>
 
-
-       <ul class="navbar-nav ms-auto align-items-center">
+      <ul class="navbar-nav ms-auto align-items-center">
         <li class="nav-item me-3">
           <a class="nav-link" href="notification.html"><i class="bi bi-bell-fill"></i></a>
         </li>
@@ -39,35 +36,35 @@
           <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" data-bs-toggle="dropdown">
             <i class="bi bi-person-circle"></i> Admin
           </a>
-        <ul class="dropdown-menu dropdown-menu-end">
-          <li><hr class="dropdown-divider"></li>
-          <li>
-            <a class="dropdown-item text-center" href="#" id="logoutBtn">
-              Logout <i class="bi bi-box-arrow-right me-1"></i>
-            </a>
-          </li>
-        </ul>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <a class="dropdown-item text-center" href="#" id="logoutBtn">
+                Logout <i class="bi bi-box-arrow-right me-1"></i>
+              </a>
+            </li>
+          </ul>
+        </li>
       </ul>
     </div>
   </nav>
 
-
-<div class="sidebar">
-  <nav class="nav flex-column">
-    <a class="nav-link" href="dashboard.html"><i class="bi bi-house-door-fill me-2"></i> Dashboard</a>
-    <a class="nav-link" href="schedule.html"><i class="bi bi-map-fill me-2"></i> Routes & Schedules</a>
-    <a class="nav-link" href="trucks.html"><i class="bi bi-truck-front-fill me-2"></i> Trucks & Collectors</a>
-    <a class="nav-link" href="collection.html"><i class="bi bi-trash-fill me-2"></i> Collection Records</a>
-    <a class="nav-link " href="special.html"><i class="bi bi-exclamation-circle-fill me-2"></i> Special Pickup</a>
-    <a class="nav-link" href="resident.html"><i class="bi bi-file-earmark-text-fill me-2"></i> Resident Reports</a>
-    <a class="nav-link active" href="analytics.html"><i class="bi bi-bar-chart-fill me-2"></i> Analytics & Reports</a>
-    <a class="nav-link " href="announcements.html"><i class="bi bi-megaphone-fill me-2"></i> Announcements</a>
-    <a class="nav-link" href="news.html"><i class="bi bi-newspaper me-2"></i> News & Articles</a>
-    <a class="nav-link" href="user.html"><i class="bi bi-people-fill me-2"></i> User Management</a>
-    <a class="nav-link" href="settings.html"><i class="bi bi-gear-fill me-2"></i> Settings</a>
-  </nav>
-</div>
-
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <nav class="nav flex-column">
+      <a class="nav-link" href="dashboard.html"><i class="bi bi-house-door-fill me-2"></i> Dashboard</a>
+      <a class="nav-link" href="schedule.html"><i class="bi bi-map-fill me-2"></i> Routes & Schedules</a>
+      <a class="nav-link" href="trucks.html"><i class="bi bi-truck-front-fill me-2"></i> Trucks & Collectors</a>
+      <a class="nav-link" href="collection.html"><i class="bi bi-trash-fill me-2"></i> Collection Records</a>
+      <a class="nav-link" href="special.html"><i class="bi bi-exclamation-circle-fill me-2"></i> Special Pickup</a>
+      <a class="nav-link" href="resident.html"><i class="bi bi-file-earmark-text-fill me-2"></i> Resident Reports</a>
+      <a class="nav-link active" href="analytics.html"><i class="bi bi-bar-chart-fill me-2"></i> Analytics & Reports</a>
+      <a class="nav-link" href="announcements.html"><i class="bi bi-megaphone-fill me-2"></i> Announcements</a>
+      <a class="nav-link" href="news.html"><i class="bi bi-newspaper me-2"></i> News & Articles</a>
+      <a class="nav-link" href="user.html"><i class="bi bi-people-fill me-2"></i> User Management</a>
+      <a class="nav-link" href="settings.html"><i class="bi bi-gear-fill me-2"></i> Settings</a>
+    </nav>
+  </div>
 
   <!-- Main Content -->
   <div class="main-content">
@@ -78,124 +75,97 @@
 
         <div class="row g-4">
 
-     <!-- Bar Chart with Date Picker -->
-<div class="col-lg-6">
-  <div class="chart-card">
-    <div class="d-flex justify-content-between align-items-center mb-2">
-      <h6 class="fw-semibold mb-2 text-secondary">
-        Waste Collected per Barangay
-        <i class="bi bi-info-circle text-secondary ms-2" style="cursor:pointer;"
-           data-bs-toggle="modal" data-bs-target="#infoModal"
-           data-info="Shows the total waste collected in each barangay for the selected date.">
-        </i>
-      </h6>
-      <input type="date" id="barChartDate" class="form-control form-control-sm" style="width:160px;">
-    </div>
-    <canvas id="barChart"></canvas>
-  </div>
-</div>
+          <!-- Bar Chart with Date Picker -->
+          <div class="col-lg-6">
+            <div class="chart-card">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="fw-semibold mb-2 text-secondary">
+                  Waste Collected per Barangay
+                  <i class="bi bi-info-circle text-secondary ms-2"
+                     data-bs-toggle="tooltip"
+                     data-bs-placement="top"
+                     title="Shows the total waste collected in each barangay for the selected date.">
+                  </i>
+                </h6>
+                <input type="date" id="barChartDate" class="form-control form-control-sm" style="width:160px;">
+              </div>
+              <canvas id="barChart"></canvas>
+            </div>
+          </div>
 
-<!-- Line Chart with Weekly Range -->
-<div class="col-lg-6">
-  <div class="chart-card">
-    <div class="d-flex justify-content-between align-items-center mb-2">
-      <h6 class="fw-semibold mb-2 text-secondary">
-        Weekly Collection Trends
-        <i class="bi bi-info-circle text-secondary ms-2" style="cursor:pointer;"
-           data-bs-toggle="modal" data-bs-target="#infoModal"
-           data-info="Displays trends of collected waste over a 7-day week period. Use < and > to navigate weeks.">
-        </i>
-      </h6>
-      <div class="input-group input-group-sm" style="width:200px;">
-        <button class="btn btn-outline-secondary" id="prevWeek">&lt;</button>
-        <input type="text" id="weekRange" class="form-control text-center" readonly>
-        <button class="btn btn-outline-secondary" id="nextWeek">&gt;</button>
-      </div>
-    </div>
-    <canvas id="lineChart"></canvas>
-  </div>
-</div>
-<!-- Donut Chart: Resolution Rate -->
-<div class="col-lg-6">
-  <div class="chart-card" style="height: 320px;"> <!-- match Route Efficiency container -->
-    <div class="d-flex justify-content-between align-items-center mb-2">
-      <h6 class="fw-semibold mb-2 text-secondary d-flex align-items-center">
-        Report Resolution Rate (%)
-        <i class="bi bi-info-circle text-secondary ms-2"
-           style="cursor:pointer; font-size: 0.9rem;"
-           data-bs-toggle="modal" data-bs-target="#infoModal"
-           data-info="Shows the percentage of reported issues that have been resolved within the selected month.">
-        </i>
-      </h6>
-      <select id="resolutionMonth" class="form-select form-select-sm" style="width:120px;">
-        <option value="Jan">January</option>
-        <option value="Feb">February</option>
-        <option value="Mar">March</option>
-        <option value="Apr">April</option>
-      </select>
-    </div>
-   <canvas id="pieChart" style="display: block; margin: 0 auto; height: 230px;"></canvas>
+          <!-- Line Chart with Weekly Range -->
+          <div class="col-lg-6">
+            <div class="chart-card">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="fw-semibold mb-2 text-secondary">
+                  Weekly Collection Trends
+                  <i class="bi bi-info-circle text-secondary ms-2"
+                     data-bs-toggle="tooltip"
+                     data-bs-placement="top"
+                     title="Displays trends of collected waste over a 7-day week period.">
+                  </i>
+                </h6>
+                <div class="input-group input-group-sm" style="width:200px;">
+                  <button class="btn btn-outline-secondary" id="prevWeek">&lt;</button>
+                  <input type="text" id="weekRange" class="form-control text-center" readonly>
+                  <button class="btn btn-outline-secondary" id="nextWeek">&gt;</button>
+                </div>
+              </div>
+              <canvas id="lineChart"></canvas>
+            </div>
+          </div>
 
-  </div>
-</div>
+          <!-- Donut Chart: Resolution Rate -->
+          <div class="col-lg-6">
+            <div class="chart-card" style="height: 320px;">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="fw-semibold mb-2 text-secondary d-flex align-items-center">
+                  Report Resolution Rate (%)
+                  <i class="bi bi-info-circle text-secondary ms-2"
+                     data-bs-toggle="tooltip"
+                     data-bs-placement="top"
+                     title="Shows the percentage of reported issues that have been resolved within the selected month.">
+                  </i>
+                </h6>
+                <select id="resolutionMonth" class="form-select form-select-sm" style="width:120px;">
+                  <option value="Jan">January</option>
+                  <option value="Feb">February</option>
+                  <option value="Mar">March</option>
+                  <option value="Apr">April</option>
+                </select>
+              </div>
+              <canvas id="pieChart" style="display: block; margin: 0 auto; height: 230px;"></canvas>
+            </div>
+          </div>
 
-<!-- Route Efficiency Chart -->
-<div class="col-lg-6">
-  <div class="chart-card">
-    <div class="d-flex justify-content-between align-items-center mb-2">
-      <h6 class="fw-semibold mb-2 text-secondary d-flex align-items-center">
-        Route Efficiency / Duration
-        <i class="bi bi-info-circle text-secondary ms-2"
-           style="cursor:pointer; font-size: 0.9rem;"
-           data-bs-toggle="modal" data-bs-target="#infoModal"
-           data-info="Shows planned vs actual duration per route and highlights delays. Clicking a route can display time spent per barangay.">
-        </i>
-      </h6>
-      <input type="date" id="routeDate" class="form-control form-control-sm" style="width:160px;">
-    </div>
-    <canvas id="routeChart"></canvas>
-  </div>
-</div>
+          <!-- Route Efficiency Chart -->
+          <div class="col-lg-6">
+            <div class="chart-card">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="fw-semibold mb-2 text-secondary d-flex align-items-center">
+                  Route Efficiency / Duration
+                  <i class="bi bi-info-circle text-secondary ms-2"
+                     data-bs-toggle="tooltip"
+                     data-bs-placement="top"
+                     title="Shows planned vs actual duration per route and highlights delays. Clicking a route can display time spent per barangay.">
+                  </i>
+                </h6>
+                <input type="date" id="routeDate" class="form-control form-control-sm" style="width:160px;">
+              </div>
+              <canvas id="routeChart"></canvas>
+            </div>
+          </div>
 
+          <!-- Download Section -->
+          <div class="card p-4 download-section text-center">
+            <h5 class="fw-semibold mb-3"><i class="bi bi-download me-2"></i>Download Reports</h5>
+            <div class="download-buttons justify-content-center">
+              <button class="btn btn-success" onclick="downloadPDF()"><i class="bi bi-file-earmark-pdf"></i> PDF</button>
+              <button class="btn btn-primary" onclick="downloadCSV()"><i class="bi bi-filetype-csv"></i> CSV</button>
+              <button class="btn btn-secondary" onclick="showSummary()"><i class="bi bi-calendar3"></i> Monthly Summary</button>
+            </div>
+          </div>
 
-<!-- Waste Heatmap -->
-<div class="col-lg-12">
-  <div class="chart-card">
-    <h6 class="fw-semibold mb-2 text-secondary">
-      Waste Collection Heatmap (Tons)
-      <i class="bi bi-info-circle text-secondary ms-2" style="cursor:pointer;"
-         data-bs-toggle="modal" data-bs-target="#infoModal"
-         data-info="Displays waste collection activity per barangay in color-coded intensity. Dark Forest Green: >5 tons, Emerald Green: 3-5 tons, Pale Mint: <3 tons, Grey: 0.">
-      </i>
-    </h6>
-    <canvas id="heatmapChart"></canvas>
-  </div>
-</div>
-
-      <!-- Download Section -->
-      <div class="card p-4 download-section text-center">
-        <h5 class="fw-semibold mb-3"><i class="bi bi-download me-2"></i>Download Reports</h5>
-        <div class="download-buttons justify-content-center">
-          <button class="btn btn-success" onclick="downloadPDF()"><i class="bi bi-file-earmark-pdf"></i> PDF</button>
-          <button class="btn btn-primary" onclick="downloadCSV()"><i class="bi bi-filetype-csv"></i> CSV</button>
-          <button class="btn btn-secondary" onclick="showSummary()"><i class="bi bi-calendar3"></i> Monthly Summary</button>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- Info Modal -->
-  <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="infoModalLabel">Chart Info</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body" id="infoModalBody"></div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -205,16 +175,9 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
- // ---------- INFO MODAL ----------
-const infoIcons = document.querySelectorAll('.bi-info-circle');
-const infoModalBody = document.getElementById('infoModalBody');
-
-infoIcons.forEach(icon => {
-  icon.addEventListener('click', () => {
-    const infoText = icon.getAttribute('data-info');
-    infoModalBody.innerText = infoText;
-  });
-});
+    // Initialize Bootstrap tooltips
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    const tooltipList = [...tooltipTriggerList].map(el => new bootstrap.Tooltip(el));
 
     // ---------- LOGOUT ----------
     const logoutBtn = document.getElementById('logoutBtn');
@@ -231,13 +194,24 @@ infoIcons.forEach(icon => {
         labels: ["Barangay 1", "Barangay 2", "Barangay 3", "Barangay 4", "Barangay 5"],
         datasets: [{ label: "Waste Collected (kg)", data: [1200, 950, 1340, 1100, 900], backgroundColor: "#66bb6a" }]
       },
-      options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, title: { display: true, text: "Kilograms" } }, x: { title: { display: true, text: "Barangay" } } } }
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, title: { display: true, text: "Kilograms" } },
+          x: { title: { display: true, text: "Barangay" } }
+        }
+      }
     });
     document.getElementById("barChartDate").value = new Date().toISOString().split('T')[0];
 
     // ---------- LINE CHART ----------
     const lineCtx = document.getElementById("lineChart");
-    const lineChart = new Chart(lineCtx, { type: "line", data: { labels:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"], datasets:[{ label:"Collected Waste (kg)", data:[200,250,230,280,260,300,320], borderColor:"#2e7d32", backgroundColor:"rgba(46,125,50,0.1)", fill:true, tension:0.3 }] }, options: { responsive:true, plugins:{ legend:{ position:"top" } }, scales:{ y:{ beginAtZero:true }, x:{ title:{ display:true, text:"Day of Week" } } } } });
+    const lineChart = new Chart(lineCtx, {
+      type: "line",
+      data: { labels:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"], datasets:[{ label:"Collected Waste (kg)", data:[200,250,230,280,260,300,320], borderColor:"#2e7d32", backgroundColor:"rgba(46,125,50,0.1)", fill:true, tension:0.3 }] },
+      options: { responsive:true, plugins:{ legend:{ position:"top" } }, scales:{ y:{ beginAtZero:true }, x:{ title:{ display:true, text:"Day of Week" } } } }
+    });
     let currentWeekStart = new Date(); currentWeekStart.setDate(currentWeekStart.getDate()-currentWeekStart.getDay());
     function updateWeekRange() {
       const start = currentWeekStart.toLocaleDateString('en-US', { month:'short', day:'numeric' });
@@ -251,52 +225,44 @@ infoIcons.forEach(icon => {
 
     // ---------- DONUT CHART ----------
     const pieCtx = document.getElementById("pieChart");
-    const pieChart = new Chart(pieCtx, { type:'doughnut', data:{ labels:["Resolved","Pending"], datasets:[{ data:[80,20], backgroundColor:["#43a047","#c62828"] }] }, options:{ responsive:true, plugins:{ legend:{ position:"bottom" } } }, plugins:[{ id:'centerText', beforeDraw(chart){ const ctx=chart.ctx; const total = chart.data.datasets[0].data.reduce((a,b)=>a+b,0); const resolved = chart.data.datasets[0].data[0]; const percent=Math.round((resolved/total)*100); ctx.save(); const width=chart.width,height=chart.height; ctx.font='bold 18px Arial'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillStyle='#43a047'; ctx.fillText(percent+'%',width/2,height/2); ctx.restore(); } }] });
+    const pieChart = new Chart(pieCtx, {
+      type:'doughnut',
+      data:{ labels:["Resolved","Pending"], datasets:[{ data:[80,20], backgroundColor:["#43a047","#c62828"] }] },
+      options:{ responsive:true, plugins:{ legend:{ position:"bottom" } } },
+      plugins:[{
+        id:'centerText',
+        beforeDraw(chart){
+          const ctx=chart.ctx;
+          const total = chart.data.datasets[0].data.reduce((a,b)=>a+b,0);
+          const resolved = chart.data.datasets[0].data[0];
+          const percent=Math.round((resolved/total)*100);
+          ctx.save();
+          const width=chart.width,height=chart.height;
+          ctx.font='bold 18px Arial';
+          ctx.textAlign='center';
+          ctx.textBaseline='middle';
+          ctx.fillStyle='#43a047';
+          ctx.fillText(percent+'%',width/2,height/2);
+          ctx.restore();
+        }
+      }]
+    });
     document.getElementById('resolutionMonth').addEventListener('change', e => { console.log("Resolution Month:", e.target.value); });
 
     // ---------- ROUTE EFFICIENCY ----------
     const routeCtx = document.getElementById("routeChart");
-    const routeChart = new Chart(routeCtx, { type:'bar', data:{ labels:["Route A","Route B","Route C","Route D","Route E"], datasets:[{ label:"Planned Shift (hrs)", data:[8,8,8,8,8], backgroundColor:"#a5d6a7" },{ label:"Actual Duration (hrs)", data:[7.8,8.5,9,7.5,8], backgroundColor:"#66bb6a" }] }, options:{ responsive:true, plugins:{ legend:{ position:"top" } }, scales:{ y:{ beginAtZero:true, title:{ display:true, text:"Hours" } } } } });
+    const routeChart = new Chart(routeCtx, {
+      type:'bar',
+      data:{ labels:["Route A","Route B","Route C","Route D","Route E"], datasets:[{ label:"Planned Shift (hrs)", data:[8,8,8,8,8], backgroundColor:"#a5d6a7" },{ label:"Actual Duration (hrs)", data:[7.8,8.5,9,7.5,8], backgroundColor:"#66bb6a" }] },
+      options:{ responsive:true, plugins:{ legend:{ position:"top" } }, scales:{ y:{ beginAtZero:true, title:{ display:true, text:"Hours" } } } }
+    });
     document.getElementById('routeDate').value = new Date().toISOString().split('T')[0];
-
-// ---------- HEATMAP ----------
-const heatmapCtx = document.getElementById("heatmapChart");
-new Chart(heatmapCtx,{
-  type:'matrix',
-  data:{
-    datasets:[{
-      label:'Waste per Barangay',
-      data:[
-        {x:0,y:0,v:1200},{x:1,y:0,v:4500},{x:2,y:0,v:0},{x:3,y:0,v:3000},{x:4,y:0,v:500}
-      ],
-      backgroundColor: ctx=>{
-        const v=ctx.dataset.data[ctx.dataIndex].v/1000; // kg → tons
-        if(v>5) return '#1B5E20';
-        else if(v>=3) return '#4CAF50';
-        else if(v>0) return '#C8E6C9';
-        else return '#F5F5F5';
-      },
-      width: ({chart, dataset}) => chart.chartArea.width / dataset.data.length - 2,
-      height: ({chart}) => chart.chartArea.height - 2
-    }]
-  },
-  options:{
-    responsive:true,
-    plugins:{
-      legend:{ display:false }
-    },
-    scales:{
-      x:{ display:false },
-      y:{ display:false }
-    }
-  }
-});
 
     // ---------- DOWNLOAD SIMULATION ----------
     function downloadPDF(){alert("PDF Report downloaded successfully!");}
     function downloadCSV(){alert("CSV Report downloaded successfully!");}
     function showSummary(){alert("Monthly Summary:\n- Total Waste Collected: 5,890 kg\n- Average Resolution Rate: 82%\n- Most Active Barangay: Barangay 3");}
-  </script>
 
+  </script>
 </body>
 </html>

@@ -1,3 +1,4 @@
+
     /* 🌿 Color Palette (Earthy Forest & Leafy Green Garden) */
     :root {
       --forest-green: #1e5631;
@@ -160,18 +161,25 @@ body {
   border-collapse: collapse;
   text-align: center;
   font-size: 14px;
+    border: 0.5px solid #000;
+  border-collapse: collapse;
 }
 
 .heatmap-table th,
 .heatmap-table td {
   padding: 8px;
   border-radius: 4px;
+    border: 0.5px solid #000;
 }
 
 .heatmap-table th:first-child,
 .heatmap-table td:first-child {
-  text-align: left;
+  text-align: center;
   font-weight: 600;
+}
+.heatmap-table thead th {
+  background: #ffffff !important;
+  color: #000000 !important;
 }
 
 .hm-low { background:#C8E6C9; }      /* Pale Mint */
@@ -184,7 +192,10 @@ body {
   gap: 15px;
   flex-wrap: wrap;
   font-size: 13px;
+  justify-content: flex-end; /* Ito ang nagpa-right align */
+  margin-top: 10px; /* optional, para may space sa table */
 }
+
 
 .legend-box {
   width: 14px;
