@@ -154,3 +154,47 @@ body {
 .bg-success-fill { background-color: #28a745; }
 .bg-warning-fill { background-color: #ffc107; color: #000; }
 .bg-danger-fill  { background-color: #dc3545; }
+
+.heatmap-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 14px;
+}
+
+.heatmap-table th,
+.heatmap-table td {
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.heatmap-table th:first-child,
+.heatmap-table td:first-child {
+  text-align: left;
+  font-weight: 600;
+}
+
+.hm-low { background:#C8E6C9; }      /* Pale Mint */
+.hm-mid { background:#4CAF50; color:#fff; } /* Emerald */
+.hm-high{ background:#1B5E20; color:#fff; } /* Dark Forest */
+.hm-zero{ background:#F5F5F5; color:#999; }
+
+.heatmap-legend {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+
+.legend-box {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  border-radius: 3px;
+  margin-right: 5px;
+}
+
+.legend-box.low { background:#C8E6C9; }
+.legend-box.mid { background:#4CAF50; }
+.legend-box.high{ background:#1B5E20; }
+.legend-box.zero{ background:#F5F5F5; border:1px solid #ccc; }
