@@ -298,27 +298,38 @@ barChartModal.update();
 modalDatePicker.addEventListener("change", e => {
   updateModalChart(e.target.value);
 });
-
-// Modal PDF download as chart image
+// Modal PDF download as simple numeric table
 document.getElementById("downloadModalPDF").addEventListener("click", () => {
-  const doc = new jsPDF('landscape'); // landscape to fit bar chart
+  const doc = new jsPDF('p', 'mm', 'a4');
   const date = modalDatePicker.value;
 
-  // Add title
+  // Title
   doc.setFontSize(16);
   doc.text(`Waste Collected per Barangay - ${date}`, 105, 10, { align: 'center' });
 
-  // Convert the modal chart canvas to image
-  const chartCanvas = document.getElementById("barChartModal");
-  const chartImage = chartCanvas.toDataURL('image/png', 1.0);
+  // Table data: sum of all collections per barangay
+  const labels = allBarangays;
+  const data = allBarDataByDate[date] || allBarDataByDate["2026-02-01"];
+  const tableBody = labels.map((label, i) => {
+    const total = data[i].reduce((a, b) => a + b, 0);
+    return [label, total];
+  });
 
-  // Add chart image to PDF
-  // 10 = x margin, 20 = y position, 0,0 = width/height auto scale
-  doc.addImage(chartImage, 'PNG', 10, 20, 280, 150);
+  // Column headers
+  const header = ["Barangay", "Waste (kg)"];
 
-  // Save PDF
+  doc.autoTable({
+    startY: 20,
+    head: [header],
+    body: tableBody,
+    theme: 'grid',
+    headStyles: { fillColor: [102, 187, 106] },
+    styles: { fontSize: 10 }
+  });
+
   doc.save(`Waste_Barangay_${date}.pdf`);
 });
+
 
 
   // ========= LINE CHART ==========
