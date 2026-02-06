@@ -75,35 +75,29 @@
 
         <div class="row g-4">
 
-          <!-- Bar Chart with Date Picker -->
+      
+           <!-- Bar Chart -->
           <div class="col-lg-6">
             <div class="chart-card">
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <h6 class="fw-semibold mb-2 text-secondary">
-                  Waste Collected per Barangay
-                  <i class="bi bi-info-circle text-secondary ms-2"
-                     data-bs-toggle="tooltip"
-                     data-bs-placement="top"
-                     title="Shows the total waste collected in each barangay for the selected date.">
-                  </i>
+                <h6 class="fw-semibold mb-2 text-secondary">Waste Collected per Barangay
+                  <i class="bi bi-info-circle text-secondary ms-2" data-bs-toggle="tooltip" title="Shows the total waste collected per barangay for selected date."></i>
                 </h6>
-                <input type="date" id="barChartDate" class="form-control form-control-sm" style="width:160px;">
+                <div class="d-flex gap-2">
+                  <input type="date" id="barChartDate" class="form-control form-control-sm" style="width:160px;">
+                  <button class="btn btn-sm btn-outline-success" id="viewAllBarangaysBtn"></i> View All</button>
+                </div>
               </div>
               <canvas id="barChart"></canvas>
             </div>
           </div>
 
-          <!-- Line Chart with Weekly Range -->
+          <!-- Line Chart -->
           <div class="col-lg-6">
             <div class="chart-card">
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <h6 class="fw-semibold mb-2 text-secondary">
-                  Weekly Collection Trends
-                  <i class="bi bi-info-circle text-secondary ms-2"
-                     data-bs-toggle="tooltip"
-                     data-bs-placement="top"
-                     title="Displays trends of collected waste over a 6-day week period (Mon-Sat).">
-                  </i>
+                <h6 class="fw-semibold mb-2 text-secondary">Weekly Collection Trends
+                  <i class="bi bi-info-circle text-secondary ms-2" data-bs-toggle="tooltip" title="Trends of collected waste over a 6-day week (Mon-Sat)."></i>
                 </h6>
                 <div class="input-group input-group-sm" style="width:200px;">
                   <button class="btn btn-outline-secondary" id="prevWeek">&lt;</button>
@@ -115,40 +109,29 @@
             </div>
           </div>
 
-          <!-- Donut Chart: Resolution Rate -->
+          <!-- Donut Chart -->
           <div class="col-lg-6">
-            <div class="chart-card" style="height: 320px;">
+            <div class="chart-card" style="height:320px;">
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <h6 class="fw-semibold mb-2 text-secondary d-flex align-items-center">
-                  Report Resolution Rate (%)
-                  <i class="bi bi-info-circle text-secondary ms-2"
-                     data-bs-toggle="tooltip"
-                     data-bs-placement="top"
-                     title="Shows the percentage of reported issues that have been resolved within the selected month.">
-                  </i>
+                <h6 class="fw-semibold mb-2 text-secondary">Report Resolution Rate (%)
+                  <i class="bi bi-info-circle text-secondary ms-2" data-bs-toggle="tooltip" title="Percentage of reported issues resolved within selected month."></i>
                 </h6>
                 <select id="resolutionMonth" class="form-select form-select-sm" style="width:120px;">
                   <option value="Jan">January</option>
                   <option value="Feb">February</option>
                   <option value="Mar">March</option>
-                  <option value="Apr">April</option>
                 </select>
               </div>
-              <canvas id="pieChart" style="display: block; margin: 0 auto; height: 230px;"></canvas>
+              <canvas id="pieChart" style="display:block;margin:0 auto;height:230px;"></canvas>
             </div>
           </div>
 
-          <!-- Route Efficiency Chart -->
+          <!-- Route Chart -->
           <div class="col-lg-6">
             <div class="chart-card">
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <h6 class="fw-semibold mb-2 text-secondary d-flex align-items-center">
-                  Route Efficiency / Duration
-                  <i class="bi bi-info-circle text-secondary ms-2"
-                     data-bs-toggle="tooltip"
-                     data-bs-placement="top"
-                     title="Shows planned vs actual duration per route and highlights delays. Clicking a route can display time spent per barangay.">
-                  </i>
+                <h6 class="fw-semibold mb-2 text-secondary">Route Efficiency / Duration
+                  <i class="bi bi-info-circle text-secondary ms-2" data-bs-toggle="tooltip" title="Planned vs actual duration per route."></i>
                 </h6>
                 <input type="date" id="routeDate" class="form-control form-control-sm" style="width:160px;">
               </div>
@@ -167,6 +150,31 @@
 
         </div>
       </div>
+
+    </div>
+  </div>
+
+  <!-- View All Modal -->
+  <div class="modal fade" id="viewAllModal" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+  <h5 class="modal-title" id="viewAllModalLabel">
+    <i class="bi bi-bar-chart-fill me-2"></i>Waste Collected per Barangay
+  </h5>
+  <div class="d-flex align-items-center ms-auto gap-2">
+    <input type="date" id="modalBarChartDate" class="form-control form-control-sm" style="width:160px;">
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+</div>
+
+        <div class="modal-body">
+          <canvas id="barChartModal" style="height:600px;"></canvas>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-success" id="downloadModalPDF"><i class="bi bi-file-earmark-pdf me-1"></i> Download</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -176,157 +184,211 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 
   <script>
-    // ---------- TOOLTIP ----------
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-    [...tooltipTriggerList].map(el => new bootstrap.Tooltip(el));
+  // --------- TOOLTIP ----------
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+  [...tooltipTriggerList].map(el => new bootstrap.Tooltip(el));
 
-    // ---------- LOGOUT ----------
-    document.getElementById('logoutBtn').addEventListener('click', e => {
-      e.preventDefault();
-      if (confirm("Are you sure you want to log out?")) location.href = "index.html";
-    });
+  // --------- LOGOUT ----------
+  document.getElementById('logoutBtn').addEventListener('click', e => {
+    e.preventDefault();
+    if (confirm("Are you sure you want to log out?")) location.href = "index.html";
+  });
 
-    /* ================= DATA ================= */
-    const barDataByDate = {
-      "2026-02-01": [1200, 950, 1340, 1100, 900],
-      "2026-02-02": [1000, 880, 1200, 980, 760],
-      "2026-02-03": [1400, 1100, 1500, 1250, 1020]
-    };
+  // ========== DATA ==========
+  const barDataByDate = {
+    "2026-02-01":[1200,950,1340,1100,900],
+    "2026-02-02":[1000,880,1200,980,760],
+    "2026-02-03":[1400,1100,1500,1250,1020]
+  };
+  const weeklyLineData = [[200,250,230,280,260,300,320],[180,220,210,260,240,280,300],[260,300,290,330,310,360,380]];
+  const resolutionData = { Jan:[75,25], Feb:[82,18], Mar:[90,10] };
+  const routeDataByDate = { "2026-02-01":[7.8,8.5,9,7.5,8], "2026-02-02":[8,8.2,8.6,7.9,8.1], "2026-02-03":[9,9.1,9.4,8.8,9] };
+  const allBarangays = ["Antipolo","Balubal","Bignay 1","Bignay 2","Bucal","Canda","Castañas","Concepcion I","Concepcion Banahaw","Concepcion Palasan","Concepcion Pinagbakuran","Gibanga","Guisguis-San Roque","Guisguis-Talon","Janagdong 1","Janagdong 2","Limbon","Lutucan 1","Lutucan Bata","Lutucan Malabag","Mamala I","Mamala II","Manggalang 1","Manggalang Tulo-tulo","Manggalang-Bantilan","Manggalang-Kiling","Montecillo","Morong","Pili","Poblacion 1","Poblacion 2","Poblacion 3","Poblacion 4","Poblacion 5","Poblacion 6","Sampaloc 1","Sampaloc 2","Sampaloc Bogon","Santo Cristo","Talaan Aplaya","Talaan Pantoc","Tumbaga 1","Tumbaga 2"];
+  const allBarDataByDate = { "2026-02-01": allBarangays.map(()=>[Math.floor(Math.random()*500)+500,Math.floor(Math.random()*500)+500,Math.floor(Math.random()*500)+500]), "2026-02-02": allBarangays.map(()=>[Math.floor(Math.random()*500)+500,Math.floor(Math.random()*500)+500,Math.floor(Math.random()*500)+500]), "2026-02-03": allBarangays.map(()=>[Math.floor(Math.random()*500)+500,Math.floor(Math.random()*500)+500,Math.floor(Math.random()*500)+500])};
 
-    const weeklyLineData = [
-      [200, 250, 230, 280, 260, 300, 320],
-      [180, 220, 210, 260, 240, 280, 300],
-      [260, 300, 290, 330, 310, 360, 380]
-    ];
+  // ========== BAR CHART ==========
+  const barChart = new Chart(document.getElementById("barChart"), {
+    type:"bar",
+    data:{ labels: allBarangays.slice(0,5), datasets:[{ label:"Waste Collected (kg)", data:barDataByDate["2026-02-01"], backgroundColor:"#66bb6a" }]},
+    options:{ responsive:true, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true,title:{display:true,text:"Kilograms"}}, x:{title:{display:true,text:"Barangay"}}}}
+  });
+  document.getElementById("barChartDate").value="2026-02-01";
 
-    const resolutionData = {
-      Jan: [75, 25],
-      Feb: [82, 18],
-      Mar: [90, 10]
-    };
+  // ---------- VIEW ALL MODAL ----------
+const modalEl = document.getElementById('viewAllModal');
+const modal = new bootstrap.Modal(modalEl);
+const modalCanvas = document.getElementById("barChartModal");
+const modalDatePicker = document.getElementById("modalBarChartDate");
 
-    const routeDataByDate = {
-      "2026-02-01": [7.8, 8.5, 9, 7.5, 8],
-      "2026-02-02": [8, 8.2, 8.6, 7.9, 8.1],
-      "2026-02-03": [9, 9.1, 9.4, 8.8, 9]
-    };
-
-    /* ================= BAR CHART ================= */
-    const barCtx = document.getElementById("barChart");
-    const barChart = new Chart(barCtx, {
-      type: "bar",
-      data: {
-        labels: ["Barangay 1", "Barangay 2", "Barangay 3", "Barangay 4", "Barangay 5"],
-        datasets: [{ label: "Waste Collected (kg)", data: barDataByDate["2026-02-01"], backgroundColor: "#66bb6a" }]
-      },
-      options: { responsive:true, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true, title:{display:true,text:"Kilograms"}}, x:{title:{display:true,text:"Barangay"}}} }
-    });
-
-    document.getElementById("barChartDate").value = "2026-02-01";
-    document.getElementById("barChartDate").addEventListener("change", e => {
-      barChart.data.datasets[0].data = barDataByDate[e.target.value] || barDataByDate["2026-02-01"];
-      barChart.update();
-    });
-
-    /* ================= LINE CHART ================= */
-    let weekIndex = 0;
-    const lineCtx = document.getElementById("lineChart");
-    const lineChart = new Chart(lineCtx, {
-      type: "line",
-      data: {
-        labels: ["Mon","Tue","Wed","Thu","Fri","Sat"],
-        datasets: [{ label:"Collected Waste (kg)", data:weeklyLineData[weekIndex].slice(0,6), borderColor:"#2e7d32", backgroundColor:"rgba(46,125,50,0.1)", fill:true, tension:0.3 }]
-      },
-      options: { responsive:true, plugins:{legend:{position:"top"}}, scales:{y:{beginAtZero:true}, x:{title:{display:true,text:"Day of Week"}}} }
-    });
-
-    function updateWeekRange() {
-      const startDate = new Date();
-      startDate.setDate(startDate.getDate() - startDate.getDay() + weekIndex*7 + 1);
-      const endDate = new Date(startDate);
-      endDate.setDate(startDate.getDate() + 5);
-
-      const startStr = startDate.toLocaleDateString('en-US', { month:'short', day:'numeric' });
-      const endStr = endDate.toLocaleDateString('en-US', { month:'short', day:'numeric' });
-      const year = endDate.getFullYear();
-
-      document.getElementById('weekRange').value = `${startStr} - ${endStr}, ${year}`;
-      lineChart.data.datasets[0].data = weeklyLineData[weekIndex].slice(0,6);
-      lineChart.update();
-    }
-
-    document.getElementById('prevWeek').addEventListener('click', () => { weekIndex=(weekIndex+2)%3; updateWeekRange(); });
-    document.getElementById('nextWeek').addEventListener('click', () => { weekIndex=(weekIndex+1)%3; updateWeekRange(); });
-    updateWeekRange();
-
-    /* ================= DONUT CHART ================= */
-    const pieCtx = document.getElementById("pieChart");
-    const pieChart = new Chart(pieCtx, {
-      type: 'doughnut',
-      data: { labels:["Resolved","Pending"], datasets:[{ data: resolutionData.Jan, backgroundColor:["#43a047","#c62828"] }] },
-      options: { responsive:true, plugins:{legend:{position:"bottom"}, tooltip:{callbacks:{label:ctx=>ctx.parsed+"%"}}} },
-      plugins: [{
-        id:'centerText',
-        beforeDraw(chart){
-          const ctx=chart.ctx;
-          const total=chart.data.datasets[0].data.reduce((a,b)=>a+b,0);
-          const resolved=chart.data.datasets[0].data[0];
-          const percent=Math.round((resolved/total)*100);
-          ctx.save(); ctx.font='bold 18px Arial'; ctx.textAlign='center'; ctx.textBaseline='middle';
-          ctx.fillStyle='#43a047'; ctx.fillText(percent+'%', chart.width/2, chart.height/2); ctx.restore();
+const barChartModal = new Chart(modalCanvas, {
+  type: 'bar',
+  data: {
+    labels: allBarangays,
+    datasets: [{
+      label: "Waste Collected (kg)",
+      data: allBarDataByDate["2026-02-01"].map(arr => arr.reduce((a,b)=>a+b,0)),
+      backgroundColor: "#66bb6a"
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            const idx = ctx.dataIndex;
+            const date = modalDatePicker.value;
+            const arr = allBarDataByDate[date][idx];
+            return `Collections: ${arr.join(", ")} kg (Total: ${arr.reduce((a,b)=>a+b,0)} kg)`;
+          }
         }
-      }]
-    });
+      }
+    },
+    scales: {
+      y: { beginAtZero:true, title:{ display:true, text:"Kilograms" } },
+      x: { ticks:{ autoSkip:false, maxRotation:90, minRotation:45 } }
+    },
+ plugins: [
+  {
+    id: 'allBarangayLabel',
+    afterDraw(chart) {
+      const { ctx, scales } = chart;
+      const xScale = scales.x;
+      const yPos = xScale.bottom + 20; // 20px below x-axis
 
-    document.getElementById('resolutionMonth').addEventListener('change', e => {
-      pieChart.data.datasets[0].data = resolutionData[e.target.value] || resolutionData.Jan;
-      pieChart.update();
-    });
+      ctx.save();
+      ctx.font = 'bold 16px Arial';
+      ctx.fillStyle = '#555';
+      ctx.textAlign = 'center';
+      ctx.fillText('All Barangay', (xScale.left + xScale.right) / 2, yPos);
+      ctx.restore();
+    }
+  }
+]
 
-    /* ================= ROUTE CHART ================= */
-    const routeCtx = document.getElementById("routeChart");
-    const routeChart = new Chart(routeCtx, {
-      type:'bar',
-      data:{
-        labels:["Route A","Route B","Route C","Route D","Route E"],
-        datasets:[
-          { label:"Planned Shift (hrs)", data:[8,8,8,8,8], backgroundColor:"#a5d6a7" },
-          { label:"Actual Duration (hrs)", data:routeDataByDate["2026-02-01"], backgroundColor:"#66bb6a" }
-        ]
-      },
-      options:{ responsive:true, plugins:{ legend:{ position:"top" } }, scales:{ y:{ beginAtZero:true, title:{ display:true, text:"Hours" } } } }
-    });
 
-    document.getElementById('routeDate').value = "2026-02-01";
-    document.getElementById('routeDate').addEventListener('change', e => {
-      routeChart.data.datasets[1].data = routeDataByDate[e.target.value] || routeDataByDate["2026-02-01"];
-      routeChart.update();
-    });
+  }
+});
+
+// Function to update modal chart by date
+function updateModalChart(date) {
+  const data = allBarDataByDate[date] || allBarDataByDate["2026-02-01"];
+  barChartModal.data.datasets[0].data = data.map(arr => arr.reduce((a,b)=>a+b,0));
+  barChartModal.update();
+}
+
+document.getElementById("viewAllBarangaysBtn").addEventListener("click", () => {
+  modalDatePicker.value = document.getElementById("barChartDate").value;
+
+ modalCanvas.style.height = `${allBarangays.length * 30 + 50}px`; // extra 50px for label
+barChartModal.resize();
+barChartModal.update();
+
+  updateModalChart(modalDatePicker.value);
+  
+  
+
+  modal.show();
+});
+
+
+// Update modal when modal date changes
+modalDatePicker.addEventListener("change", e => {
+  updateModalChart(e.target.value);
+});
+
+// Modal PDF download as chart image
+document.getElementById("downloadModalPDF").addEventListener("click", () => {
+  const doc = new jsPDF('landscape'); // landscape to fit bar chart
+  const date = modalDatePicker.value;
+
+  // Add title
+  doc.setFontSize(16);
+  doc.text(`Waste Collected per Barangay - ${date}`, 105, 10, { align: 'center' });
+
+  // Convert the modal chart canvas to image
+  const chartCanvas = document.getElementById("barChartModal");
+  const chartImage = chartCanvas.toDataURL('image/png', 1.0);
+
+  // Add chart image to PDF
+  // 10 = x margin, 20 = y position, 0,0 = width/height auto scale
+  doc.addImage(chartImage, 'PNG', 10, 20, 280, 150);
+
+  // Save PDF
+  doc.save(`Waste_Barangay_${date}.pdf`);
+});
+
+
+  // ========= LINE CHART ==========
+  let weekIndex=0;
+  const lineChart = new Chart(document.getElementById("lineChart"), {
+    type:"line",
+    data:{ labels:["Mon","Tue","Wed","Thu","Fri","Sat"], datasets:[{label:"Collected Waste (kg)", data:weeklyLineData[weekIndex].slice(0,6), borderColor:"#2e7d32", backgroundColor:"rgba(46,125,50,0.1)", fill:true, tension:0.3 }]},
+    options:{ responsive:true, plugins:{legend:{position:"top"}}, scales:{y:{beginAtZero:true}, x:{title:{display:true,text:"Day of Week"}}}}
+  });
+
+  function updateWeekRange(){
+    const startDate=new Date(); startDate.setDate(startDate.getDate()-startDate.getDay()+weekIndex*7+1);
+    const endDate=new Date(startDate); endDate.setDate(startDate.getDate()+5);
+    const startStr=startDate.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const endStr=endDate.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const year=endDate.getFullYear();
+    document.getElementById('weekRange').value=`${startStr} - ${endStr}, ${year}`;
+    lineChart.data.datasets[0].data=weeklyLineData[weekIndex].slice(0,6); lineChart.update();
+  }
+  document.getElementById('prevWeek').addEventListener('click',()=>{weekIndex=(weekIndex+2)%3; updateWeekRange();});
+  document.getElementById('nextWeek').addEventListener('click',()=>{weekIndex=(weekIndex+1)%3; updateWeekRange();});
+  updateWeekRange();
+
+  // ========= DONUT CHART ==========
+  const pieChart = new Chart(document.getElementById("pieChart"), {
+    type:'doughnut', data:{labels:["Resolved","Pending"], datasets:[{data:resolutionData.Jan, backgroundColor:["#43a047","#c62828"]}]},
+    options:{ responsive:true, plugins:{legend:{position:"bottom"}, tooltip:{callbacks:{label:ctx=>ctx.parsed+"%"}}}},
+    plugins:[{ id:'centerText', beforeDraw(chart){ const ctx=chart.ctx; const total=chart.data.datasets[0].data.reduce((a,b)=>a+b,0); const resolved=chart.data.datasets[0].data[0]; const percent=Math.round((resolved/total)*100); ctx.save(); ctx.font='bold 18px Arial'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillStyle='#43a047'; ctx.fillText(percent+'%', chart.width/2, chart.height/2); ctx.restore();}}]
+  });
+  document.getElementById('resolutionMonth').addEventListener('change', e=>{pieChart.data.datasets[0].data=resolutionData[e.target.value]||resolutionData.Jan; pieChart.update();});
+
+  // ========= ROUTE CHART ==========
+  const routeChart = new Chart(document.getElementById("routeChart"),{
+    type:'bar',
+    data:{ labels:["Route A","Route B","Route C","Route D","Route E"], datasets:[{label:"Planned Shift (hrs)", data:[8,8,8,8,8], backgroundColor:"#a5d6a7"},{label:"Actual Duration (hrs)", data:routeDataByDate["2026-02-01"], backgroundColor:"#66bb6a"}]},
+    options:{ responsive:true, plugins:{legend:{position:"top"}}, scales:{y:{beginAtZero:true, title:{display:true,text:"Hours"}}}}
+  });
+  document.getElementById('routeDate').value="2026-02-01";
+  document.getElementById('routeDate').addEventListener('change', e=>{ routeChart.data.datasets[1].data=routeDataByDate[e.target.value]||routeDataByDate["2026-02-01"]; routeChart.update(); });
+
 
     const { jsPDF } = window.jspdf;
 
 /* ================= CSV ================= */
 function downloadCSV() {
   let csv = "";
-
-  // Bar Chart
   const barDate = document.getElementById("barChartDate").value;
+
+  // Use modal chart data to get all barangays
+  const allLabels = allBarangays;
+  const allData = allBarDataByDate[barDate] ? allBarDataByDate[barDate].map(arr => arr.reduce((a,b)=>a+b,0)) : barChart.data.datasets[0].data;
+
   csv += `Waste Collected per Barangay, Date: ${barDate}\nBarangay, Waste (kg)\n`;
-  barChart.data.labels.forEach((label,i)=>csv += `${label}, ${barChart.data.datasets[0].data[i]}\n`);
+  allLabels.forEach((label, i) => {
+    csv += `${label}, ${allData[i]}\n`;
+  });
   csv += "\n";
 
-  // Line Chart
+  // Line chart
   csv += `Weekly Collection Trends, ${document.getElementById('weekRange').value}\nDay, Waste (kg)\n`;
   lineChart.data.labels.forEach((day,i)=>csv += `${day}, ${lineChart.data.datasets[0].data[i]}\n`);
   csv += "\n";
 
-  // Resolution Rate
+  // Donut chart
   const month = document.getElementById('resolutionMonth').value;
   csv += `Report Resolution Rate (%), Month: ${month}\nStatus, Percentage\n`;
   ["Resolved","Pending"].forEach((label,i)=>{ csv += `${label}, ${pieChart.data.datasets[0].data[i]}\n`; });
   csv += "\n";
 
-  // Route Chart
+  // Route chart
   const routeDate = document.getElementById('routeDate').value;
   csv += `Route Efficiency, Date: ${routeDate}\nRoute, Planned (hrs), Actual (hrs)\n`;
   routeChart.data.labels.forEach((label,i)=>csv += `${label}, ${routeChart.data.datasets[0].data[i]}, ${routeChart.data.datasets[1].data[i]}\n`);
@@ -342,25 +404,40 @@ function downloadCSV() {
 function downloadPDF() {
   const doc = new jsPDF();
   let y = 10;
-  doc.setFontSize(16); doc.text("EnviroManage Analytics Report", 105, y, {align: "center"}); y+=10;
+  doc.setFontSize(16); 
+  doc.text("EnviroManage Analytics Report", 105, y, {align: "center"}); 
+  y+=10;
 
-  // Bar Chart
   const barDate = document.getElementById("barChartDate").value;
-  doc.setFontSize(12); doc.text(`Waste Collected per Barangay (Date: ${barDate})`, 10, y); y+=6;
-  doc.autoTable({ startY: y, head: [["Barangay", "Waste (kg)"]], body: barChart.data.labels.map((label,i)=>[label, barChart.data.datasets[0].data[i]]), theme: 'grid', headStyles:{ fillColor:[102,187,106] }, styles:{ fontSize:10 }});
+
+  // Use all barangays for PDF
+  const allLabels = allBarangays;
+  const allData = allBarDataByDate[barDate] ? allBarDataByDate[barDate].map(arr => arr.reduce((a,b)=>a+b,0)) : barChart.data.datasets[0].data;
+
+  doc.setFontSize(12); 
+  doc.text(`Waste Collected per Barangay (Date: ${barDate})`, 10, y); 
+  y+=6;
+  doc.autoTable({ 
+    startY: y, 
+    head: [["Barangay", "Waste (kg)"]], 
+    body: allLabels.map((label,i)=>[label, allData[i]]), 
+    theme: 'grid', 
+    headStyles:{ fillColor:[102,187,106] }, 
+    styles:{ fontSize:10 } 
+  });
   y = doc.lastAutoTable.finalY + 10;
 
-  // Line Chart
+  // Line chart
   doc.text(`Weekly Collection Trends (${document.getElementById('weekRange').value})`, 10, y); y+=6;
   doc.autoTable({ startY:y, head:[["Day","Waste (kg)"]], body:lineChart.data.labels.map((day,i)=>[day, lineChart.data.datasets[0].data[i]]), theme:'grid', headStyles:{fillColor:[46,125,50]}, styles:{fontSize:10}}); y=doc.lastAutoTable.finalY+10;
 
-  // Resolution Rate
+  // Donut chart
   const month = document.getElementById('resolutionMonth').value;
   doc.text(`Report Resolution Rate (Month: ${month})`, 10, y); y+=6;
   doc.autoTable({ startY:y, head:[["Status","Percentage"]], body:[["Resolved",pieChart.data.datasets[0].data[0]],["Pending",pieChart.data.datasets[0].data[1]]], theme:'grid', headStyles:{ fillColor:[67,160,71] }, styles:{ fontSize:10 }}); 
   y = doc.lastAutoTable.finalY + 10;
 
-  // Route Chart
+  // Route chart
   const routeDate = document.getElementById('routeDate').value;
   doc.text(`Route Efficiency (Date: ${routeDate})`, 10, y); y+=6;
   doc.autoTable({ startY:y, head:[["Route","Planned (hrs)","Actual (hrs)"]], body: routeChart.data.labels.map((label,i)=>[label, routeChart.data.datasets[0].data[i], routeChart.data.datasets[1].data[i]]), theme:'grid', headStyles:{ fillColor:[102,187,106] }, styles:{ fontSize:10 }});

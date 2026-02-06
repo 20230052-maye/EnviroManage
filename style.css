@@ -187,6 +187,17 @@ body {
 .hm-high{ background:#1B5E20; color:#fff; } /* Dark Forest */
 .hm-zero{ background:#F5F5F5; color:#999; }
 
+#modalHeatmapTable td.hm-low  { background:#C8E6C9 !important; }
+#modalHeatmapTable td.hm-mid  { background:#4CAF50 !important; color:#fff; }
+#modalHeatmapTable td.hm-high { background:#1B5E20 !important; color:#fff; }
+#modalHeatmapTable td.hm-zero { background:#F5F5F5 !important; color:#999; }
+
+#modalHeatmapTable td,
+#modalHeatmapTable th {
+  text-align: center; /* Center lahat ng cells sa modal table */
+  vertical-align: middle; /* Optional, para vertically centered din */
+}
+
 .heatmap-legend {
   display: flex;
   gap: 15px;
