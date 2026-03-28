@@ -151,33 +151,58 @@
     </div>
 
 
-  <!-- Graphical Waste Report -->
-    <div class="mt-4">
-      <div class="d-flex justify-content-between align-items-center mb-2">
-        <h5 class="mb-0 d-flex align-items-center">
-          <i class="bi bi-bar-chart-fill me-2 text-success"></i>
-          Barangay Waste Graph
-          <i class="bi bi-info-circle text-secondary ms-2"
-             data-bs-toggle="tooltip"
-             data-bs-placement="top"
-             title="Visualizes waste collected for all barangays. No barangay is left out."></i>
-        </h5>
 
-        <div class="input-group input-group-sm" style="width:220px;">
-          <button class="btn btn-outline-secondary" id="prevWeek">&lt;</button>
-          <input type="text" id="weekLabel" class="form-control text-center" readonly value="Jan 26 – Feb 1 2026">
-          <button class="btn btn-outline-secondary" id="nextWeek">&gt;</button>
-        </div>
-      </div>
 
-      <canvas id="wasteGraph" height="200"></canvas>
+<!-- Heatmap Header -->
+<div class="d-flex justify-content-between align-items-center mb-2">
+  <h5 class="mb-0 d-flex align-items-center">
+    <i class="bi bi-bar-chart-fill me-2 text-success"></i>
+    Barangay Service Frequency Heatmap
+    <i class="bi bi-info-circle text-secondary ms-2"
+       data-bs-toggle="tooltip"
+       data-bs-placement="top"
+       title="Shows how often each barangay is served per day (number of truck visits)."></i>
+  </h5>
 
-      <div class="mt-2 d-flex justify-content-end">
-        <button class="btn btn-sm btn-outline-success" id="downloadHeatmapBtn">
-          <i class="bi bi-download me-1"></i> Download PDF
-        </button>
-      </div>
-    </div>
+  <!-- Week Selector on the right -->
+  <div class="input-group input-group-sm" style="width:220px;">
+    <button class="btn btn-outline-secondary" id="prevWeek">&lt;</button>
+    <input type="text" id="weekLabel" class="form-control text-center" readonly>
+    <button class="btn btn-outline-secondary" id="nextWeek">&gt;</button>
+  </div>
+</div>
+
+<!-- Heatmap Table -->
+<div class="table-responsive">
+  <table class="table table-bordered text-center align-middle" id="heatmapTable">
+    <thead class="table-light">
+      <tr>
+        <th>Barangay</th>
+        <th>Mon</th>
+        <th>Tue</th>
+        <th>Wed</th>
+        <th>Thu</th>
+        <th>Fri</th>
+        <th>Sat</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<!-- Buttons row below table -->
+<div class="mt-2 d-flex justify-content-between">
+  <!-- Left: Show All / Top 5 -->
+  <button class="btn btn-sm btn-outline-primary" id="toggleBarangays">
+    Show All
+  </button>
+
+  <!-- Right: Download PDF -->
+  <button class="btn btn-sm btn-outline-success" id="downloadHeatmapBtn">
+    <i class="bi bi-download me-1"></i> Download PDF
+  </button>
+</div>
+</div>
   </div>
 </div>
 
@@ -247,21 +272,21 @@ const truckCardsContainer = document.getElementById('truckCards');
 const truckMapContainer = document.getElementById('truckMapContainer');
 
 function showListView() {
-  truckCardsContainer.style.display = 'block'; // show list
+  truckCardsContainer.style.display = 'block'; // show list container
   truckMapContainer.style.display = 'none';    // hide map
   listViewBtn.classList.add('active');
   mapViewBtn.classList.remove('active');
-}
 
-/* ----------------- MAP & SMOOTH TRUCK ANIMATION ----------------- */
+  renderTruckCards(); // render cards inside
+}
 function showMapView() {
   truckCardsContainer.style.display = 'none';  // hide list
   truckMapContainer.style.display = 'block';   // show map
   mapViewBtn.classList.add('active');
   listViewBtn.classList.remove('active');
 
+  // Initialize Map only once
   if (!window.truckMap) {
-    // Initialize Map
     window.truckMap = new maplibregl.Map({
       container: 'truckMapContainer',
       style: {
@@ -280,7 +305,7 @@ function showMapView() {
     });
     window.truckMap.addControl(new maplibregl.NavigationControl(), 'bottom-right');
 
-    // Initialize trucks
+    // Add truck markers and popups
     trucks.forEach(truck => {
       const el = document.createElement('div');
       el.innerHTML = "🚛";
@@ -307,33 +332,27 @@ function showMapView() {
       truck.currentStep = 0;
       truck.nextStep = 1;
       truck.progress = 0;
-      truck.speed = 0.005; // adjust speed: smaller = slower
+      truck.speed = 0.005;
     });
 
-    // Smooth animation function
     function animateTrucks() {
       trucks.forEach(truck => {
         let start = truck.route[truck.currentStep];
         let end = truck.route[truck.nextStep];
-
-        // Linear interpolation between points
         let lng = start[0] + (end[0]-start[0]) * truck.progress;
         let lat = start[1] + (end[1]-start[1]) * truck.progress;
         truck.marker.setLngLat([lng, lat]);
 
         truck.progress += truck.speed;
-
         if(truck.progress >= 1){
           truck.currentStep = truck.nextStep;
           truck.nextStep = (truck.nextStep + 1) % truck.route.length;
           truck.progress = 0;
         }
       });
-
       requestAnimationFrame(animateTrucks);
     }
 
-    // Start the animation
     animateTrucks();
   }
 }
@@ -342,33 +361,16 @@ function showMapView() {
 listViewBtn.addEventListener('click', showListView);
 mapViewBtn.addEventListener('click', showMapView);
 
-// Default to list view
+// Default view
 showListView();
+/* ---------------- HEATMAP (SERVICE FREQUENCY) ---------------- */
 
-// Render truck cards
-renderTruckCards();
+/* ---------------- HEATMAP (SERVICE FREQUENCY) ---------------- */
 
+// Days
+const days = ["Mon","Tue","Wed","Thu","Fri","Sat"];
 
-/* ---------------- CHART ---------------- */
-const ctx=document.getElementById('wasteChart');
-new Chart(ctx,{
-  type:'bar',
-  data:{
-    labels:['Poblacion','Sampaloc','Guisguis','Sto. Cristo','Talaan'],
-    datasets:[{label:'Total Waste (tons)',data:[2.4,1.8,1.2,0.9,0.7],backgroundColor:'#1e5631'}]
-  },
-  options:{
-    responsive:true,
-    plugins:{legend:{display:false}},
-    scales:{
-      y:{beginAtZero:true,title:{display:true,text:'Tons Collected'}},
-      x:{title:{display:true,text:'Barangay'}}
-    }
-  }
-});
-/* ---------------- HEATMAP ---------------- */
-
-/* ---------------- DATA ---------------- */
+// Barangays
 const allBarangays = [
   "Poblacion 1","Poblacion 2","Poblacion 3","Poblacion 4","Poblacion 5","Poblacion 6",
   "Antipolo","Balubal","Bignay 1","Bignay 2","Bucal","Canda","Castañas",
@@ -380,81 +382,118 @@ const allBarangays = [
   "Santo Cristo","Talaan Aplaya","Talaan Pantoc","Tumbaga 1","Tumbaga 2"
 ];
 
-function generateExampleData() {
-  return Array.from({length:6}, () => +(Math.random()*5 + 1).toFixed(1));
+// Generate frequency (1–6 trips/day)
+function generateFrequencyData() {
+  return Array.from({length:6}, () => Math.floor(Math.random() * 6) + 1);
 }
 
+// Weekly datasets
 const weeks = [
-  { label: "Jan 26 – Jan 31, 2026", data: allBarangays.map(b => ({ barangay: b, data: generateExampleData() })) },
-  { label: "Feb 2 – Feb 7, 2026", data: allBarangays.map(b => ({ barangay: b, data: generateExampleData() })) },
-  { label: "Feb 9 – Feb 14, 2026", data: allBarangays.map(b => ({ barangay: b, data: generateExampleData() })) }
+  { label: "Jan 26 – Jan 31, 2026", data: allBarangays.map(b => ({ barangay: b, data: generateFrequencyData() })) },
+  { label: "Feb 2 – Feb 7, 2026", data: allBarangays.map(b => ({ barangay: b, data: generateFrequencyData() })) },
+  { label: "Feb 9 – Feb 14, 2026", data: allBarangays.map(b => ({ barangay: b, data: generateFrequencyData() })) }
 ];
 
 let currentWeek = 0;
+let showAll = false;
 
-/* ---------------- GRAPH ---------------- */
-const ctxGraph = document.getElementById('wasteGraph').getContext('2d');
-
-function getChartData(weekIndex){
-  return weeks[weekIndex].data.map(b => b.data.reduce((a,c)=>a+c,0));
+// Color scale (adjusted for 1–6)
+function getColor(value) {
+  if (value === 1) return "#c8e6c9";
+  if (value === 2) return "#81c784";
+  if (value === 3) return "#4caf50";
+  if (value === 4) return "#2e7d32";
+  if (value === 5) return "#1b5e20";
+  return "#0b3d0f"; // for 6 (most frequent)
 }
 
-const wasteGraph = new Chart(ctxGraph, {
-  type: 'bar',
-  data: {
-    labels: allBarangays,
-    datasets: [{
-      label: 'Total Waste (tons)',
-      data: getChartData(currentWeek),
-      backgroundColor: '#1e5631'
-    }]
-  },
-  options: {
-    responsive: true,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { ticks: { maxRotation: 90, minRotation: 45 } },
-      y: { beginAtZero: true, title: { display: true, text: 'Tons Collected' } }
-    }
-  }
-});
+function renderHeatmap() {
+  const tbody = document.querySelector("#heatmapTable tbody");
+  tbody.innerHTML = "";
 
-/* ---------------- WEEK NAVIGATION ---------------- */
+  let weekData = [...weeks[currentWeek].data];
+
+  // SORT alphabetically by barangay
+  weekData.sort((a, b) => a.barangay.localeCompare(b.barangay));
+
+  // SHOW ONLY TOP 5 OR ALL
+  if (!showAll) {
+    weekData = weekData.slice(0, 5);
+  }
+
+  weekData.forEach(b => {
+    const row = document.createElement("tr");
+
+    const nameCell = document.createElement("td");
+    nameCell.textContent = b.barangay;
+    nameCell.classList.add("fw-semibold");
+    row.appendChild(nameCell);
+
+    b.data.forEach(val => {
+      const cell = document.createElement("td");
+      cell.textContent = val;  // value always 1-6
+      cell.style.backgroundColor = getColor(val);
+      cell.style.color = val >= 5 ? "#fff" : "#000"; // darker bg → white text
+      row.appendChild(cell);
+    });
+
+    tbody.appendChild(row);
+  });
+}
+
+// Toggle Show All / Top 5
+const toggleBtn = document.getElementById("toggleBarangays");
+if (toggleBtn) {
+  toggleBtn.onclick = function () {
+    showAll = !showAll;
+    this.textContent = showAll ? "Show Top 5" : "Show All";
+    renderHeatmap();
+  };
+}
+
+// Week navigation
 document.getElementById("prevWeek").onclick = () => {
   currentWeek = (currentWeek - 1 + weeks.length) % weeks.length;
-  wasteGraph.data.datasets[0].data = getChartData(currentWeek);
-  wasteGraph.update();
-  document.getElementById("weekLabel").value = weeks[currentWeek].label;
+  updateWeek();
 };
 
 document.getElementById("nextWeek").onclick = () => {
   currentWeek = (currentWeek + 1) % weeks.length;
-  wasteGraph.data.datasets[0].data = getChartData(currentWeek);
-  wasteGraph.update();
-  document.getElementById("weekLabel").value = weeks[currentWeek].label;
+  updateWeek();
 };
 
-/* ---------------- DOWNLOAD PDF ---------------- */
+function updateWeek() {
+  document.getElementById("weekLabel").value = weeks[currentWeek].label;
+  renderHeatmap();
+}
+
+// PDF Export
 document.getElementById("downloadHeatmapBtn").onclick = () => {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF("l", "mm", "a4");
 
   doc.setFontSize(14);
-  doc.text("Waste Collection Graph", 14, 15);
+  doc.text("Barangay Service Frequency Report", 14, 15);
   doc.setFontSize(10);
   doc.text(`Week: ${weeks[currentWeek].label}`, 14, 22);
 
-  const head = [["Barangay","Tons Collected"]];
-  const body = weeks[currentWeek].data.map(b => [
-    b.barangay,
-    b.data.reduce((a,c)=>a+c,0)
-  ]);
+  const head = [["Barangay", ...days]];
 
-  doc.autoTable({ head, body, startY: 28, styles:{ fontSize:9 }, columnStyles:{0:{cellWidth:60}} });
-  const fileName = `Waste_Graph_${weeks[currentWeek].label.replace(/\s|–/g,"_")}.pdf`;
-  doc.save(fileName);
+  const body = weeks[currentWeek].data
+    .map(b => [b.barangay, ...b.data.map(v => v)]); // 1–6 values
+
+  doc.autoTable({
+    head,
+    body,
+    startY: 28,
+    styles: { fontSize: 8 }
+  });
+
+  doc.save(`Service_Frequency_${weeks[currentWeek].label.replace(/\s|–/g,"_")}.pdf`);
 };
 
+// Initial load
+updateWeek();
 /* ---------------- LOGOUT ---------------- */
 document.getElementById('logoutBtn').addEventListener('click', e=>{
   e.preventDefault();
