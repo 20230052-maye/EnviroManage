@@ -10,9 +10,9 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- MapLibre -->
-  <link href="https://unpkg.com/maplibre-gl@4.1.0/dist/maplibre-gl.css" rel="stylesheet" />
-  <script src="https://unpkg.com/maplibre-gl@4.1.0/dist/maplibre-gl.js"></script>
+<!-- Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
   <link rel="stylesheet" href="style.css">
 </head>
@@ -280,76 +280,66 @@ function showListView() {
   renderTruckCards(); // render cards inside
 }
 function showMapView() {
-  truckCardsContainer.style.display = 'none';  // hide list
-  truckMapContainer.style.display = 'block';   // show map
+  truckCardsContainer.style.display = 'none';
+  truckMapContainer.style.display = 'block';
   mapViewBtn.classList.add('active');
   listViewBtn.classList.remove('active');
 
-  // Initialize Map only once
+  // Initialize map once
   if (!window.truckMap) {
-    window.truckMap = new maplibregl.Map({
-      container: 'truckMapContainer',
-      style: {
-        version: 8,
-        sources: {
-          osm: {
-            type: 'raster',
-            tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
-            tileSize: 256
-          }
-        },
-        layers: [{ id: 'osm-layer', type: 'raster', source: 'osm' }]
-      },
-      center: [121.4761, 13.9897],
-      zoom: 14
-    });
-    window.truckMap.addControl(new maplibregl.NavigationControl(), 'bottom-right');
+    window.truckMap = L.map('truckMapContainer').setView([13.9897, 121.4761], 14);
 
-    // Add truck markers and popups
+    // OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(window.truckMap);
+
+    // Store markers
     trucks.forEach(truck => {
-      const el = document.createElement('div');
-      el.innerHTML = "🚛";
-      el.style.fontSize = "24px";
 
       let statusText;
       if (truck.capacity <= 60) statusText = "Normal";
       else if (truck.capacity <= 85) statusText = "Near Full";
       else statusText = "Full";
 
-      const popup = new maplibregl.Popup({ offset: 25 }).setHTML(
-        `<b>${truck.id}</b><br>
-         Barangay: ${truck.barangay}<br>
-         Capacity: ${truck.capacity}%<br>
-         Status: <span style="color:${statusText==='Normal'?'green':statusText==='Near Full'?'orange':'red'}">${statusText}</span>`
-      );
+      const marker = L.marker([truck.route[0][1], truck.route[0][0]])
+        .addTo(window.truckMap)
+        .bindPopup(`
+          <b>${truck.id}</b><br>
+          Barangay: ${truck.barangay}<br>
+          Capacity: ${truck.capacity}%<br>
+          Status: <span style="color:${statusText==='Normal'?'green':statusText==='Near Full'?'orange':'red'}">${statusText}</span>
+        `);
 
-      truck.marker = new maplibregl.Marker(el)
-                       .setLngLat(truck.route[0])
-                       .setPopup(popup)
-                       .addTo(window.truckMap);
+      truck.marker = marker;
 
-      // Animation properties
+      // Animation setup
       truck.currentStep = 0;
       truck.nextStep = 1;
       truck.progress = 0;
       truck.speed = 0.005;
     });
 
+    // Animate trucks
     function animateTrucks() {
       trucks.forEach(truck => {
         let start = truck.route[truck.currentStep];
         let end = truck.route[truck.nextStep];
-        let lng = start[0] + (end[0]-start[0]) * truck.progress;
-        let lat = start[1] + (end[1]-start[1]) * truck.progress;
-        truck.marker.setLngLat([lng, lat]);
+
+        let lng = start[0] + (end[0] - start[0]) * truck.progress;
+        let lat = start[1] + (end[1] - start[1]) * truck.progress;
+
+        truck.marker.setLatLng([lat, lng]);
 
         truck.progress += truck.speed;
-        if(truck.progress >= 1){
+
+        if (truck.progress >= 1) {
           truck.currentStep = truck.nextStep;
           truck.nextStep = (truck.nextStep + 1) % truck.route.length;
           truck.progress = 0;
         }
       });
+
       requestAnimationFrame(animateTrucks);
     }
 
@@ -357,6 +347,9 @@ function showMapView() {
   }
 }
 
+setTimeout(() => {
+  window.truckMap.invalidateSize();
+}, 200);
 // Event listeners
 listViewBtn.addEventListener('click', showListView);
 mapViewBtn.addEventListener('click', showMapView);
