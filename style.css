@@ -1,23 +1,18 @@
+/* 🌿 Color Palette (Earthy Forest & Leafy Green Garden) */
+:root {
+  --forest-green: #1e5631;
+  --leaf-green: #a4de02;
+  --moss-green: #4c9a2a;
+  --bark-brown: #3e2723;
+  --light-leaf: #eaf5ef;
+  --soft-beige: #f9f7f3;
+  --dark-text: #2e2e2e;
+}
 
-    /* 🌿 Color Palette (Earthy Forest & Leafy Green Garden) */
-    :root {
-      --forest-green: #1e5631;
-      --leaf-green: #a4de02;
-      --moss-green: #4c9a2a;
-      --bark-brown: #3e2723;
-      --light-leaf: #eaf5ef;
-      --soft-beige: #f9f7f3;
-      --dark-text: #2e2e2e;
-    }
-
+/* Global */
 body {
   font-family: "Poppins", sans-serif;
   background-color: #f1f8f4;
-}
-
-.logo {
-  width: 50px;   /* adjust as needed */
-  height: auto;
 }
 
 /* Navbar */
@@ -52,59 +47,63 @@ body {
   background-color: #2d6a4f;
   color: #fff;
 }
-    /* Main content */
-    .main-content {
-      margin-left: 250px;
-      padding: 25px;
-      margin-top: 70px;
-    }
 
-    /* Dashboard cards */
-    .dashboard-card {
-      border-left: 5px solid var(--forest-green);
-      border-radius: 12px;
-      background: white;
-      padding: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-      transition: transform 0.2s ease;
-    }
-    .dashboard-card:hover {
-      transform: translateY(-4px);
-    }
+/* Main Content */
+.main-content {
+  margin-left: 250px;
+  padding: 25px;
+  margin-top: 70px;
+}
 
-    .map-placeholder {
-      background-color: var(--light-leaf);
-      height: 300px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--forest-green);
-      font-weight: 500;
-      border-radius: 12px;
-      box-shadow: inset 0 0 8px rgba(0,0,0,0.05);
-    }
+/* Dashboard Cards */
+.dashboard-card {
+  border-left: 5px solid var(--forest-green);
+  border-radius: 12px;
+  background: white;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease;
+}
+.dashboard-card:hover {
+  transform: translateY(-4px);
+}
 
-    /* Table Styling */
-    table thead {
-      background-color: var(--moss-green);
-      color: white;
-    }
-    table tbody tr:hover {
-      background-color: #f0f8f4;
-    }
+/* Map Placeholder */
+.map-placeholder {
+  background-color: var(--light-leaf);
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--forest-green);
+  font-weight: 500;
+  border-radius: 12px;
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.05);
+}
 
-    /* Responsive */
-    @media (max-width: 991px) {
-      .sidebar {
-        position: relative;
-        width: 100%;
-        height: auto;
-        border: none;
-      }
-      .main-content {
-        margin-left: 0;
-      }
-    }
+/* Table Styling */
+table thead {
+  background-color: var(--moss-green);
+  color: white;
+}
+table tbody tr:hover {
+  background-color: #f0f8f4;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    border: none;
+  }
+  .main-content {
+    margin-left: 0;
+  }
+}
+
+/* Logo */
 .logo {
   height: 100px; /* bigger than navbar */
   width: auto;
@@ -112,31 +111,57 @@ body {
   top: 50%;
   transform: translateY(-50%);
 }
+  .dropdown-item.active {
+    background-color: #4CAF50; /* green color for EnviroManage theme */
+    color: white;
+  }
+/* Truck Card */
 .truck-card {
   text-align: center;
 }
-#truckMapContainer {
-  display: none;
-  height: 480px;
+
+/* Truck Views */
+#truckCards, #truckMapContainer {
+  width: 100%;
   border-radius: 10px;
+  background: white;
+  display: none; /* JS will toggle */
+}
+.truck-view-container {
+  height: 480px;
+  position: relative;
 }
 
-/* Garbage Bin Container */
+
+#truckIconContainer .truck-card small {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.75rem;
+  color: #6c757d;
+}
+#truckIconContainer .truck-card small::before {
+  content: "Last Updated:\A";
+  white-space: pre;
+  font-weight: 500;
+  color: #000;
+  display: block;
+  font-size: 0.75rem;
+}
+
+/* Garbage Bin */
 .garbage-bin {
   width: 60px;
   height: 100px;
   background: #eee;
   border: 3px solid #555;
-  border-radius: 8px 8px 10px 10px; /* rounded top */
+  border-radius: 8px 8px 10px 10%;
   position: relative;
   overflow: hidden;
   display: flex;
-  align-items: flex-end; /* content sticks to bottom */
+  align-items: flex-end;
   justify-content: center;
   margin: 0 auto;
 }
-
-/* Fill bar inside bin */
 .garbage-fill {
   width: 100%;
   text-align: center;
@@ -148,30 +173,26 @@ body {
   position: absolute;
   bottom: 0;
   left: 0;
-  border-radius: 0 0 5px 5px; /* bottom corners rounded */
+  border-radius: 0 0 5px 5px;
 }
-
-/* Colors */
 .bg-success-fill { background-color: #28a745; }
 .bg-warning-fill { background-color: #ffc107; color: #000; }
 .bg-danger-fill  { background-color: #dc3545; }
 
+/* Heatmap Table */
 .heatmap-table {
   width: 100%;
   border-collapse: collapse;
   text-align: center;
   font-size: 14px;
-    border: 0.5px solid #000;
-  border-collapse: collapse;
+  border: 0.5px solid #000;
 }
-
 .heatmap-table th,
 .heatmap-table td {
   padding: 8px;
   border-radius: 4px;
-    border: 0.5px solid #000;
+  border: 0.5px solid #000;
 }
-
 .heatmap-table th:first-child,
 .heatmap-table td:first-child {
   text-align: center;
@@ -181,33 +202,30 @@ body {
   background: #ffffff !important;
   color: #000000 !important;
 }
-
-.hm-low { background:#C8E6C9; }      /* Pale Mint */
-.hm-mid { background:#4CAF50; color:#fff; } /* Emerald */
-.hm-high{ background:#1B5E20; color:#fff; } /* Dark Forest */
+.hm-low { background:#C8E6C9; }
+.hm-mid { background:#4CAF50; color:#fff; }
+.hm-high{ background:#1B5E20; color:#fff; }
 .hm-zero{ background:#F5F5F5; color:#999; }
 
+/* Modal Heatmap Table */
 #modalHeatmapTable td.hm-low  { background:#C8E6C9 !important; }
 #modalHeatmapTable td.hm-mid  { background:#4CAF50 !important; color:#fff; }
 #modalHeatmapTable td.hm-high { background:#1B5E20 !important; color:#fff; }
 #modalHeatmapTable td.hm-zero { background:#F5F5F5 !important; color:#999; }
-
-#modalHeatmapTable td,
-#modalHeatmapTable th {
-  text-align: center; /* Center lahat ng cells sa modal table */
-  vertical-align: middle; /* Optional, para vertically centered din */
+#modalHeatmapTable td, #modalHeatmapTable th {
+  text-align: center;
+  vertical-align: middle;
 }
 
+/* Heatmap Legend */
 .heatmap-legend {
   display: flex;
   gap: 15px;
   flex-wrap: wrap;
   font-size: 13px;
-  justify-content: flex-end; /* Ito ang nagpa-right align */
-  margin-top: 10px; /* optional, para may space sa table */
+  justify-content: flex-end;
+  margin-top: 10px;
 }
-
-
 .legend-box {
   width: 20px;
   height: 20px;
@@ -215,7 +233,6 @@ body {
   margin: 0 2px 0 8px;
   border: 1px solid #ccc;
 }
-
 .legend-box.low { background:#C8E6C9; }
 .legend-box.mid { background:#4CAF50; }
 .legend-box.high{ background:#1B5E20; }

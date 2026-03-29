@@ -92,19 +92,41 @@
     <!-- Truck Capacity Section -->
     <div class="mt-4">
       <div class="d-flex justify-content-between align-items-center mb-2">
-        <h5><i class="bi bi-truck-front-fill me-2 text-primary"></i>Truck Capacities</h5>
-        <div>
-          <button id="listViewBtn" class="btn btn-outline-primary btn-sm me-1 active">List View</button>
-          <button id="mapViewBtn" class="btn btn-outline-primary btn-sm">Map View</button>
-        </div>
+        <h5><i class="bi bi-truck-front-fill me-2 text-primary"></i>Truck Monitoring</h5>
+<div class="dropdown">
+  <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" id="viewDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+    View
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="viewDropdown">
+    <li><a class="dropdown-item" href="#" data-view="list">List View </a></li>
+    <li><a class="dropdown-item" href="#" data-view="map">Map View </a></li>
+    <li><a class="dropdown-item" href="#" data-view="icon">Icon View </a></li>
+  </ul>
+</div>
+
       </div>
+      
+<!-- Container for list/table view -->
+<div id="truckListContainer" style="display:none;" class="table-responsive">
+  <table class="table table-bordered table-striped align-middle text-center">
+    <thead class="table-light">
+      <tr>
+        <th>Collector Name</th>
+        <th>Truck ID</th>
+        <th>Capacity (%)</th>
+        <th>Location</th>
+        <th>Last Updated</th>
+      </tr>
+    </thead>
+    <tbody id="truckTableBody"></tbody>
+  </table>
+</div>
 
-      <!-- List View -->
-      <div class="row d-flex flex-wrap" id="truckCards"></div>
+<!-- Container for icon/cards view -->
+<div id="truckIconContainer" style="display:none;"></div>
 
-     <!-- Map View -->
-<div id="truckMapContainer" style="height:480px; border-radius:10px; display:none;"></div>
-<div class="mt-2 small text-muted">
+<!-- Map container -->
+<div id="truckMapContainer" style="height:480px; border-radius:10px; display:none;"></div><div id="mapLegend" class="mt-2 small text-muted" style="display:none;">
   🔵 Blue dot = your location | 🚛 = trucks
 </div>
     </div>
@@ -212,28 +234,73 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
 
 <script>
-   const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-  tooltipTriggerList.forEach(el => new bootstrap.Tooltip(el));
-/* ----------------- TRUCK DATA ----------------- */
+  // Enable tooltips
+  document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el));
+
+  /* ----------------- TRUCK DATA ----------------- */
 const trucks = [
   { id:"Truck 01", collector:"Juan Dela Cruz", capacity:55,
-    route:[[121.4785,13.9905],[121.4795,13.9912],[121.4810,13.9901]], barangay:"Poblacion", lastUpdated:"12:34 PM" },
+    route:[[121.4785,13.9905],[121.4795,13.9912],[121.4810,13.9901]],
+    barangay:"Poblacion", lastUpdated:"Oct 17, 2025 12:34 PM" },
   { id:"Truck 02", collector:"Mario Santos", capacity:78,
-    route:[[121.4742,13.9871],[121.4728,13.9865],[121.4715,13.9882]], barangay:"Sampaloc", lastUpdated:"12:20 PM" },
+    route:[[121.4742,13.9871],[121.4728,13.9865],[121.4715,13.9882]],
+    barangay:"Sampaloc", lastUpdated:"Oct 17, 2025 12:20 PM" },
   { id:"Truck 03", collector:"Pedro Reyes", capacity:92,
-    route:[[121.4791,13.9852],[121.4813,13.9841],[121.4820,13.9860]], barangay:"Guisguis", lastUpdated:"11:50 AM" },
+    route:[[121.4791,13.9852],[121.4813,13.9841],[121.4820,13.9860]],
+    barangay:"Guisguis", lastUpdated:"Oct 17, 2025 11:50 AM" },
   { id:"Truck 04", collector:"Miguel De Torre", capacity:45,
-    route:[[121.4795,13.9885],[121.4805,13.9880],[121.4815,13.9890]], barangay:"Sto. Cristo", lastUpdated:"12:10 PM" },
+    route:[[121.4795,13.9885],[121.4805,13.9880],[121.4815,13.9890]],
+    barangay:"Sto. Cristo", lastUpdated:"Oct 17, 2025 12:10 PM" },
   { id:"Truck 05", collector:"Luis Garcia", capacity:88,
-    route:[[121.4765,13.9920],[121.4775,13.9915],[121.4785,13.9925]], barangay:"Talaan", lastUpdated:"11:45 AM" },
+    route:[[121.4765,13.9920],[121.4775,13.9915],[121.4785,13.9925]],
+    barangay:"Talaan", lastUpdated:"Oct 17, 2025 11:45 AM" },
   { id:"Truck 06", collector:"Joseph Reyes", capacity:60,
-    route:[[121.4745,13.9840],[121.4755,13.9835],[121.4765,13.9845]], barangay:"Concepcion Banahaw", lastUpdated:"12:05 PM" },
+    route:[[121.4745,13.9840],[121.4755,13.9835],[121.4765,13.9845]],
+    barangay:"Concepcion Banahaw", lastUpdated:"Oct 17, 2025 12:05 PM" },
   { id:"Truck 07", collector:"Marco Santos", capacity:72,
-    route:[[121.4780,13.9865],[121.4790,13.9860],[121.4800,13.9870]], barangay:"Mamala 1", lastUpdated:"11:30 AM" }
+    route:[[121.4780,13.9865],[121.4790,13.9860],[121.4800,13.9870]],
+    barangay:"Mamala 1", lastUpdated:"Oct 17, 2025 11:30 AM" }
 ];
-/* ------------- RENDER TRUCK CARDS (LIST VIEW) ------------- */
-function renderTruckCards() {
-  const container = document.getElementById('truckCards');
+
+  function renderTruckListView() {
+  document.getElementById('truckListContainer').style.display = 'block';
+  document.getElementById('truckIconContainer').style.display = 'none';
+  document.getElementById('truckMapContainer').style.display = 'none';
+  document.getElementById('mapLegend').style.display = 'none';
+
+  const tbody = document.getElementById("truckTableBody");
+  tbody.innerHTML = "";
+
+  // Declare barangay coordinates once
+  const barangayCoords = {
+    "Poblacion": [13.9905, 121.4785],
+    "Sampaloc": [13.9871, 121.4742],
+    "Guisguis": [13.9852, 121.4791],
+    "Sto. Cristo": [13.9885, 121.4795],
+    "Talaan": [13.9920, 121.4765],
+    "Concepcion Banahaw": [13.9840, 121.4745],
+    "Mamala 1": [13.9865, 121.4780]
+  };
+
+ trucks.forEach(truck => {
+  const row = document.createElement("tr");
+  row.innerHTML = `
+    <td>${truck.collector}</td>
+    <td>${truck.id}</td>
+    <td>${truck.capacity}%</td>
+    <td>${truck.barangay}</td>  <!-- show specific location -->
+    <td>${truck.lastUpdated}</td>
+  `;
+  tbody.appendChild(row);
+});
+}
+function renderTruckIconView() {
+  document.getElementById('truckListContainer').style.display = 'none';
+  document.getElementById('truckIconContainer').style.display = 'block';
+  document.getElementById('truckMapContainer').style.display = 'none';
+  document.getElementById('mapLegend').style.display = 'none';
+
+  const container = document.getElementById('truckIconContainer');
   container.innerHTML = "";
 
   // Flex container to center trucks in rows
@@ -241,122 +308,109 @@ function renderTruckCards() {
   flexContainer.className = "d-flex flex-wrap justify-content-center mb-3";
   container.appendChild(flexContainer);
 
-  // Render each truck
+  // Render each truck as card
   trucks.forEach(truck => {
     let colorClass, statusText;
-    if (truck.capacity <= 60) { colorClass = "bg-success-fill"; statusText = "Normal"; }
-    else if (truck.capacity <= 85) { colorClass = "bg-warning-fill"; statusText = "Near Full"; }
-    else { colorClass = "bg-danger-fill"; statusText = "Full"; }
+    if (truck.capacity <= 60) { 
+      colorClass = "bg-success-fill"; 
+      statusText = "Normal"; 
+    }
+    else if (truck.capacity <= 85) { 
+      colorClass = "bg-warning-fill"; 
+      statusText = "Near Full"; 
+    }
+    else { 
+      colorClass = "bg-danger-fill"; 
+      statusText = "Full"; 
+    }
 
     const truckCard = document.createElement('div');
-    truckCard.className = "d-flex flex-column align-items-center m-2";
+    truckCard.className = "d-flex flex-column align-items-center m-2 text-center";
     truckCard.innerHTML = `
-      <div class="truck-card shadow-sm" style="width:120px;">
-        <h6><b>${truck.collector}</b> (${truck.id})</h6>
-        <div class="garbage-bin">
-          <div class="garbage-fill ${colorClass}" style="height:${truck.capacity}%">
+      <div class="truck-card shadow-sm" style="width:150px;">
+     <h6>
+  <b>${truck.collector}</b>
+  <div class="truck-id">(${truck.id})</div>
+</h6>
+        <div class="garbage-bin" style="height:60px; width:40px; border:1px solid #ccc; margin:5px auto; position:relative; background:#f1f1f1;">
+          <div class="garbage-fill ${colorClass}" style="height:${truck.capacity}%; width:100%; position:absolute; bottom:0; display:flex; align-items:center; justify-content:center; color:#fff; font-size:0.8rem;">
             ${truck.capacity}%
           </div>
         </div>
         <span class="badge ${colorClass} mt-1">${statusText}</span><br>
-        <small class="text-muted">Last Updated: ${truck.lastUpdated}</small>
+        <small class="text-muted"> ${truck.lastUpdated}</small>
       </div>
     `;
     flexContainer.appendChild(truckCard);
   });
 }
-/* ------------- TOGGLE LIST / MAP VIEW ------------- */
-const listViewBtn = document.getElementById('listViewBtn');
-const mapViewBtn = document.getElementById('mapViewBtn');
-const truckCardsContainer = document.getElementById('truckCards');
-const truckMapContainer = document.getElementById('truckMapContainer');
 
-function showListView() {
-  truckCardsContainer.style.display = 'block'; // show list container
-  truckMapContainer.style.display = 'none';    // hide map
-  listViewBtn.classList.add('active');
-  mapViewBtn.classList.remove('active');
+  function showMapView() {
+    document.getElementById('truckListContainer').style.display = 'none';
+    document.getElementById('truckIconContainer').style.display = 'none';
+    document.getElementById('truckMapContainer').style.display = 'block';
+    document.getElementById('mapLegend').style.display = 'block';
 
-  renderTruckCards(); // render cards inside
-}
-function showMapView() {
-  truckCardsContainer.style.display = 'none';
-  truckMapContainer.style.display = 'block';
-  mapViewBtn.classList.add('active');
-  listViewBtn.classList.remove('active');
+    window.truckMap.invalidateSize(); // fix blank map issue
+  }
 
-  // Initialize map once
+  // Initialize map only once
   if (!window.truckMap) {
     window.truckMap = L.map('truckMapContainer').setView([13.9897, 121.4761], 14);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap contributors' }).addTo(window.truckMap);
 
-    // OpenStreetMap tiles
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(window.truckMap);
-
-    // Store markers
     trucks.forEach(truck => {
-
-      let statusText;
-      if (truck.capacity <= 60) statusText = "Normal";
-      else if (truck.capacity <= 85) statusText = "Near Full";
-      else statusText = "Full";
-
+      let statusText = truck.capacity <= 60 ? "Normal" : truck.capacity <= 85 ? "Near Full" : "Full";
       const marker = L.marker([truck.route[0][1], truck.route[0][0]])
         .addTo(window.truckMap)
-        .bindPopup(`
-          <b>${truck.id}</b><br>
-          Barangay: ${truck.barangay}<br>
-          Capacity: ${truck.capacity}%<br>
-          Status: <span style="color:${statusText==='Normal'?'green':statusText==='Near Full'?'orange':'red'}">${statusText}</span>
-        `);
-
+        .bindPopup(`<b>${truck.id}</b><br>Barangay: ${truck.barangay}<br>Capacity: ${truck.capacity}%<br>Status: <span style="color:${statusText==='Normal'?'green':statusText==='Near Full'?'orange':'red'}">${statusText}</span>`);
       truck.marker = marker;
-
-      // Animation setup
       truck.currentStep = 0;
       truck.nextStep = 1;
       truck.progress = 0;
       truck.speed = 0.005;
     });
 
-    // Animate trucks
     function animateTrucks() {
       trucks.forEach(truck => {
         let start = truck.route[truck.currentStep];
         let end = truck.route[truck.nextStep];
-
         let lng = start[0] + (end[0] - start[0]) * truck.progress;
         let lat = start[1] + (end[1] - start[1]) * truck.progress;
-
         truck.marker.setLatLng([lat, lng]);
-
         truck.progress += truck.speed;
-
         if (truck.progress >= 1) {
           truck.currentStep = truck.nextStep;
           truck.nextStep = (truck.nextStep + 1) % truck.route.length;
           truck.progress = 0;
         }
       });
-
       requestAnimationFrame(animateTrucks);
     }
 
     animateTrucks();
   }
-}
+  const dropdownItems = document.querySelectorAll('.dropdown-item');
 
-setTimeout(() => {
-  window.truckMap.invalidateSize();
-}, 200);
-// Event listeners
-listViewBtn.addEventListener('click', showListView);
-mapViewBtn.addEventListener('click', showMapView);
+    dropdownItems.forEach(item => {
+      item.addEventListener('click', function(e) {
+        e.preventDefault(); // para hindi mag-jump
+        dropdownItems.forEach(i => i.classList.remove('active')); // alisin active sa lahat
+        this.classList.add('active'); // idagdag active sa napili
+      });
+    });
+  // Dropdown switching
+  document.querySelectorAll('#viewDropdown + .dropdown-menu .dropdown-item').forEach(item => {
+    item.addEventListener('click', function() {
+      const view = this.dataset.view;
+      if(view==='list') renderTruckListView();
+      if(view==='map') showMapView();
+      if(view==='icon') renderTruckIconView();
+    });
+  });
 
-// Default view
-showListView();
-/* ---------------- HEATMAP (SERVICE FREQUENCY) ---------------- */
+  // Default view
+  renderTruckListView();
 
 /* ---------------- HEATMAP (SERVICE FREQUENCY) ---------------- */
 
