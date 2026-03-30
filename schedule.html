@@ -193,16 +193,32 @@
             </div>
           </div>
           <div class="row mb-3">
-            <div class="col-md-6"><label class="form-label">Truck ID</label><input type="number" class="form-control" id="truckId" min="1" required></div>
-            <div class="col-md-6"><label class="form-label">Collector</label><input type="text" class="form-control" id="collectorName" required></div>
-          </div>
+  <div class="col-md-6">
+  <label class="form-label">Truck</label>
+  <select id="truckId" class="form-select" required>
+    <option value="">Select Truck</option>
+  </select>
+</div>
+
+<div class="col-md-6">
+  <label class="form-label">Collector</label>
+  <select id="collectorName" class="form-select" required>
+    <option value="">Select Collector</option>
+  </select>
+</div>   </div>
           <div class="row mb-3">
             <div class="col-md-6"><label class="form-label">Date</label><input type="text" class="form-control" id="collectionDate" required></div>
             <div class="col-md-3"><label class="form-label">Start Time</label><input type="time" class="form-control" id="startTime" required></div>
             <div class="col-md-3"><label class="form-label">End Time</label><input type="time" class="form-control" id="endTime" required></div>
           </div>
-          <div class="mb-3"><label class="form-label">Garbage Type</label><input type="text" class="form-control" id="remarks" required></div>
-          <div class="text-center"><button type="submit" class="btn btn-success px-5">Save</button></div>
+       <div class="mb-3">
+  <label class="form-label">Garbage Type</label>
+  <select id="remarks" class="form-select" required>
+    <option value="">Select Type</option>
+    <option value="Biodegradable">Biodegradable</option>
+    <option value="Non-Biodegradable">Non-Biodegradable</option>
+  </select>
+</div> <div class="text-center"><button type="submit" class="btn btn-success px-5">Save</button></div>
         </form>
       </div>
     </div>
@@ -213,6 +229,36 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+
+  let trucks = [
+  { id: 1, collectors: ["Juan", "Pedro"] },
+  { id: 2, collectors: ["Maria", "Ana"] },
+  { id: 3, collectors: ["Jose"] }
+];
+const truckIdSelect = document.getElementById("truckId");
+const collectorSelect = document.getElementById("collectorName");
+
+function populateTruckOptions() {
+  truckIdSelect.innerHTML = '<option value="">Select Truck</option>' +
+    trucks.map(t => `<option value="${t.id}">Truck ${t.id}</option>`).join('');
+}
+
+truckIdSelect.addEventListener("change", () => {
+  const selectedTruck = trucks.find(t => t.id == truckIdSelect.value);
+
+  if (selectedTruck) {
+    collectorSelect.innerHTML = `
+      <option value="" disabled selected>Select Collector</option>
+    ` + selectedTruck.collectors.map(c => `
+      <option value="${c}">${c}</option>
+    `).join('');
+  } else {
+    collectorSelect.innerHTML = `
+      <option value="" disabled selected>Select Collector</option>
+    `;
+  }
+});
+
   let routes = [
     {id:1, name:"Route 1", barangay:"Barangay 1"},
     {id:2, name:"Route 2", barangay:"Barangay 2"},
@@ -220,7 +266,7 @@ document.addEventListener("DOMContentLoaded", () => {
     {id:4, name:"Route 4", barangay:"Barangay 4"}
   ];
   let schedules = [
-    {id:1, routeName:"Route 1", barangay:"Barangay 1", truck:1, collector:"Juan", date:"2025-10-20", start:"07:00", end:"11:00", type:"Recyclable"}
+    {id:1, routeName:"Route 1", barangay:"Barangay 1", truck:1, collector:"Juan", date:"2025-10-20", start:"07:00", end:"11:00", type:"Biodegrable"},
   ];
 
   let editRouteId = null;
@@ -303,7 +349,12 @@ document.addEventListener("DOMContentLoaded", () => {
         populateBarangayOptions(s.routeName);
         scheduleBarangay.value = s.barangay;
         document.getElementById("truckId").value = s.truck;
-        document.getElementById("collectorName").value = s.collector;
+       document.getElementById("truckId").value = s.truck;
+
+// trigger change para mag-load collectors
+truckIdSelect.dispatchEvent(new Event("change"));
+
+document.getElementById("collectorName").value = s.collector;
         document.getElementById("collectionDate").value = s.date;
         document.getElementById("startTime").value = s.start;
         document.getElementById("endTime").value = s.end;
@@ -425,7 +476,10 @@ routeFilter.addEventListener("change", ()=> renderRoutes(routeFilter.value));
 renderRoutes();
 populateRouteFilters();
 renderSchedules();
+populateTruckOptions();
 });
+
+
 </script>
 
 </body> </html> 
