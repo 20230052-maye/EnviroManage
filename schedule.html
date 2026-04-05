@@ -224,6 +224,27 @@
     </div>
   </div>
 </div>
+<!-- Floating Message Button -->
+<button id="chatToggleBtn" class="chat-btn shadow">
+  <i class="bi bi-chat-dots-fill"></i>
+</button>
+
+<!-- Chat Box -->
+<div id="chatBox" class="chat-box shadow" style="display:none;">
+  <div class="chat-header">
+    <strong>Messages</strong>
+    <button class="btn-close btn-close-white btn-sm" id="closeChat"></button>
+  </div>
+
+  <div class="chat-body" id="chatBody">
+    <!-- Messages will appear here -->
+  </div>
+
+  <div class="chat-footer">
+    <input type="text" id="chatInput" class="form-control" placeholder="Type a message...">
+    <button class="btn btn-success btn-sm" id="sendMsg">Send</button>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -478,7 +499,123 @@ populateRouteFilters();
 renderSchedules();
 populateTruckOptions();
 });
+/* ---------------- CHAT SYSTEM ---------------- */
 
+// Toggle chat
+const chatBtn = document.getElementById("chatToggleBtn");
+
+const chatBox = document.getElementById("chatBox");
+
+chatBtn.onclick = () => {
+  chatBox.style.display = chatBox.style.display === "none" ? "flex" : "none";
+};
+
+document.getElementById("closeChat").onclick = () => {
+  chatBox.style.display = "none";
+};
+
+// Send message button
+document.getElementById("sendMsg").onclick = sendMessage;
+
+// ENTER key support (🔥 better UX)
+document.getElementById("chatInput").addEventListener("keypress", function(e){
+  if(e.key === "Enter"){
+    sendMessage();
+  }
+});
+
+// Send message
+function sendMessage() {
+  const input = document.getElementById("chatInput");
+  const text = input.value.trim();
+  if (!text) return;
+
+  addMessage(text, "admin");
+
+  input.value = ""; // clear input (refresh feel)
+}
+
+// Add message (FIXED)
+function addMessage(text, sender) {
+  const chatBody = document.getElementById("chatBody");
+
+  const wrapper = document.createElement("div");
+  wrapper.className = `chat-row ${sender}`;
+
+  wrapper.innerHTML = `
+    ${sender === "collector" ? `<div class="avatar"><i class="bi bi-person-fill"></i></div>` : ""}
+    
+    <div class="message-bubble ${sender}">
+      ${text}
+    </div>
+
+    ${sender === "admin" ? `<div class="avatar admin"><i class="bi bi-person-badge-fill"></i></div>` : ""}
+  `;
+
+  chatBody.appendChild(wrapper);
+
+  // 🔥 AUTO SCROLL (refresh effect)
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+// Auto-generated pickup message
+function generatePickupMessage(request) {
+  const message = `
+    <div><strong>📦 Pickup Approved</strong></div>
+    <div>👤 <b>${request.name}</b></div>
+    <div>📍 ${request.address}</div>
+    <div>📞 ${request.contact}</div>
+    <div>🗑 ${request.waste}</div>
+    <div>📅 ${request.date}</div>
+    <div>⏰ ${request.time}</div>
+  `;
+
+  addMessage(message, "collector");
+}
+window.onload = () => {
+
+  const storedMessage = localStorage.getItem("newPickupMessage");
+
+  if (storedMessage) {
+    const data = JSON.parse(storedMessage);
+
+    // Add message silently (no open)
+    generatePickupMessage({
+      name: data.name,
+      address: data.address,
+      contact: data.contact,
+      waste: data.waste,
+      date: data.date,
+      time: data.time
+    });
+
+    addMessage(`Assigned Collector: ${data.collector}`, "collector");
+
+    // Clear after loading
+    localStorage.removeItem("newPickupMessage");
+  }
+
+
+
+  // System-generated message (after approval)
+  generatePickupMessage({
+    name: "Juan Dela Cruz",
+    address: "Brgy. Poblacion",
+    contact: "09123456789",
+    waste: "Mixed Waste",
+    date: "Oct 18, 2025",
+    time: "2:00 PM"
+  });
+// Auto-close chat when scrolling
+window.addEventListener("scroll", () => {
+  const chatBox = document.getElementById("chatBox");
+
+  if (chatBox.style.display === "flex") {
+    chatBox.style.display = "none";
+  }
+});
+
+};
 
 </script>
 

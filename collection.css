@@ -95,3 +95,147 @@ body {
   top: 50%;
   transform: translateY(-50%);
 }
+
+/* Floating button */
+.chat-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: none;
+  background: #198754;
+  color: #fff;
+  font-size: 22px;
+  z-index: 9999;
+}
+
+/* Chat box */
+.chat-box {
+  position: fixed;
+  bottom: 85px;
+  right: 20px;
+  width: 320px;
+  height: 400px;
+  background: #fff;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+/* Header */
+.chat-header {
+  background: #198754;
+  color: #fff;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Body */
+.chat-body {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  background: #f8f9fa;
+}
+
+/* Footer */
+.chat-footer {
+  display: flex;
+  gap: 5px;
+  padding: 10px;
+}
+
+/* Messages */
+.message {
+  padding: 6px 10px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+  max-width: 80%;
+}
+
+.admin-msg {
+  background: #198754;
+  color: #fff;
+  margin-left: auto;
+}
+
+.collector-msg {
+  background: #e4e6eb;
+}
+
+/* Chat rows */
+.chat-row {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 10px;
+}
+
+.chat-row.admin {
+  justify-content: flex-end;
+}
+
+.chat-row.collector {
+  justify-content: flex-start;
+}
+
+/* Avatar */
+.avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: #dee2e6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 6px;
+  font-size: 18px;
+}
+
+.avatar.admin {
+  background: #198754;
+  color: #fff;
+}
+
+/* Message bubble */
+.message-bubble {
+  padding: 8px 12px;
+  border-radius: 15px;
+  max-width: 70%;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Admin (right side) */
+.message-bubble.admin {
+  background: #198754;
+  color: #fff;
+  border-bottom-right-radius: 5px;
+}
+
+/* Collector (left side) */
+.message-bubble.collector {
+  background: #e9ecef;
+  color: #000;
+  border-bottom-left-radius: 5px;
+}
+
+.message-bubble {
+  animation: fadeIn 0.2s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
