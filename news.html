@@ -165,14 +165,7 @@
                 <option>Announcement</option>
               </select>
             </div>
-            <div class="col-md-4 mb-3">
-              <label class="form-label fw-semibold">Target Audience</label>
-              <select class="form-select" id="addArticleAudience" required>
-                <option>All Residents</option>
-                <option>Barangay Officials</option>
-                <option>Collectors</option>
-              </select>
-            </div>
+           
           </div>
           <div class="text-end">
             <button type="submit" class="btn btn-success">Publish</button>
@@ -225,14 +218,7 @@
                 <option>Announcement</option>
               </select>
             </div>
-            <div class="col-md-4 mb-3">
-              <label class="form-label fw-semibold">Target Audience</label>
-              <select class="form-select" id="editArticleAudience" required>
-                <option>All Residents</option>
-                <option>Barangay Officials</option>
-                <option>Collectors</option>
-              </select>
-            </div>
+          
           </div>
           <div class="text-end">
             <button type="submit" class="btn btn-primary">Update</button>
@@ -293,8 +279,7 @@ document.getElementById("addArticleForm").addEventListener("submit", function(e)
   const title = document.getElementById("addArticleTitle").value;
   const date = document.getElementById("addArticleDate").value;
   const category = document.getElementById("addArticleCategory").value;
-  const audience = document.getElementById("addArticleAudience").value;
-
+const audience = "All Residents";
   const row = document.createElement("tr");
   row.innerHTML = `
     <td>${id}</td>
@@ -319,21 +304,19 @@ document.getElementById("addSaveDraftBtn").addEventListener("click", () => {
   const title = document.getElementById("addArticleTitle").value;
   const date = document.getElementById("addArticleDate").value;
   const category = document.getElementById("addArticleCategory").value;
-  const audience = document.getElementById("addArticleAudience").value;
-
+  const audience = "All Residents";
   const row = document.createElement("tr");
   row.innerHTML = `
-    <td>${id}</td>
-    <td>${title}</td>
-    <td>${new Date(date).toDateString()}</td>
-    <td>${category}</td>
-    <td>${audience}</td>
-    <td><span class="badge bg-secondary">Draft</span></td>
-    <td>
-      <button class="btn btn-sm btn-primary editBtn"><i class="bi bi-pencil-square"></i></button>
-      <button class="btn btn-sm btn-danger deleteBtn"><i class="bi bi-trash"></i></button>
-      <button class="btn btn-sm btn-success publishBtn">Publish</button>
-    </td>
+ <td>${id}</td>
+<td>${title}</td>
+<td>${new Date(date).toDateString()}</td>
+<td>${category}</td>
+<td><span class="badge bg-success">Active</span></td>
+<td>
+  <button class="btn btn-sm btn-primary editBtn"><i class="bi bi-pencil-square"></i></button>
+  <button class="btn btn-sm btn-danger deleteBtn"><i class="bi bi-trash"></i></button>
+  <button class="btn btn-sm btn-warning publishBtn">Unpublish</button>
+</td>
   `;
   articleList.appendChild(row);
   addModal.hide();
@@ -352,8 +335,8 @@ articleList.addEventListener("click", function(e){
     document.getElementById("editArticleTitle").value = row.children[1].textContent;
     document.getElementById("editArticleDate").value = new Date(row.children[2].textContent).toISOString().split('T')[0];
     document.getElementById("editArticleCategory").value = row.children[3].textContent;
-    document.getElementById("editArticleAudience").value = row.children[4].textContent;
-    editModal.show();
+ 
+   editModal.show();
   }
 
   // Delete
@@ -377,7 +360,29 @@ articleList.addEventListener("click", function(e){
     }
   }
 });
+document.getElementById("addArticleForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  const id = document.getElementById("addArticleID").value;
+  const title = document.getElementById("addArticleTitle").value;
+  const date = document.getElementById("addArticleDate").value;
+  const category = document.getElementById("addArticleCategory").value;
 
+  const row = document.createElement("tr");
+  row.innerHTML = `
+    <td>${id}</td>
+    <td>${title}</td>
+    <td>${new Date(date).toDateString()}</td>
+    <td>${category}</td>
+    <td><span class="badge bg-success">Active</span></td>
+    <td>
+      <button class="btn btn-sm btn-primary editBtn"><i class="bi bi-pencil-square"></i></button>
+      <button class="btn btn-sm btn-danger deleteBtn"><i class="bi bi-trash"></i></button>
+      <button class="btn btn-sm btn-warning publishBtn">Unpublish</button>
+    </td>
+  `;
+  articleList.appendChild(row);
+  addModal.hide();
+});
 // Edit Article Submit
 document.getElementById("editArticleForm").addEventListener("submit", function(e){
   e.preventDefault();
@@ -386,8 +391,7 @@ document.getElementById("editArticleForm").addEventListener("submit", function(e
   row.children[1].textContent = document.getElementById("editArticleTitle").value;
   row.children[2].textContent = new Date(document.getElementById("editArticleDate").value).toDateString();
   row.children[3].textContent = document.getElementById("editArticleCategory").value;
-  row.children[4].textContent = document.getElementById("editArticleAudience").value;
-  editModal.hide();
+ editModal.hide();
 });
 
 // Search
