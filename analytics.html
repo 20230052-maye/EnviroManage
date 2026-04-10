@@ -12,7 +12,8 @@
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-matrix@1.1.0/dist/chartjs-chart-matrix.min.js"></script>
-  <link rel="stylesheet" href="analytics.css" />
+  <link rel="stylesheet" href="analytics.css"
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"> />
 </head>
 <body>
   <style>
@@ -210,25 +211,102 @@
       </div>
     </div>
   </div>
-<!-- Floating Message Button -->
+    <!-- Floating Message Button -->
 <button id="chatToggleBtn" class="chat-btn shadow">
   <i class="bi bi-chat-dots-fill"></i>
 </button>
 
 <!-- Chat Box -->
 <div id="chatBox" class="chat-box shadow" style="display:none;">
-  <div class="chat-header">
+<div class="chat-header d-flex align-items-center justify-content-between">
+  
+  <!-- LEFT SIDE: BACK + TITLE -->
+  <div class="d-flex align-items-center gap-2">
+    <button id="backBtn" class="btn btn-sm btn-light" style="display:none;">
+      ←
+    </button>
     <strong>Messages</strong>
-    <button class="btn-close btn-close-white btn-sm" id="closeChat"></button>
   </div>
 
-  <div class="chat-body" id="chatBody">
-    <!-- Messages will appear here -->
-  </div>
+  <!-- RIGHT SIDE: CLOSE -->
+  <button class="btn-close btn-close-white btn-sm" id="closeChat"></button>
 
-  <div class="chat-footer">
+</div>
+<div class="chat-body">
+
+  <!-- CONTACT LIST -->
+  <div id="contactList" class="conversation-list"></div>
+
+  <!-- CHAT MESSAGES -->
+  <div id="chatMessages" style="display:none;"></div>
+
+</div>
+
+ <div class="chat-footer" id="chatFooter" style="display:none;">
     <input type="text" id="chatInput" class="form-control" placeholder="Type a message...">
     <button class="btn btn-success btn-sm" id="sendMsg">Send</button>
+  </div>
+</div>
+ <div class="modal fade" id="pickupModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title">📦 Pickup Details</h5>
+        <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row">
+
+          <div class="col-md-6">
+            <h6>Resident Information</h6>
+            <p><b>Name:</b> <span id="mName"></span></p>
+            <p><b>Contact:</b> <span id="mContact"></span></p>
+
+            <h6 class="mt-3">Detailed Address</h6>
+            <p>
+              House No: <span id="mHouse"></span><br>
+              Street: <span id="mStreet"></span><br>
+              Barangay: <span id="mBrgy"></span><br>
+              Sariaya, Quezon
+            </p>
+
+            <h6 class="mt-3">Pickup Info</h6>
+            <p>
+              Waste: <span id="mWaste"></span><br>
+              Date: <span id="mDate"></span><br>
+              Time: <span id="mTime"></span>
+            </p>
+
+      
+          </div>
+
+          <div class="col-md-6">
+          <div id="map"></div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- LOCATION MAP MODAL -->
+<div class="modal fade" id="locationModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Pickup Location</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <div id="locationMap" style="height: 400px; width: 100%;"></div>
+      </div>
+
+    </div>
   </div>
 </div>
 
@@ -236,6 +314,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <script>
   // --------- TOOLTIP ----------
@@ -591,123 +670,262 @@ function downloadPDF() {
 
   doc.save("overall_charts_analysis_table.pdf");
 }
-/* ---------------- CHAT SYSTEM ---------------- */
+  /* =========================================================
+     CHAT SYSTEM (FIXED ONLY — NO DESIGN CHANGES)
+  ========================================================= */
 
-// Toggle chat
-const chatBtn = document.getElementById("chatToggleBtn");
+  const chatBtn = document.getElementById("chatToggleBtn");
+  const chatBox = document.getElementById("chatBox");
+  const contactList = document.getElementById("contactList");
+  const chatMessages = document.getElementById("chatMessages");
+  const chatFooter = document.getElementById("chatFooter");
+ const closeBtn = document.getElementById("closeChat");
+  let activeCollector = null;
 
-const chatBox = document.getElementById("chatBox");
+  chatBtn.onclick = () => {
+    chatBox.style.display = (chatBox.style.display === "none" || !chatBox.style.display)
+      ? "flex"
+      : "none";
 
-chatBtn.onclick = () => {
-  chatBox.style.display = chatBox.style.display === "none" ? "flex" : "none";
-};
+    renderContacts();
+    showContacts();
+  };
 
-document.getElementById("closeChat").onclick = () => {
+  document.getElementById("closeChat").onclick = () => {
+    chatBox.style.display = "none";
+  };
+const backBtn = document.getElementById("backBtn");
+
+function showContacts() {
+  contactList.style.display = "block";
+  chatMessages.style.display = "none";
+  chatFooter.style.display = "none";
+
+  document.querySelector(".chat-header strong").textContent = "Messages";
+
+  backBtn.style.display = "none";
+
+  // SHOW X BUTTON in contact list
+  closeBtn.style.display = "block";
+}
+
+function openChat(name) {
+  activeCollector = name;
+
+  contactList.style.display = "none";
+  chatMessages.style.display = "block";
+  chatFooter.style.display = "flex";
+
+  document.querySelector(".chat-header strong").textContent = name;
+
+  backBtn.style.display = "inline-block";
+
+  // HIDE X BUTTON in conversation
+  closeBtn.style.display = "none";
+
+  chatMessages.innerHTML = "";
+  loadMessages(name);
+}
+closeBtn.onclick = () => {
   chatBox.style.display = "none";
 };
+  function renderContacts() {
+    contactList.innerHTML = "";
 
-// Send message button
-document.getElementById("sendMsg").onclick = sendMessage;
+    collectors.forEach(c => {
+      const div = document.createElement("div");
+      div.className = "conversation-item";
+      div.dataset.name = c.name;
 
-// ENTER key support (🔥 better UX)
-document.getElementById("chatInput").addEventListener("keypress", function(e){
-  if(e.key === "Enter"){
-    sendMessage();
-  }
-});
+      div.innerHTML = `
+        <div class="avatar-circle">${c.name.charAt(0)}</div>
+        <div>${c.name}</div>
+      `;
 
-// Send message
-function sendMessage() {
-  const input = document.getElementById("chatInput");
-  const text = input.value.trim();
-  if (!text) return;
-
-  addMessage(text, "admin");
-
-  input.value = ""; // clear input (refresh feel)
-}
-
-// Add message (FIXED)
-function addMessage(text, sender) {
-  const chatBody = document.getElementById("chatBody");
-
-  const wrapper = document.createElement("div");
-  wrapper.className = `chat-row ${sender}`;
-
-  wrapper.innerHTML = `
-    ${sender === "collector" ? `<div class="avatar"><i class="bi bi-person-fill"></i></div>` : ""}
-    
-    <div class="message-bubble ${sender}">
-      ${text}
-    </div>
-
-    ${sender === "admin" ? `<div class="avatar admin"><i class="bi bi-person-badge-fill"></i></div>` : ""}
-  `;
-
-  chatBody.appendChild(wrapper);
-
-  // 🔥 AUTO SCROLL (refresh effect)
-  chatBody.scrollTop = chatBody.scrollHeight;
-}
-
-// Auto-generated pickup message
-function generatePickupMessage(request) {
-  const message = `
-    <div><strong>📦 Pickup Approved</strong></div>
-    <div>👤 <b>${request.name}</b></div>
-    <div>📍 ${request.address}</div>
-    <div>📞 ${request.contact}</div>
-    <div>🗑 ${request.waste}</div>
-    <div>📅 ${request.date}</div>
-    <div>⏰ ${request.time}</div>
-  `;
-
-  addMessage(message, "collector");
-}
-window.onload = () => {
-
-  const storedMessage = localStorage.getItem("newPickupMessage");
-
-  if (storedMessage) {
-    const data = JSON.parse(storedMessage);
-
-    // Add message silently (no open)
-    generatePickupMessage({
-      name: data.name,
-      address: data.address,
-      contact: data.contact,
-      waste: data.waste,
-      date: data.date,
-      time: data.time
+      contactList.appendChild(div);
     });
-
-    addMessage(`Assigned Collector: ${data.collector}`, "collector");
-
-    // Clear after loading
-    localStorage.removeItem("newPickupMessage");
   }
 
+  document.addEventListener("click", e => {
+    const item = e.target.closest(".conversation-item");
+    if (!item) return;
 
-
-  // System-generated message (after approval)
-  generatePickupMessage({
-    name: "Juan Dela Cruz",
-    address: "Brgy. Poblacion",
-    contact: "09123456789",
-    waste: "Mixed Waste",
-    date: "Oct 18, 2025",
-    time: "2:00 PM"
+    openChat(item.dataset.name);
   });
-// Auto-close chat when scrolling
-window.addEventListener("scroll", () => {
-  const chatBox = document.getElementById("chatBox");
 
-  if (chatBox.style.display === "flex") {
-    chatBox.style.display = "none";
+  function sendMessage() {
+    const input = document.getElementById("chatInput");
+    const text = input.value.trim();
+    if (!text) return;
+
+    addMessage(text, "admin");
+    input.value = "";
   }
+
+  document.getElementById("sendMsg").onclick = sendMessage;
+
+  document.getElementById("chatInput").addEventListener("keypress", e => {
+    if (e.key === "Enter") sendMessage();
+  });
+
+  function addMessage(text, sender) {
+    const div = document.createElement("div");
+    div.className = `chat-row ${sender}`;
+
+    div.innerHTML = `
+      ${sender === "collector" ? `<div class="avatar"><i class="bi bi-person-fill"></i></div>` : ""}
+      <div class="message-bubble ${sender}">
+        ${text}
+      </div>
+      ${sender === "admin" ? `<div class="avatar admin"><i class="bi bi-person-badge-fill"></i></div>` : ""}
+    `;
+
+    chatMessages.appendChild(div);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  const collectors = [
+    {
+      name: "Juan Dela Cruz",
+      messages: [
+        {
+          type: "pickup",
+          data: {
+            name: "Maria Reyes",
+            contact: "09123456789",
+            waste: "Mixed Waste",
+            date: "April 7, 2026",
+            time: "2:00 PM",
+            house: "123",
+            street: "Rizal St",
+            brgy: "Poblacion",
+            lat: 13.9634,
+            lng: 121.5262
+          }
+        },
+       
+      ]
+    },
+      { name: "Mario Santos", messages: [] },
+  { name: "Pedro Reyes", messages: [] },
+  { name: "Miguel De Torre", messages: [] },
+  { name: "Luis Garcia", messages: [] },
+  { name: "Joseph Reyes", messages: [] },
+  { name: "Marco Santos", messages: [] }
+  ];
+
+
+  function loadMessages(name) {
+    const convo = collectors.find(c => c.name === name);
+    if (!convo) return;
+
+    convo.messages.forEach(msg => {
+      if (msg.type === "pickup") {
+        generatePickupMessage(msg.data);
+      } else {
+        addMessage(msg.text, msg.sender);
+      }
+    });
+  }
+
+  function generatePickupMessage(data) {
+    const html = `
+      <div class="pickup-card">
+        <strong>📦 Pickup Assigned</strong><br>
+        <b>${data.name}</b><br>
+        <small>${data.date} • ${data.time}</small><br>
+
+        <button class="btn btn-sm btn-outline-success mt-2 viewDetailsBtn"
+          data-name="${data.name}"
+          data-contact="${data.contact}"
+          data-waste="${data.waste}"
+          data-date="${data.date}"
+          data-time="${data.time}"
+          data-house="${data.house}"
+          data-street="${data.street}"
+          data-brgy="${data.brgy}"
+          data-lat="${data.lat}"
+          data-lng="${data.lng}">
+          View Details
+        </button>
+      </div>
+    `;
+
+    addMessage(html, "admin");
+  }
+
+  backBtn.onclick = () => {
+    showContacts();
+  };
+
+  window.onload = () => {
+    renderContacts();
+  };
+
+
+/* =========================
+   VIEW DETAILS (FIXED)
+========================= */
+
+document.addEventListener("click", function (e) {
+  const btn = e.target.closest(".viewDetailsBtn");
+  if (!btn) return;
+
+  const d = btn.dataset;
+
+  // Fill modal data
+  document.getElementById("mName").textContent = d.name;
+  document.getElementById("mContact").textContent = d.contact;
+  document.getElementById("mHouse").textContent = d.house || "-";
+  document.getElementById("mStreet").textContent = d.street || "-";
+  document.getElementById("mBrgy").textContent = d.brgy || "-";
+  document.getElementById("mWaste").textContent = d.waste;
+  document.getElementById("mDate").textContent = d.date;
+  document.getElementById("mTime").textContent = d.time;
+
+  const lat = d.lat ? parseFloat(d.lat) : 13.9634;
+  const lng = d.lng ? parseFloat(d.lng) : 121.5262;
+
+  // Open modal
+  const modal = new bootstrap.Modal(document.getElementById("pickupModal"));
+  modal.show();
+
+  // Load Leaflet map after modal opens
+  setTimeout(() => {
+    initLeafletMap(lat, lng, d.name, d.brgy);
+  }, 300);
 });
 
-};
+
+/* =========================
+   LEAFLET MAP (SAFE FIX)
+========================= */
+
+let leafletMap = null;
+let marker = null;
+
+function initLeafletMap(lat, lng, name, brgy) {
+
+  if (leafletMap) {
+    leafletMap.remove();
+    leafletMap = null;
+  }
+
+  leafletMap = L.map("map").setView([lat, lng], 16);
+
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "&copy; OpenStreetMap"
+  }).addTo(leafletMap);
+
+  marker = L.marker([lat, lng])
+    .addTo(leafletMap)
+    .bindPopup(`<b>${name}</b><br>${brgy}`)
+    .openPopup();
+
+  setTimeout(() => {
+    leafletMap.invalidateSize();
+  }, 200);
+}
   </script>
 </body>
 </html>
